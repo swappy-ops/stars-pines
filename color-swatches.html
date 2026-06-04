@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Stars & Pines — Color Swatches</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+    .subtitle {
+      font-size: 0.75rem;
+      color: #888;
+      margin-bottom: 48px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .swatch-group {
+      margin-bottom: 48px;
+    }
+    .swatch-group h2 {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #aaa;
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .swatch-row {
+      display: flex;
+      gap: 4px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .swatch {
+      flex: 1;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 12px 8px;
+      position: relative;
+    }
+    .swatch span {
+      font-size: 0.6rem;
+      font-family: monospace;
+      letter-spacing: 0.05em;
+      padding: 3px 6px;
+      border-radius: 3px;
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+    }
+    .swatch .name {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-size: 0.55rem;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stars & Pines — Color Schemes</h1>
+  <p class="subtitle">Palette for each application in the ecosystem</p>
+
+  <!-- Public Website -->
+  <div class="swatch-group">
+    <h2>Public Website (stars-and-pines-v3.html)</h2>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#faf7f2"><span>#FAF7F2</span><div class="name">Snow</div></div>
+      <div class="swatch" style="background:#f8f4ef"><span>#F8F4EF</span><div class="name">Cream</div></div>
+      <div class="swatch" style="background:#f2ede6"><span>#F2EDE6</span><div class="name">Paper</div></div>
+      <div class="swatch" style="background:#1a1714"><span>#1A1714</span><div class="name">Ink</div></div>
+      <div class="swatch" style="background:#253422"><span>#253422</span><div class="name">Pine</div></div>
+      <div class="swatch" style="background:#4a3a26"><span>#4A3A26</span><div class="name">Bark</div></div>
+      <div class="swatch" style="background:#7a6248"><span>#7A6248</span><div class="name">Earth</div></div>
+      <div class="swatch" style="background:#c4a870"><span>#C4A870</span><div class="name">Warm</div></div>
+      <div class="swatch" style="background:#b8974a"><span>#B8974A</span><div class="name">Gold</div></div>
+      <div class="swatch" style="background:#0f1210"><span>#0F1210</span><div class="name">Night</div></div>
+    </div>
+  </div>
+
+  <!-- Guest Portal -->
+  <div class="swatch-group">
+    <h2>Guest Portal (guest-portal.html)</h2>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#131a12"><span>#131A12</span><div class="name">Night</div></div>
+      <div class="swatch" style="background:#1f2f1d"><span>#1F2F1D</span><div class="name">Pine</div></div>
+      <div class="swatch" style="background:#2d4030"><span>#2D4030</span><div class="name">Pine 2</div></div>
+      <div class="swatch" style="background:#253422"><span>#253422</span><div class="name">Forest</div></div>
+      <div class="swatch" style="background:#4a6340"><span>#4A6340</span><div class="name">Sage</div></div>
+      <div class="swatch" style="background:#c4a870"><span>#C4A870</span><div class="name">Warm</div></div>
+      <div class="swatch" style="background:#b8974a"><span>#B8974A</span><div class="name">Gold</div></div>
+      <div class="swatch" style="background:#f6f1ea"><span>#F6F1EA</span><div class="name">Cream</div></div>
+      <div class="swatch" style="background:#ddd7cc"><span>#DDD7CC</span><div class="name">Mist</div></div>
+      <div class="swatch" style="background:#c4784a"><span>#C4784A</span><div class="name">Alert</div></div>
+    </div>
+  </div>
+
+  <!-- Ridge Bell Staff App -->
+  <div class="swatch-group">
+    <h2>Ridge Bell Staff App (ridge-bell-staff-app.html)</h2>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#131a12"><span>#131A12</span><div class="name">Night</div></div>
+      <div class="swatch" style="background:#1f2f1d"><span>#1F2F1D</span><div class="name">Pine</div></div>
+      <div class="swatch" style="background:#2d4030"><span>#2D4030</span><div class="name">Pine 2</div></div>
+      <div class="swatch" style="background:#4a3a26"><span>#4A3A26</span><div class="name">Bark</div></div>
+      <div class="swatch" style="background:#7a6248"><span>#7A6248</span><div class="name">Earth</div></div>
+      <div class="swatch" style="background:#c4a870"><span>#C4A870</span><div class="name">Warm</div></div>
+      <div class="swatch" style="background:#b8974a"><span>#B8974A</span><div class="name">Gold</div></div>
+      <div class="swatch" style="background:#c4784a"><span>#C4784A</span><div class="name">Alert</div></div>
+      <div class="swatch" style="background:#3d7a52"><span>#3D7A52</span><div class="name">Green</div></div>
+      <div class="swatch" style="background:#a04040"><span>#A04040</span><div class="name">Red Soft</div></div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="swatch-group">
+    <h2>Shared Core Palette</h2>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#253422"><span>#253422</span><div class="name">Pine</div></div>
+      <div class="swatch" style="background:#c4a870"><span>#C4A870</span><div class="name">Warm</div></div>
+      <div class="swatch" style="background:#b8974a"><span>#B8974A</span><div class="name">Gold</div></div>
+      <div class="swatch" style="background:#131a12"><span>#131A12</span><div class="name">Night</div></div>
+      <div class="swatch" style="background:#ddd7cc"><span>#DDD7CC</span><div class="name">Mist</div></div>
+    </div>
+  </div>
+</body>
+</html>
