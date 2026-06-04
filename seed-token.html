@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head><title>Seed Token</title></head>
+<body>
+<p>Seeding token 888888...</p>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+firebase.initializeApp({
+  apiKey: 'AIzaSyAJtVjg6zv1KK2puu57NICrW8mU7OTybUA',
+  authDomain: 'stars-and-pines-ridge.firebaseapp.com',
+  databaseURL: 'https://stars-and-pines-ridge-default-rtdb.asia-southeast1.firebasedatabase.app',
+  projectId: 'stars-and-pines-ridge',
+  storageBucket: 'stars-and-pines-ridge.firebasestorage.app',
+  messagingSenderId: '8285256236',
+  appId: '1:8285256236:web:e03af2dff72e80eed26f89'
+});
+
+const db = firebase.database();
+db.ref('guest_access/888888').set({
+  token: '888888',
+  guestName: 'Test Guest',
+  room: 'Mountain Double',
+  active: true,
+  validUntil: 9999999999999,
+  createdAt: Date.now()
+}).then(() => {
+  document.body.innerHTML = '<h1>Done.</h1><p>Token <b>888888</b> created.</p><p><a href="guest-portal.html?token=888888">Open guest portal →</a></p>';
+}).catch(e => {
+  document.body.innerHTML = '<h1>Error</h1><pre>' + e.message + '</pre>';
+});
+</script>
+</body>
+</html>
