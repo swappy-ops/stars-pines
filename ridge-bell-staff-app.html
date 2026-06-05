@@ -1489,6 +1489,35 @@ body {
         <button class="sp-logout" onclick="logout()">Sign out</button>
       </div>
 
+      <div class="sec-label" style="margin-top:24px">Guest Check-in</div>
+      <div class="app-info-block">
+        <div class="aib-label">Generate access code</div>
+        <div style="padding:12px 0;">
+          <div style="display:flex;gap:8px;margin-bottom:12px;">
+            <input type="text" id="qr-guest-name" placeholder="Guest name" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(184,151,74,0.15);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:300;padding:10px 12px;outline:none;border-radius:6px;" />
+            <select id="qr-guest-room" style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(184,151,74,0.15);color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:300;padding:10px 12px;outline:none;border-radius:6px;-webkit-appearance:none;">
+              <option value="">Room</option>
+              <option value="Six-Bed Dorm">Six-Bed Dorm</option>
+              <option value="Mountain Double">Mountain Double</option>
+              <option value="Deluxe Twin">Deluxe Twin</option>
+            </select>
+          </div>
+          <button onclick="generateGuestCode()" style="width:100%;background:var(--warm);color:var(--pine);border:none;padding:12px;font-family:'DM Sans',sans-serif;font-size:0.58rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;border-radius:6px;transition:background 0.2s;">Generate Access Code</button>
+        </div>
+      </div>
+      <div id="qr-result" style="display:none;">
+        <div class="app-info-block" style="text-align:center;border:1px solid rgba(184,151,74,0.2);">
+          <div class="aib-label">Access Code</div>
+          <div id="qr-code-display" style="font-family:monospace;font-size:1.8rem;letter-spacing:0.2em;color:var(--warm);padding:16px 0;"></div>
+          <canvas id="qr-canvas" style="margin:0 auto;display:block;border-radius:8px;"></canvas>
+          <div id="qr-portal-link" style="font-size:0.65rem;color:rgba(221,215,204,0.4);margin-top:12px;word-break:break-all;"></div>
+          <div style="display:flex;gap:8px;margin-top:16px;">
+            <button onclick="shareCodeWhatsApp()" style="flex:1;background:#25D366;color:#fff;border:none;padding:10px;font-family:'DM Sans',sans-serif;font-size:0.55rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:6px;">Share WhatsApp</button>
+            <button onclick="copyCodeLink()" style="flex:1;background:rgba(255,255,255,0.06);color:var(--mist);border:1px solid rgba(184,151,74,0.15);padding:10px;font-family:'DM Sans',sans-serif;font-size:0.55rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:6px;">Copy Link</button>
+          </div>
+        </div>
+      </div>
+
       <div class="sec-label" style="margin-top:24px">Property</div>
       <div class="app-info-block">
         <div class="aib-label">Property</div>
@@ -1551,6 +1580,7 @@ body {
 
 </div><!-- end screen-main -->
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
@@ -2317,6 +2347,79 @@ function vibrate(pattern) {
   if (navigator.vibrate) {
     navigator.vibrate(pattern);
   }
+}
+
+// ─── QR CODE GENERATOR (6-digit)
+let currentGuestCode = null;
+
+function generateToken() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function generateGuestCode() {
+  const name = document.getElementById('qr-guest-name').value.trim();
+  const room = document.getElementById('qr-guest-room').value;
+
+  if (!name || !room) {
+    showToast('Enter guest name and room');
+    return;
+  }
+
+  const code = generateToken();
+  currentGuestCode = { code, name, room };
+
+  const now = Date.now();
+  const guestData = {
+    token: code,
+    guestName: name,
+    room: room,
+    active: true,
+    validUntil: now + (14 * 24 * 60 * 60 * 1000), // 14 days
+    createdAt: now,
+    source: 'ridge-bell-qr'
+  };
+
+  db.ref('guest_access/' + code).set(guestData).then(() => {
+    const portalUrl = window.location.origin + window.location.pathname.replace('ridge-bell-staff-app.html', 'guest-portal.html') + '?token=' + code;
+
+    document.getElementById('qr-code-display').textContent = code;
+    document.getElementById('qr-portal-link').textContent = portalUrl;
+    document.getElementById('qr-result').style.display = 'block';
+
+    // Generate QR code
+    const canvas = document.getElementById('qr-canvas');
+    if (typeof QRCode !== 'undefined') {
+      QRCode.toCanvas(canvas, portalUrl, {
+        width: 180,
+        margin: 2,
+        color: { dark: '#131a12', light: '#f0ebe3' }
+      });
+    }
+
+    showToast('Code generated: ' + code);
+  }).catch(() => {
+    showToast('Could not save code. Check connection.');
+  });
+}
+
+function shareCodeWhatsApp() {
+  if (!currentGuestCode) return;
+  const portalUrl = window.location.origin + window.location.pathname.replace('ridge-bell-staff-app.html', 'guest-portal.html') + '?token=' + currentGuestCode.code;
+  const msg = `Welcome to Stars & Pines, ${currentGuestCode.name}!\n\nYour access code: ${currentGuestCode.code}\nRoom: ${currentGuestCode.room}\n\nOpen your guest portal:\n${portalUrl}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function copyCodeLink() {
+  if (!currentGuestCode) return;
+  const portalUrl = window.location.origin + window.location.pathname.replace('ridge-bell-staff-app.html', 'guest-portal.html') + '?token=' + currentGuestCode.code;
+  navigator.clipboard.writeText(portalUrl).then(() => {
+    showToast('Link copied!');
+  }).catch(() => {
+    showToast('Could not copy link');
+  });
 }
 </script>
 </body>

@@ -19,18 +19,17 @@ Date: 2026-06-04
 │  /perool/        — product catalogue (NEW, future)           │
 └──────────┬──────────────────────┬────────────────────────────┘
            │                      │
-    ┌──────▼──────┐        ┌──────▼──────┐
-    │  PUBLIC     │        │  GUEST      │
-    │  WEBSITE    │        │  PORTAL     │
-    │             │        │             │
-    │ stars-and-  │        │ guest-      │
-    │ pines-v3    │        │ portal      │
-    │ .html       │        │ .html       │
-    │             │        │             │
-    │ Editorial   │        │ Operational │
-    │ Atmospheric │        │ Functional  │
-    │ Story       │        │ Field Guide │
-    └─────────────┘        └──────┬──────┘
+     ┌──────▼──────┐        ┌──────▼──────┐
+     │  PUBLIC     │        │  GUEST      │
+     │  WEBSITE    │        │  PORTAL     │
+     │             │        │             │
+     │ index       │        │ guest-      │
+     │ .html       │        │ portal      │
+     │             │        │             │
+     │ Editorial   │        │ Operational │
+     │ Atmospheric │        │ Functional  │
+     │ Story       │        │ Field Guide │
+     └─────────────┘        └──────┬──────┘
                                   │
                            ┌──────▼──────┐
                            │  RIDGE BELL │
@@ -49,17 +48,20 @@ Date: 2026-06-04
 
 ## 2. SEPARATION OF CONCERNS
 
-### Public Website (stars-and-pines-v3.html)
+### Public Website (index.html)
 **Job:** Sell the experience. Tell the story.
-- Crank's Ridge history
-- Philosophy
+- Why people come (silence, light, company)
+- A day on the ridge
+- The house philosophy
 - Rooms
 - Reviews
 - Guide (editorial)
 - Booking channels
 - WhatsApp enquiry form
+- Easter eggs (hidden stars, torn notes, polaroids, terrace lightbox)
 
 **Removed:**
+- Ridge history/timeline (too long, distracts from booking flow)
 - Room service ordering (moved to guest portal)
 - Guest requests (moved to guest portal)
 - Grievances (moved to guest portal)
@@ -81,8 +83,9 @@ Date: 2026-06-04
 - Order queue (unchanged)
 - Staff ordering (unchanged)
 - Nudges / requests (unchanged, now also receives from portal)
-- Grievances (NEW — higher priority visibility)
+- Grievances (higher priority visibility)
 - Log (fixed — no more static entries)
+- **QR Code Generator** (NEW — 8-digit codes, guest check-in, share via WhatsApp)
 
 ## 3. FIREBASE SCHEMA
 
@@ -358,7 +361,7 @@ Each item:
 |------|--------|------|------|
 | 1 | Fix 5 defects | Both existing files | 30 min |
 | 2 | Create guest portal | guest-portal.html | 90 min |
-| 3 | Update public website | stars-and-pines-v3.html | 45 min |
+| 3 | Update public website | index.html | 45 min |
 | 4 | Update staff app | ridge-bell-staff-app.html | 30 min |
 | 5 | Update documentation | AUDIT.md, PLAN.md | 15 min |
 

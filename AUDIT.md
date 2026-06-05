@@ -6,16 +6,20 @@ Date: 2026-06-04
 
 | File | Role |
 |---|---|
-| `stars-and-pines-v3.html` | Public website — editorial, atmospheric |
+| `index.html` | Public website — editorial, atmospheric, easter eggs |
 | `guest-portal.html` | Guest portal — operational, field guide |
-| `ridge-bell-staff-app.html` | Staff app — dispatch, queue, concerns |
+| `ridge-bell-staff-app.html` | Staff app — dispatch, queue, concerns, QR codes |
+| `guest-entry.html` | Guest entry — QR check-in flow |
+| `v4/index.html` | Alternative website (separate experience) |
+| `stars-and-pines-v5.html` | Conversational website (experimental) |
 
 ## 2. SEPARATION OF CONCERNS
 
 ### Public Website
-- Crank's Ridge history, philosophy, rooms, reviews, guide, booking
+- Why people come, a day on the ridge, the house, rooms, reviews, guide, booking
 - No operational features (ordering, requests, grievances removed)
-- Founder-centric language replaced with place-centric storytelling
+- No ridge history/timeline (removed for cleaner booking flow)
+- Easter eggs: hidden stars, torn notes, polaroids, terrace lightbox
 - Link to guest portal in footer
 
 ### Guest Portal

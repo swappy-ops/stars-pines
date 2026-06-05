@@ -4,9 +4,12 @@
 
 | File | Status |
 |---|---|
-| `stars-and-pines-v3.html` | Public website — editorial, atmospheric, no operational features |
+| `index.html` | Public website — editorial, atmospheric, easter eggs, no operational features |
 | `guest-portal.html` | Guest portal — token-based access, ordering, requests, grievances, guide, perool, community |
-| `ridge-bell-staff-app.html` | Staff app — queue, dispatch, nudges, grievances, log |
+| `ridge-bell-staff-app.html` | Staff app — queue, dispatch, nudges, grievances, log, QR code generator |
+| `guest-entry.html` | Guest entry — QR check-in flow, registration |
+| `v4/index.html` | Alternative website experience (separate, not deployed) |
+| `stars-and-pines-v5.html` | Conversational website experience (experimental) |
 
 ## Architecture
 
