@@ -19,18 +19,18 @@
   --pine2:  #2d4030;
   --bark:   #4a3a26;
   --earth:  #7a6248;
-  --mist:   #ddd7cc;
+  --mist:   #e8e2d8;
   --paper:  #f0ebe3;
   --cream:  #f6f1ea;
-  --gold:   #b8974a;
-  --warm:   #c4a870;
-  --smoke:  #9a9188;
+  --gold:   #c4a55a;
+  --warm:   #d4b880;
+  --smoke:  #b0a898;
   --night:  #131a12;
   --forest: #253422;
   --sage:   #4a6340;
-  --alert:  #c4784a;
-  --green:  #3d7a52;
-  --red-soft: #a04040;
+  --alert:  #d4885a;
+  --green:  #4a8a62;
+  --red-soft: #b05050;
 
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -115,7 +115,7 @@ body {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--warm);
-  opacity: 0.6;
+  opacity: 0.8;
   margin-bottom: 60px;
 }
 
@@ -123,7 +123,7 @@ body {
   font-size: 0.58rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
   margin-bottom: 24px;
 }
 .user-pills {
@@ -166,7 +166,7 @@ body {
   font-size: 0.52rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
 }
 
 .lock-enter {
@@ -174,7 +174,7 @@ body {
   font-size: 0.55rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(221,215,204,0.2);
+  color: rgba(232,226,216,0.5);
 }
 
 /* ─── MAIN APP ─── */
@@ -206,7 +206,7 @@ body {
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
 }
 .header-badge {
   position: relative;
@@ -251,7 +251,7 @@ body {
   gap: 3px;
   border-bottom: 2px solid transparent;
   transition: all 0.2s;
-  color: rgba(184,151,74,0.3);
+  color: rgba(196,165,90,0.6);
 }
 .tab-btn.active {
   border-bottom-color: var(--warm);
@@ -281,7 +281,7 @@ body {
   font-size: 0.5rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
   margin-bottom: 10px;
   margin-top: 20px;
   display: flex;
@@ -334,7 +334,7 @@ body {
 }
 .order-time {
   font-size: 0.6rem;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
 }
 .order-time.late { color: var(--alert); }
 .order-actions {
@@ -358,7 +358,7 @@ body {
 .empty-queue {
   text-align: center;
   padding: 48px 20px;
-  color: rgba(221,215,204,0.2);
+  color: rgba(232,226,216,0.5);
   font-family: 'Playfair Display', serif;
   font-style: italic;
   font-size: 1rem;
@@ -460,7 +460,7 @@ body {
   padding: 7px 14px;
   border: 1px solid rgba(255,255,255,0.08);
   background: transparent;
-  color: rgba(221,215,204,0.4);
+  color: rgba(232,226,216,0.75);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.68rem;
   cursor: pointer;
@@ -563,7 +563,7 @@ body {
 
 .grievance-message {
   font-size: 0.72rem;
-  color: rgba(221,215,204,0.45);
+  color: rgba(232,226,216,0.75);
   line-height: 1.6;
   margin-bottom: 8px;
 }
@@ -576,7 +576,7 @@ body {
 
 .grievance-time {
   font-size: 0.6rem;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
 }
 
 .grievance-status {
@@ -681,7 +681,7 @@ body {
 }
 .nudge-desc {
   font-size: 0.55rem;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
   text-align: center;
   line-height: 1.5;
 }
@@ -725,11 +725,11 @@ body {
 }
 .naan-sub {
   font-size: 0.58rem;
-  color: rgba(196,120,74,0.6);
+  color: rgba(212,136,90,0.8);
   letter-spacing: 0.08em;
 }
 .naan-arrow {
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
   font-size: 0.9rem;
 }
 
@@ -791,7 +791,7 @@ body {
   font-size: 0.6rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
 }
 .modal-cost-val {
   font-family: 'Playfair Display', serif;
@@ -819,7 +819,7 @@ body {
 .modal-confirm:hover { background: var(--gold); }
 .modal-cancel {
   background: transparent;
-  color: rgba(221,215,204,0.4);
+  color: rgba(232,226,216,0.75);
   border: 1px solid rgba(255,255,255,0.08);
   padding: 14px;
   font-family: 'DM Sans', sans-serif;
@@ -894,7 +894,7 @@ body {
 .alert-close {
   background: none;
   border: none;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
   font-size: 1.1rem;
   cursor: pointer;
   padding: 4px;
@@ -919,7 +919,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  color: rgba(221,215,204,0.25);
+  color: rgba(232,226,216,0.55);
   transition: color 0.2s;
   font-family: 'DM Sans', sans-serif;
   position: relative;
@@ -971,7 +971,7 @@ body {
 }
 .log-meta {
   font-size: 0.58rem;
-  color: rgba(221,215,204,0.25);
+  color: rgba(232,226,216,0.55);
   letter-spacing: 0.06em;
 }
 
@@ -1005,13 +1005,13 @@ body {
   font-size: 0.55rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.45);
+  color: rgba(196,165,90,0.7);
 }
 .sp-logout {
   margin-left: auto;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.07);
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
   padding: 7px 14px;
   font-family: 'DM Sans', sans-serif;
   font-size: 0.58rem;
@@ -1032,12 +1032,12 @@ body {
   font-size: 0.5rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
   margin-bottom: 6px;
 }
 .aib-val {
   font-size: 0.78rem;
-  color: rgba(221,215,204,0.5);
+  color: rgba(232,226,216,0.75);
   line-height: 1.7;
 }
 </style>
@@ -1070,9 +1070,18 @@ body {
     <div class="modal-btns">
       <button class="modal-cancel" onclick="closeModal()">Go back</button>
       <button class="modal-confirm" id="modal-confirm-btn">Confirm</button>
+        </div>
+      </div>
+
+      <!-- ─── GUEST REQUESTS FROM PORTAL ─── -->
+      <div class="sec-label" style="margin-top:24px">Portal requests</div>
+      <p style="font-size:0.72rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:14px;">
+        Experiences and concierge requests from guests via the portal.
+      </p>
+      <div id="guest-requests-list">
+        <div class="empty-queue">Loading requests...</div>
+      </div>
     </div>
-  </div>
-</div>
 
 <!-- ═══════════════════════════════════════
   LOCK SCREEN
@@ -1430,7 +1439,7 @@ body {
       </div>
 
       <div class="sec-label" style="margin-top:24px">Raise a Nudge™</div>
-      <p style="font-size:0.72rem;color:rgba(221,215,204,0.3);line-height:1.7;margin-bottom:14px;">
+      <p style="font-size:0.72rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:14px;">
         Something needs attention — a maintenance issue, a guest complaint, or something that fell through. Tap to flag it quietly.
       </p>
 
@@ -1456,12 +1465,21 @@ body {
           <div class="nudge-desc">Needs attention now</div>
         </div>
       </div>
+
+      <!-- ─── GUEST REQUESTS FROM PORTAL ─── -->
+      <div class="sec-label" style="margin-top:24px">Portal requests</div>
+      <p style="font-size:0.72rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:14px;">
+        Experiences and concierge requests from guests via the portal.
+      </p>
+      <div id="guest-requests-list">
+        <div class="empty-queue">Loading requests...</div>
+      </div>
     </div>
 
     <!-- ─── GRIEVANCES TAB ─── -->
     <div class="tab-panel" id="panel-grievances">
       <div class="sec-label">Guest concerns — priority</div>
-      <p style="font-size:0.72rem;color:rgba(221,215,204,0.3);line-height:1.7;margin-bottom:16px;">
+      <p style="font-size:0.72rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:16px;">
         Issues raised by guests. These need attention before regular requests.
       </p>
       <div id="grievance-list">
@@ -1510,12 +1528,17 @@ body {
           <div class="aib-label">Access Code</div>
           <div id="qr-code-display" style="font-family:monospace;font-size:1.8rem;letter-spacing:0.2em;color:var(--warm);padding:16px 0;"></div>
           <canvas id="qr-canvas" style="margin:0 auto;display:block;border-radius:8px;"></canvas>
-          <div id="qr-portal-link" style="font-size:0.65rem;color:rgba(221,215,204,0.4);margin-top:12px;word-break:break-all;"></div>
+          <div id="qr-portal-link" style="font-size:0.65rem;color:rgba(232,226,216,0.75);margin-top:12px;word-break:break-all;"></div>
           <div style="display:flex;gap:8px;margin-top:16px;">
             <button onclick="shareCodeWhatsApp()" style="flex:1;background:#25D366;color:#fff;border:none;padding:10px;font-family:'DM Sans',sans-serif;font-size:0.55rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:6px;">Share WhatsApp</button>
             <button onclick="copyCodeLink()" style="flex:1;background:rgba(255,255,255,0.06);color:var(--mist);border:1px solid rgba(184,151,74,0.15);padding:10px;font-family:'DM Sans',sans-serif;font-size:0.55rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;border-radius:6px;">Copy Link</button>
           </div>
         </div>
+      </div>
+
+      <div class="sec-label" style="margin-top:24px">Currently Checked-in</div>
+      <div id="checked-in-guests">
+        <div class="empty-queue" style="font-size:0.7rem;">Loading guests...</div>
       </div>
 
       <div class="sec-label" style="margin-top:24px">Property</div>
@@ -1620,6 +1643,24 @@ let isOnline = navigator.onLine;
 let offlineQueue = [];
 let initialSyncComplete = false; // Track first load to prevent alert spam
 
+// Restore persisted queue from previous session
+(function restoreOfflineQueue() {
+  try {
+    const saved = localStorage.getItem('sp-offline-queue');
+    if (saved) offlineQueue = JSON.parse(saved);
+  } catch(e) {}
+})();
+
+function persistOfflineQueue() {
+  try {
+    if (offlineQueue.length > 0) {
+      localStorage.setItem('sp-offline-queue', JSON.stringify(offlineQueue));
+    } else {
+      localStorage.removeItem('sp-offline-queue');
+    }
+  } catch(e) {}
+}
+
 // ─── ONLINE/OFFLINE
 window.addEventListener('online', () => { isOnline = true; flushOfflineQueue(); updateOnlineBadge(); });
 window.addEventListener('offline', () => { isOnline = false; updateOnlineBadge(); });
@@ -1632,16 +1673,32 @@ function updateOnlineBadge() {
     document.body.appendChild(badge);
   }
   badge.style.opacity = isOnline ? '0' : '1';
-  badge.textContent = 'Offline — changes will sync';
+  badge.textContent = offlineQueue.length > 0
+    ? `Offline — ${offlineQueue.length} change${offlineQueue.length > 1 ? 's' : ''} queued`
+    : 'Offline — changes will sync';
 }
 
-// ─── OFFLINE QUEUE
-function queueWrite(fn) {
-  if (isOnline) { fn(); }
-  else { offlineQueue.push(fn); }
+// ─── OFFLINE QUEUE (serializable, persisted to localStorage)
+// operation: 'push' | 'update' | 'set'
+function queueWrite(path, data, operation = 'push') {
+  if (isOnline) {
+    if (operation === 'push') db.ref(path).push(data);
+    else if (operation === 'update') db.ref(path).update(data);
+    else if (operation === 'set') db.ref(path).set(data);
+  } else {
+    offlineQueue.push({ path, data, operation, queuedAt: Date.now() });
+    persistOfflineQueue();
+    updateOnlineBadge();
+  }
 }
 function flushOfflineQueue() {
-  while (offlineQueue.length) { offlineQueue.shift()(); }
+  while (offlineQueue.length) {
+    const item = offlineQueue.shift();
+    if (item.operation === 'push') db.ref(item.path).push(item.data);
+    else if (item.operation === 'update') db.ref(item.path).update(item.data);
+    else if (item.operation === 'set') db.ref(item.path).set(item.data);
+  }
+  persistOfflineQueue();
 }
 
 // ─── ALERT SOUND (base64 encoded short bell)
@@ -1694,7 +1751,7 @@ function startFirebaseListeners() {
     if (!initialSyncComplete) return;
     const order = snapshot.val();
     // Alert for both website and portal orders
-    if ((order.source === 'website' || order.source === 'portal') && order.status === 'pending') {
+    if ((order.source === 'website' || order.source === 'portal') && (order.status === 'pending' || order.status === 'ready')) {
       const itemText = (order.items || []).map(i => i.qty > 1 ? `${i.name} ×${i.qty}` : i.name).join(', ');
       showIncoming(order.room, itemText);
       playAlertSound();
@@ -1715,6 +1772,27 @@ function startFirebaseListeners() {
     renderGrievances(snapshot.val());
   });
   firebaseListeners.push({ ref: grievancesRef, event: 'value', fn: grievancesListener });
+
+  // Experiences listener
+  const experiencesRef = db.ref('experiences');
+  const experiencesListener = experiencesRef.on('value', (snapshot) => {
+    renderGuestRequests(snapshot.val(), 'experience');
+  });
+  firebaseListeners.push({ ref: experiencesRef, event: 'value', fn: experiencesListener });
+
+  // Concierge listener
+  const conciergeRef = db.ref('concierge');
+  const conciergeListener = conciergeRef.on('value', (snapshot) => {
+    renderGuestRequests(snapshot.val(), 'concierge');
+  });
+  firebaseListeners.push({ ref: conciergeRef, event: 'value', fn: conciergeListener });
+
+  // Guest access listener (checked-in guests)
+  const guestAccessRef = db.ref('guest_access');
+  const guestAccessListener = guestAccessRef.on('value', (snapshot) => {
+    renderCheckedInGuests(snapshot.val());
+  });
+  firebaseListeners.push({ ref: guestAccessRef, event: 'value', fn: guestAccessListener });
 }
 
 function stopFirebaseListeners() {
@@ -1736,8 +1814,8 @@ function renderOrders(orders) {
     .map(([key, val]) => ({ ...val, fbKey: key }))
     .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
 
-  const pending = orderList.filter(o => o.status === 'pending' || o.status === 'preparing');
-  const done = orderList.filter(o => o.status === 'done' || o.status === 'cancelled');
+  const pending = orderList.filter(o => o.status === 'pending' || o.status === 'preparing' || o.status === 'ready');
+  const done = orderList.filter(o => o.status === 'delivered' || o.status === 'cancelled');
 
   // Render pending queue
   if (pending.length === 0) {
@@ -1775,7 +1853,7 @@ function renderOrders(orders) {
         <div class="order-card done">
           <div class="order-room">${o.room}</div>
           <div class="order-items">${itemText}</div>
-          <div class="order-meta"><span class="order-time">${o.status === 'cancelled' ? 'Cancelled' : 'Done'} · ${timeStr}</span></div>
+            <div class="order-meta"><span class="order-time">${o.status === 'cancelled' ? 'Cancelled' : 'Delivered'} · ${timeStr}</span></div>
         </div>`;
     }).join('');
   }
@@ -1868,29 +1946,175 @@ function renderGrievances(grievances) {
 }
 
 function acknowledgeGrievance(fbKey) {
-  queueWrite(() => {
-    db.ref('grievances/' + fbKey).update({
-      status: 'acknowledged',
-      updatedAt: Date.now(),
-      acknowledgedBy: currentUser.name,
-      acknowledgedAt: Date.now()
-    });
-  });
+  const data = {
+    status: 'acknowledged',
+    updatedAt: Date.now(),
+    acknowledgedBy: currentUser.name,
+    acknowledgedAt: Date.now()
+  };
+  queueWrite('grievances/' + fbKey, data, 'update');
   addLogEntry('Grievance acknowledged', fbKey, 'nudge');
   showToast('Grievance acknowledged');
 }
 
 function resolveGrievance(fbKey) {
-  queueWrite(() => {
-    db.ref('grievances/' + fbKey).update({
-      status: 'resolved',
-      updatedAt: Date.now(),
-      resolvedBy: currentUser.name,
-      resolvedAt: Date.now()
-    });
-  });
+  const data = {
+    status: 'resolved',
+    updatedAt: Date.now(),
+    resolvedBy: currentUser.name,
+    resolvedAt: Date.now()
+  };
+  queueWrite('grievances/' + fbKey, data, 'update');
   addLogEntry('Grievance resolved', fbKey, 'done');
   showToast('Grievance resolved');
+}
+
+// ─── GUEST REQUESTS (experiences + concierge)
+let lastExperiences = null;
+let lastConcierge = null;
+
+function renderGuestRequests(data, type) {
+  if (type === 'experience') lastExperiences = data;
+  if (type === 'concierge') lastConcierge = data;
+
+  const container = document.getElementById('guest-requests-list');
+  if (!container) return;
+
+  const items = [];
+  const expIconMap = {
+    'bonfire': '🔥', 'local-guide': '🗺️', 'photography': '📸',
+    'village-walk': '🚶', 'bird-watching': '🦅', 'stargazing': '✨',
+    'transportation': '🚗', 'special-meal': '🍳'
+  };
+  const conciergeIconMap = {
+    'extra_blankets': '🛏️', 'room_cleaning': '🧹', 'hot_water': '♨️',
+    'laundry': '👕', 'taxi': '🚗', 'wake-up_call': '⏰',
+    'medical_help': '🏥', 'luggage_assistance': '🧳'
+  };
+
+  if (lastExperiences) {
+    Object.entries(lastExperiences).forEach(([key, e]) => {
+      if (e.status === 'requested') {
+        const typeLabel = (e.type || '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        items.push({
+          time: e.createdAt || 0,
+          icon: expIconMap[e.type] || '🌟',
+          type: typeLabel,
+          category: 'Experience',
+          room: e.room || 'Unknown',
+          guest: e.guestName || '',
+          fbKey: key,
+          timeStr: getTimeAgo(e.createdAt)
+        });
+      }
+    });
+  }
+
+  if (lastConcierge) {
+    Object.entries(lastConcierge).forEach(([key, c]) => {
+      if (c.status === 'requested') {
+        const typeLabel = (c.type || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        items.push({
+          time: c.createdAt || 0,
+          icon: conciergeIconMap[c.type] || '📋',
+          type: typeLabel,
+          category: 'Concierge',
+          room: c.room || 'Unknown',
+          guest: c.guestName || '',
+          fbKey: key,
+          timeStr: getTimeAgo(c.createdAt)
+        });
+      }
+    });
+  }
+
+  items.sort((a, b) => b.time - a.time);
+
+  if (items.length === 0) {
+    container.innerHTML = '<div class="empty-queue">No guest requests.<br>All is well.</div>';
+    return;
+  }
+
+  container.innerHTML = items.map(item => `
+    <div class="order-card" data-fb-key="${item.fbKey}">
+      <div class="order-room">${item.icon} ${item.type}</div>
+      <div class="order-items">${item.room}${item.guest ? ' · ' + item.guest : ''}</div>
+      <div class="order-meta">
+        <span class="order-time">${item.category} · ${item.timeStr}</span>
+        <div class="order-actions">
+          <button class="order-btn order-btn-done" onclick="markRequestDone('${item.fbKey}', '${item.type}', event)">Done ✓</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function markRequestDone(fbKey, type, e) {
+  e.stopPropagation();
+  // Determine which path to update based on type
+  const expTypes = ['bonfire', 'local-guide', 'photography', 'village-walk', 'bird-watching', 'stargazing', 'transportation', 'special-meal'];
+  const path = expTypes.includes(type.replace(/\s+/g, '-').toLowerCase()) ? 'experiences' : 'concierge';
+
+  queueWrite(path + '/' + fbKey, { status: 'completed', updatedAt: Date.now() }, 'update');
+  addLogEntry(`Request done — ${type}`, '', 'done');
+  showToast('Request marked done');
+}
+
+// ─── CHECKED-IN GUESTS
+function renderCheckedInGuests(data = {}) {
+  const container = document.getElementById('checked-in-guests');
+  if (!container) return;
+
+  const guests = Object.entries(data).filter(([_, guest]) => {
+    if (!guest) return false;
+    const isActive = guest.active === true;
+    const notExpired = !guest.validUntil || Date.now() <= guest.validUntil;
+    return isActive && notExpired;
+  });
+
+  if (guests.length === 0) {
+    container.innerHTML = '<div class="empty-queue" style="font-size:0.7rem;">No active guests on the ridge.</div>';
+    return;
+  }
+
+  container.innerHTML = guests.map(([id, guest]) => {
+    const checkinTime = guest.checkin || guest.createdAt;
+    const checkinStr = checkinTime ? new Date(checkinTime).toLocaleString('en-IN', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+    }) : '—';
+    const validUntil = guest.validUntil ? new Date(guest.validUntil).toLocaleDateString('en-IN', {
+      day: 'numeric', month: 'short'
+    }) : '—';
+    return `
+      <div class="guest-card" style="background:rgba(255,255,255,0.03);border:1px solid rgba(184,151,74,0.12);border-radius:8px;padding:12px;margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:start;">
+          <div>
+            <div style="font-size:0.85rem;font-weight:500;color:var(--cream);">${guest.guestName || 'Unknown'}</div>
+            <div style="font-size:0.7rem;color:var(--smoke);margin-top:2px;">${guest.room || '—'} · Token: <span style="font-family:monospace;color:var(--warm);">${guest.token || id}</span></div>
+            <div style="font-size:0.62rem;color:rgba(221,215,204,0.35);margin-top:4px;">Checked in: ${checkinStr} · Valid until: ${validUntil}</div>
+            ${guest.phone ? `<div style="font-size:0.62rem;color:rgba(221,215,204,0.35);">Phone: ${guest.phone}</div>` : ''}
+          </div>
+          <button onclick="deactivateGuest('${id}')" style="background:rgba(160,64,64,0.2);color:var(--red-soft);border:1px solid rgba(160,64,64,0.3);padding:4px 10px;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:4px;">Check Out</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function deactivateGuest(fbKey) {
+  const guestRef = db.ref('guest_access/' + fbKey);
+  guestRef.once('value').then((snapshot) => {
+    const guest = snapshot.val();
+    if (!guest) return;
+    if (confirm(`Check out ${guest.guestName || 'this guest'}?`)) {
+      guestRef.update({
+        active: false,
+        checkout: Date.now(),
+        status: 'checked-out'
+      }).then(() => {
+        showToast(`${guest.guestName || 'Guest'} checked out`);
+        addLogEntry('Guest checked out', guest.guestName || fbKey, 'done');
+      }).catch(() => showToast('Could not check out guest'));
+    }
+  });
 }
 
 // ─── LOGIN
@@ -2022,9 +2246,7 @@ function placeOrder(room, itemText, total) {
     notes: ''
   };
 
-  queueWrite(() => {
-    db.ref('orders').push(orderData);
-  });
+  queueWrite('orders', orderData, 'push');
 
   addLogEntry('Order placed', `${room} — ${itemText}`, 'pending');
 
@@ -2054,16 +2276,14 @@ function markDone(fbKey, e) {
 
   openModal({
     label: 'Complete order',
-    title: 'Mark as done?',
+    title: 'Mark as delivered?',
     desc: `${room} · ${items}`,
     cost: null,
-    confirmText: 'Mark done',
+    confirmText: 'Mark delivered',
     onConfirm: () => {
-      queueWrite(() => {
-        db.ref('orders/' + fbKey).update({ status: 'done', updatedAt: Date.now() });
-      });
-      addLogEntry('Order done', `${room} — ${items}`, 'done');
-      showToast('Order marked done');
+      queueWrite('orders/' + fbKey, { status: 'delivered', updatedAt: Date.now() }, 'update');
+      addLogEntry('Order delivered', `${room} — ${items}`, 'done');
+      showToast('Order marked delivered');
     }
   });
 }
@@ -2081,9 +2301,7 @@ function markCancel(fbKey, e) {
     cost: null,
     confirmText: 'Cancel order',
     onConfirm: () => {
-      queueWrite(() => {
-        db.ref('orders/' + fbKey).update({ status: 'cancelled', updatedAt: Date.now() });
-      });
+      queueWrite('orders/' + fbKey, { status: 'cancelled', updatedAt: Date.now() }, 'update');
       addLogEntry('Order cancelled', `${room} — ${items}`, 'done');
       showToast('Order cancelled');
     }
@@ -2105,9 +2323,7 @@ function sendNudge(el, type, note) {
     createdAt: now
   };
 
-  queueWrite(() => {
-    db.ref('nudges').push(nudgeData);
-  });
+  queueWrite('nudges', nudgeData, 'push');
 
   addLogEntry(`Nudge — ${type}`, note, 'nudge');
   showToast(`${type} noted`);
@@ -2129,9 +2345,7 @@ function raiseNudge(el, type, msg) {
     createdAt: now
   };
 
-  queueWrite(() => {
-    db.ref('nudges').push(nudgeData);
-  });
+  queueWrite('nudges', nudgeData, 'push');
 
   addLogEntry(`🚩 Flagged — ${type}`, msg, 'nudge');
   showToast(`Flagged: ${type} — Manager notified`);
@@ -2153,25 +2367,15 @@ function confirmNaanExtra() {
       if (firstPending) {
         const fbKey = firstPending.dataset.fbKey;
         if (fbKey) {
-          // Read current order from Firebase, append naan, write back
           db.ref('orders/' + fbKey).once('value').then((snapshot) => {
             const order = snapshot.val();
             if (order && order.items) {
               const updatedItems = [...order.items, { name: '+ Extra naan', qty: 1, price: 35 }];
               const newTotal = (order.total || 0) + 35;
-              queueWrite(() => {
-                db.ref('orders/' + fbKey).update({
-                  items: updatedItems,
-                  total: newTotal,
-                  updatedAt: Date.now()
-                });
-              });
+              queueWrite('orders/' + fbKey, { items: updatedItems, total: newTotal, updatedAt: Date.now() }, 'update');
             }
           }).catch(() => {
-            // Fallback: just update timestamp if read fails
-            queueWrite(() => {
-              db.ref('orders/' + fbKey).update({ updatedAt: Date.now() });
-            });
+            queueWrite('orders/' + fbKey, { updatedAt: Date.now() }, 'update');
           });
         }
       }
@@ -2246,8 +2450,8 @@ function loadLogFromFirebase() {
       const o = child.val();
       const timeStr = o.createdAt ? new Date(o.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '';
       const itemText = (o.items || []).map(i => i.qty > 1 ? `${i.name} ×${i.qty}` : i.name).join(', ');
-      const statusLabel = o.status === 'done' ? 'Order done' : o.status === 'cancelled' ? 'Order cancelled' : 'Order placed';
-      const dotClass = o.status === 'done' ? 'done' : o.status === 'cancelled' ? 'done' : 'pending';
+      const statusLabel = o.status === 'delivered' ? 'Order delivered' : o.status === 'cancelled' ? 'Order cancelled' : 'Order placed';
+      const dotClass = o.status === 'delivered' ? 'done' : o.status === 'cancelled' ? 'done' : 'pending';
       entries.push({
         time: o.createdAt || 0,
         html: `<div class="log-entry">

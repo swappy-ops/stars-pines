@@ -18,18 +18,18 @@
   --pine2:  #2d4030;
   --bark:   #4a3a26;
   --earth:  #7a6248;
-  --mist:   #ddd7cc;
+  --mist:   #e8e2d8;
   --paper:  #f0ebe3;
   --cream:  #f6f1ea;
-  --gold:   #b8974a;
-  --warm:   #c4a870;
-  --smoke:  #9a9188;
+  --gold:   #c4a55a;
+  --warm:   #d4b880;
+  --smoke:  #b0a898;
   --night:  #131a12;
   --forest: #253422;
   --sage:   #4a6340;
-  --alert:  #c4784a;
-  --green:  #3d7a52;
-  --red-soft: #a04040;
+  --alert:  #d4885a;
+  --green:  #4a8a62;
+  --red-soft: #b05050;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -79,7 +79,7 @@ body {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--warm);
-  opacity: 0.5;
+  opacity: 0.7;
   margin-bottom: 48px;
 }
 
@@ -87,7 +87,7 @@ body {
   font-family: 'EB Garamond', serif;
   font-size: 1.05rem;
   font-style: italic;
-  color: rgba(221,215,204,0.5);
+  color: rgba(232,226,216,0.7);
   line-height: 1.7;
   margin-bottom: 32px;
   max-width: 300px;
@@ -112,7 +112,7 @@ body {
 }
 
 .access-input:focus { border-color: var(--warm); }
-.access-input::placeholder { color: rgba(221,215,204,0.2); font-size: 0.8rem; letter-spacing: 0.15em; }
+.access-input::placeholder { color: rgba(232,226,216,0.45); font-size: 0.8rem; letter-spacing: 0.15em; }
 
 .access-enter-btn {
   width: 100%;
@@ -145,11 +145,11 @@ body {
 .access-footer {
   margin-top: 60px;
   font-size: 0.55rem;
-  color: rgba(221,215,204,0.2);
+  color: rgba(232,226,216,0.5);
   letter-spacing: 0.1em;
 }
 
-.access-footer a { color: rgba(184,151,74,0.35); text-decoration: none; }
+.access-footer a { color: rgba(196,165,90,0.65); text-decoration: none; }
 
 /* ─── PORTAL SCREEN ─── */
 #portal-screen { display: none; flex-direction: column; min-height: 100vh; }
@@ -177,14 +177,14 @@ body {
   font-size: 0.58rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
   margin-top: 2px;
 }
 
 .portal-token-display {
   font-size: 0.58rem;
   letter-spacing: 0.15em;
-  color: rgba(184,151,74,0.3);
+  color: rgba(196,165,90,0.6);
   font-family: monospace;
   background: rgba(184,151,74,0.06);
   padding: 6px 12px;
@@ -215,7 +215,7 @@ body {
   font-size: 0.55rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.3);
+  color: rgba(196,165,90,0.6);
   transition: all 0.2s;
   white-space: nowrap;
 }
@@ -241,7 +241,7 @@ body {
   font-size: 0.52rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
   margin-bottom: 12px;
   margin-top: 24px;
   display: flex;
@@ -268,7 +268,7 @@ body {
 }
 
 .search-bar:focus { border-color: var(--warm); }
-.search-bar::placeholder { color: rgba(221,215,204,0.25); }
+.search-bar::placeholder { color: rgba(232,226,216,0.5); }
 
 /* ─── CATEGORY FILTERS ─── */
 .cat-filters {
@@ -287,7 +287,7 @@ body {
   padding: 7px 14px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
-  color: rgba(221,215,204,0.4);
+  color: rgba(232,226,216,0.75);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.58rem;
   letter-spacing: 0.12em;
@@ -319,7 +319,7 @@ body {
 .kitchen-dot.closed { background: var(--red-soft); }
 
 .kitchen-text { font-size: 0.82rem; color: var(--mist); }
-.kitchen-text small { display: block; font-size: 0.65rem; color: rgba(221,215,204,0.35); margin-top: 2px; }
+.kitchen-text small { display: block; font-size: 0.65rem; color: rgba(232,226,216,0.65); margin-top: 2px; }
 
 /* ─── SPECIALS ─── */
 .specials-card {
@@ -346,7 +346,7 @@ body {
 
 .specials-desc {
   font-size: 0.72rem;
-  color: rgba(221,215,204,0.4);
+  color: rgba(232,226,216,0.75);
   line-height: 1.5;
 }
 
@@ -388,7 +388,7 @@ body {
 
 .mi-name { font-size: 0.85rem; color: var(--cream); margin-bottom: 2px; line-height: 1.3; }
 .mi-price { font-size: 0.68rem; color: rgba(184,151,74,0.5); }
-.mi-prep { font-size: 0.55rem; color: rgba(221,215,204,0.25); margin-top: 2px; }
+.mi-prep { font-size: 0.55rem; color: rgba(232,226,216,0.55); margin-top: 2px; }
 
 .mi-qty {
   position: absolute;
@@ -427,7 +427,7 @@ body {
 }
 
 .notes-field:focus { border-color: var(--warm); }
-.notes-field::placeholder { color: rgba(221,215,204,0.2); }
+.notes-field::placeholder { color: rgba(232,226,216,0.45); }
 
 /* ─── CART BAR ─── */
 .cart-bar {
@@ -453,7 +453,7 @@ body {
   font-size: 0.55rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.5);
+  color: rgba(196,165,90,0.75);
   margin-bottom: 2px;
 }
 
@@ -500,7 +500,7 @@ body {
 .ot-id {
   font-size: 0.58rem;
   letter-spacing: 0.15em;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
   font-family: monospace;
 }
 
@@ -582,7 +582,7 @@ body {
 
 .request-icon { font-size: 1.6rem; }
 .request-name { font-size: 0.75rem; color: var(--cream); line-height: 1.3; }
-.request-desc { font-size: 0.58rem; color: rgba(221,215,204,0.3); text-align: center; line-height: 1.5; }
+.request-desc { font-size: 0.58rem; color: rgba(232,226,216,0.65); text-align: center; line-height: 1.5; }
 
 /* ─── GRIEVANCES ─── */
 .grievance-types { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
@@ -605,7 +605,7 @@ body {
 .gt-icon { font-size: 1.2rem; flex-shrink: 0; }
 .gt-info { flex: 1; }
 .gt-name { font-size: 0.85rem; color: var(--cream); margin-bottom: 2px; }
-.gt-desc { font-size: 0.65rem; color: rgba(221,215,204,0.35); }
+.gt-desc { font-size: 0.65rem; color: rgba(232,226,216,0.65); }
 
 .urgency-selector {
   display: flex;
@@ -618,7 +618,7 @@ body {
   padding: 8px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
-  color: rgba(221,215,204,0.4);
+  color: rgba(232,226,216,0.75);
   font-family: 'DM Sans', sans-serif;
   font-size: 0.58rem;
   letter-spacing: 0.12em;
@@ -648,7 +648,7 @@ body {
 }
 
 .grievance-textarea:focus { border-color: var(--warm); }
-.grievance-textarea::placeholder { color: rgba(221,215,204,0.2); }
+.grievance-textarea::placeholder { color: rgba(232,226,216,0.45); }
 
 .grievance-submit {
   width: 100%;
@@ -690,13 +690,13 @@ body {
 .guide-item:last-child { border-bottom: none; }
 
 .gi-name { font-size: 0.85rem; color: var(--mist); margin-bottom: 3px; }
-.gi-desc { font-size: 0.72rem; color: rgba(221,215,204,0.35); line-height: 1.6; }
+.gi-desc { font-size: 0.72rem; color: rgba(232,226,216,0.65); line-height: 1.6; }
 .gi-dist { font-size: 0.62rem; color: rgba(184,151,74,0.4); margin-top: 4px; letter-spacing: 0.05em; }
 
 .gi-bookmark {
   background: none;
   border: none;
-  color: rgba(184,151,74,0.3);
+  color: rgba(196,165,90,0.6);
   font-size: 1rem;
   cursor: pointer;
   float: right;
@@ -719,7 +719,7 @@ body {
 .exp-icon { font-size: 1.5rem; flex-shrink: 0; }
 .exp-info { flex: 1; }
 .exp-name { font-size: 0.88rem; color: var(--cream); margin-bottom: 2px; }
-.exp-desc { font-size: 0.65rem; color: rgba(221,215,204,0.35); line-height: 1.5; }
+.exp-desc { font-size: 0.65rem; color: rgba(232,226,216,0.65); line-height: 1.5; }
 
 .exp-request-btn {
   background: rgba(184,151,74,0.1);
@@ -795,7 +795,7 @@ body {
   font-size: 0.5rem;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(184,151,74,0.4);
+  color: rgba(196,165,90,0.7);
   margin-bottom: 4px;
 }
 
@@ -805,7 +805,7 @@ body {
   color: var(--cream);
 }
 
-.stay-guest { font-size: 0.75rem; color: rgba(221,215,204,0.4); margin-top: 4px; }
+.stay-guest { font-size: 0.75rem; color: rgba(232,226,216,0.75); margin-top: 4px; }
 
 .stay-section { margin-bottom: 24px; }
 
@@ -833,7 +833,7 @@ body {
 
 .so-meta {
   font-size: 0.62rem;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
   display: flex;
   justify-content: space-between;
 }
@@ -841,7 +841,7 @@ body {
 .empty-stay {
   text-align: center;
   padding: 32px 20px;
-  color: rgba(221,215,204,0.2);
+  color: rgba(232,226,216,0.5);
   font-family: 'EB Garamond', serif;
   font-style: italic;
   font-size: 0.95rem;
@@ -895,7 +895,7 @@ body {
 
 .modal-desc {
   font-size: 0.82rem;
-  color: rgba(221,215,204,0.45);
+  color: rgba(232,226,216,0.75);
   line-height: 1.7;
   margin-bottom: 24px;
 }
@@ -914,7 +914,7 @@ body {
   font-size: 0.62rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(221,215,204,0.3);
+  color: rgba(232,226,216,0.65);
 }
 
 .modal-cost-val {
@@ -943,7 +943,7 @@ body {
 
 .modal-cancel {
   background: transparent;
-  color: rgba(221,215,204,0.4);
+  color: rgba(232,226,216,0.75);
   border: 1px solid rgba(255,255,255,0.08);
   padding: 14px;
   font-family: 'DM Sans', sans-serif;
@@ -985,8 +985,8 @@ body {
   margin-top: 32px;
 }
 
-.portal-footer p { font-size: 0.58rem; color: rgba(221,215,204,0.15); letter-spacing: 0.1em; }
-.portal-footer a { color: rgba(184,151,74,0.3); text-decoration: none; }
+.portal-footer p { font-size: 0.58rem; color: rgba(232,226,216,0.5); letter-spacing: 0.1em; }
+.portal-footer a { color: rgba(196,165,90,0.6); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -1339,7 +1339,7 @@ body {
     <!-- ─── HOUSE REQUESTS ─── -->
     <div class="p-panel" id="panel-requests">
       <div class="sec-label">Quick requests — no cost</div>
-      <p style="font-size:0.75rem;color:rgba(221,215,204,0.3);line-height:1.7;margin-bottom:20px;">
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
         Tap what you need. It goes straight to the desk.
       </p>
 
@@ -1380,7 +1380,7 @@ body {
     <!-- ─── GRIEVANCES ─── -->
     <div class="p-panel" id="panel-grievances">
       <div class="sec-label">Something wrong?</div>
-      <p style="font-size:0.75rem;color:rgba(221,215,204,0.3);line-height:1.7;margin-bottom:20px;">
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
         If something isn't right, tell us. We'll take care of it. This goes directly to the team with priority.
       </p>
 
@@ -1466,7 +1466,7 @@ body {
     <!-- ─── THE RIDGE GUIDE ─── -->
     <div class="p-panel" id="panel-guide">
       <div class="sec-label">The Ridge Guide</div>
-      <p style="font-size:0.75rem;color:rgba(221,215,204,0.3);line-height:1.7;margin-bottom:24px;">
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:24px;">
         What you need to know while you're here. Not the tourist circuit — the actual ridge.
       </p>
 
@@ -1544,7 +1544,7 @@ body {
     <!-- ─── EXPERIENCES ─── -->
     <div class="p-panel" id="panel-experiences">
       <div class="sec-label">Experiences on the ridge</div>
-      <p style="font-size:0.75rem;color:rgba(221,215,204,0.3);line-height:1.7;margin-bottom:20px;">
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
         Request something special. We'll arrange it.
       </p>
 
@@ -1624,7 +1624,7 @@ body {
     <!-- ─── DIGITAL CONCIERGE ─── -->
     <div class="p-panel" id="panel-concierge">
       <div class="sec-label">Service requests</div>
-      <p style="font-size:0.75rem;color:rgba(221,215,204,0.3);line-height:1.7;margin-bottom:20px;">
+      <p style="font-size:0.75rem;color:rgba(232,226,216,0.65);line-height:1.7;margin-bottom:20px;">
         Need something? Tap and it's noted.
       </p>
 

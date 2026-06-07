@@ -1,0 +1,71 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.md",
+      "ARCHITECTURE.md",
+      "AUDIT.md",
+      "DIAGRAMS.md",
+      "FLOWCHARTS.md",
+      "PLAN.md",
+      "README.md",
+      "firebase-schema.md",
+      "integration-audit.md",
+      "seed-token.html",
+      "seed-data.html",
+      "stars-and-pines-v3.html",
+      "stars-and-pines-v3.5(1).html",
+      "stars-and-pines-v5.html",
+      "color-swatches.html",
+      "v4/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/portal",
+        "destination": "/guest-portal.html"
+      },
+      {
+        "source": "/staff",
+        "destination": "/ridge-bell-staff-app.html"
+      },
+      {
+        "source": "/dashboard",
+        "destination": "/stars-and-pines-dashboard.html"
+      },
+      {
+        "source": "/entry",
+        "destination": "/guest-entry.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=0, must-revalidate"
+          }
+        ]
+      },
+      {
+        "source": "**/*.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      }
+    ]
+  },
+  "database": {
+    "rules": "database.rules.json"
+  }
+}
