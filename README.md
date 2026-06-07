@@ -1,41 +1,66 @@
-# Stars & Pines — Digital Guest Experience System
+# Stars & Pines — Complete Operations System
 
-A complete guest experience system built for a mountain house on Crank's Ridge, Kasar Devi, Almora — 1,645m.
+A full-stack guest-to-staff operations system for a mountain property on Crank's Ridge, Kasar Devi, Almora — 1,645m.
 
-**What it is:** A three-part digital system that replaces paper menus, walkie-talkie requests, and front-desk friction with a seamless guest portal and staff dispatch app. No hardware. No servers. No training. Works on any phone.
+**What it is:** Five connected surfaces that replace paper menus, walkie-talkie requests, and front-desk friction with a seamless guest portal, staff dispatch app, and live operations dashboard. No hardware. No servers. No training. Works on any phone.
 
 **What it costs to run:** Firebase free tier. Zero infrastructure. Zero maintenance.
 
 ---
 
-## Visual Documentation
+## System Architecture
 
-| Document | Contents |
-|---|---|
-| [DIAGRAMS.md](DIAGRAMS.md) | System architecture, data flows, token lifecycle, offline support, state machines, collection relationships |
-| [FLOWCHARTS.md](FLOWCHARTS.md) | Complete guest journey, order placement, grievance resolution, staff tab decision trees, booking flow, error handling |
+```
+Staff (Ridge Bell App)
+  → Generates 6-digit access code + QR
+  → Shares via WhatsApp or prints QR
+
+Guest (scans QR or enters code)
+  → Enters 6-digit code in Guest Portal
+  → Orders food, raises grievances, requests services
+
+Dashboard (Operations Center)
+  → Sees all orders in real-time
+  → Sees all grievances, nudges, experiences, concierge requests
+  → Manages inventory, rooms, tasks, devices
+  → Monitors water, power, lighting, music
+
+All connected via Firebase Realtime Database
+```
 
 ---
 
-## The Problem
+## Quick Start
 
-Mountain properties operate on paper, memory, and walkie-talkies. Guests don't know what's on the menu, how to request extra blankets, or where to raise a concern. Staff miss orders, lose track of requests, and have no record of what happened. The guest experience suffers because the systems to support it don't exist.
+### Deploy to Firebase Hosting
 
-## The Solution
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
 
-Three connected apps that run on phones the staff already own and the guests already carry:
+# Login
+firebase login
 
-| App | Who Uses It | What It Does |
+# Initialize (if not done)
+firebase init hosting
+
+# Deploy
+firebase deploy
+```
+
+### URLs After Deploy
+
+| Surface | URL | Purpose |
 |---|---|---|
-| **Public Website** | Prospective guests | Tells the story, sells the experience, takes bookings |
-| **Guest Portal** | Checked-in guests | Orders food, makes requests, raises concerns, explores the ridge |
-| **Ridge Bell Staff App** | Your team | Receives orders, dispatches tasks, tracks concerns, generates guest access codes |
-
-All three talk to each other in real-time through Firebase. When a guest places an order, it appears on the staff app instantly. When staff marks it done, the guest sees it update. No refresh needed.
+| Marketing Site | `https://stars-and-pines-ridge.web.app/` | Public website, bookings |
+| Guest Portal | `https://stars-and-pines-ridge.web.app/portal` | Guest self-service |
+| Staff App | `https://stars-and-pines-ridge.web.app/staff` | Staff operations |
+| Dashboard | `https://stars-and-pines-ridge.web.app/dashboard` | Operations center |
+| Guest Entry | `https://stars-and-pines-ridge.web.app/entry` | QR generation, guest registration |
 
 ---
 
-## How It Works — Guest Journey
+## Complete Guest Journey
 
 ### Before Arrival
 
@@ -73,41 +98,9 @@ Staff deactivates the guest's access code. The portal stops working. Clean.
 
 ---
 
-## How It Works — Staff Side
-
-### The Ridge Bell App
-
-Your team opens it on their phone. They pick their profile (Karan for kitchen, Meena for front desk). They see:
-
-**Queue tab** — Live list of all pending orders. Room, items, how long ago, any notes. Tap "Done" or "Cancel." Completed orders sit below for reference.
-
-**Order tab** — Staff can place orders on behalf of guests who don't have portal access. Select the room, pick from the menu, send.
-
-**Nudge tab** — All guest requests appear here. Extra towels, water refill, room cleaning. Staff can also flag things: maintenance issues, low stock, safety concerns.
-
-**Concerns tab** — Guest grievances with priority indicators. Urgent ones show with a red border. Staff acknowledges → resolves. Guest sees the status change in their portal.
-
-**Log tab** — Everything that happened today. Orders placed, requests made, concerns raised. Full history.
-
-**Me tab** — Staff profile, guest check-in with QR code generator, property info, quick WhatsApp contacts.
-
-### When a New Order Arrives
-
-1. A banner slides down: "New order — Mountain Double — Thukpa × 1, Butter naan × 2"
-2. The phone plays a bell sound
-3. The phone vibrates
-4. A red dot appears on the queue icon
-5. Staff taps it, sees the order, starts preparing
-
-### When the Internet Goes Down
-
-The app keeps working. Orders and requests are queued locally. When the connection returns, everything syncs automatically. No data lost.
-
----
-
 ## What's Included
 
-### Public Website
+### 1. Public Website (`index.html`)
 
 - Full editorial website with mountain-journal storytelling
 - Hero with animated starfield and SVG mountains
@@ -120,8 +113,9 @@ The app keeps working. Orders and requests are queued locally. When the connecti
 - Booking channels: WhatsApp, Instagram, Booking.com, email
 - Quick WhatsApp enquiry form with live message preview
 - Six easter eggs (hidden star, torn note, polaroid, terrace lightbox, room observation, footer secret)
+- Analytics tracking (scroll depth, section views, WhatsApp clicks)
 
-### Guest Portal
+### 2. Guest Portal (`guest-portal.html`)
 
 - Token-based access — no login, no password, no download
 - **Food & Drink** — full menu with search, category filters, cart, order submission, real-time status
@@ -132,7 +126,7 @@ The app keeps working. Orders and requests are queued locally. When the connecti
 - **Concierge** — blankets, cleaning, hot water, laundry, taxi, wake-up call, medical, luggage
 - **Your Stay** — personal dashboard: room info, active orders, history, requests, concerns, experiences
 
-### Ridge Bell Staff App
+### 3. Ridge Bell Staff App (`ridge-bell-staff-app.html`)
 
 - Lock screen with staff profiles
 - **Queue** — live order queue, mark done/cancel, completed history
@@ -145,11 +139,130 @@ The app keeps working. Orders and requests are queued locally. When the connecti
 - Offline support with automatic sync
 - Online/offline detection
 
-### Guest Entry Flow
+### 4. Operations Dashboard (`stars-and-pines-dashboard.html`)
+
+- **Overview Page:**
+  - Live heartbeat bar (guests, beds, events, tasks, water, power, kitchen, grievances, inventory)
+  - Live feed (merged grievances + nudges timeline)
+  - Guest requests panel (experiences + concierge)
+  - Occupancy snapshot (dorms + private rooms)
+  - Today's schedule timeline
+  - Open tasks list
+  - Water tank visual
+  - Revenue today breakdown
+
+- **Occupancy Page:**
+  - Dorm A/B/C bed grids (occupied/vacant/cleaning)
+  - Private rooms table with check-in/check-out
+  - Live guest list from Firebase
+  - Check-out button per guest
+
+- **Kitchen & Inventory Page:**
+  - Live order queue (from Firebase)
+  - Inventory by category (produce, dairy, cafe, cleaning)
+  - Low stock alerts
+  - Restock buttons
+
+- **Menu Page:**
+  - Menu items with availability toggles
+  - Hot drinks, cold drinks, food categories
+
+- **Events Page:**
+  - Today's events with progress bars
+  - Upcoming events table
+
+- **Maintenance Page:**
+  - Open tasks with priority
+  - Completed tasks
+  - Add quick task
+
+- **Water Page:**
+  - Tank level visual
+  - Motor status
+  - Daily usage history
+  - Alert rules
+
+- **Lighting & Power Page:**
+  - Zone controls (7 zones)
+  - Brightness sliders
+  - Toggle switches
+  - Power summary
+  - Scene presets
+
+- **Music & Ambience Page:**
+  - Now playing display
+  - Playlists
+  - Speaker zones with volume sliders
+  - Announcements
+
+- **Analytics Page:**
+  - Weekly revenue, occupancy, orders, water usage
+  - Daily revenue breakdown
+  - Most ordered items
+  - Occupancy rate
+
+### 5. Guest Entry (`guest-entry.html`)
 
 - Staff generates QR codes for guests at check-in
 - Guest scans QR → registration form → welcome → enters portal
 - Or staff shares the link via WhatsApp directly
+- 6-digit alphanumeric token generation
+- Guest registration (name, phone, email, emergency contact, arrival method)
+
+---
+
+## Firebase Schema
+
+### Production Paths
+
+| Path | Writer | Reader | Purpose |
+|---|---|---|---|
+| `/guest_access/{token}` | Staff App, Guest Entry | Guest Portal, Dashboard | Guest access tokens |
+| `/orders/{pushId}` | Guest Portal, Staff App | Guest Portal, Staff App, Dashboard | Food orders |
+| `/nudges/{pushId}` | Guest Portal, Staff App | Guest Portal, Staff App, Dashboard | House requests |
+| `/grievances/{pushId}` | Guest Portal | Guest Portal, Staff App, Dashboard | Guest concerns |
+| `/experiences/{pushId}` | Guest Portal | Guest Portal, Dashboard | Experience requests |
+| `/concierge/{pushId}` | Guest Portal | Guest Portal, Dashboard | Concierge requests |
+| `/events/{pushId}` | Marketing Site | — | Analytics events |
+
+### Dashboard Paths
+
+| Path | Writer | Reader | Purpose |
+|---|---|---|---|
+| `/rooms/{key}` | Dashboard | Dashboard | Room/bed state |
+| `/inventory/{category}/{key}` | Dashboard | Dashboard | Stock levels |
+| `/tasks/{pushId}` | Dashboard | Dashboard | Maintenance tasks |
+| `/devices/{key}` | Dashboard, Pi | Dashboard | IoT device state |
+| `/notifications/{pushId}` | Dashboard | Dashboard | System alerts |
+| `/activity_feed/{pushId}` | All apps | Dashboard | Activity log |
+
+---
+
+## File Structure
+
+```
+StarsPines/
+├── index.html                      # Marketing website
+├── guest-portal.html               # Guest self-service portal
+├── ridge-bell-staff-app.html       # Staff operations app
+├── stars-and-pines-dashboard.html  # Operations dashboard
+├── guest-entry.html                # Guest entry & QR generation
+├── seed-data.html                  # Database seeding tool
+├── seed-token.html                 # Test token generator (dev only)
+├── firebase.json                   # Firebase Hosting config
+├── database.rules.json             # Firebase RTDB security rules
+├── js/
+│   └── firebase-config.js          # Shared Firebase configuration
+├── DELIVERABLES.md                 # Complete system documentation
+├── firebase-schema.md              # Firebase path inventory
+├── integration-audit.md            # System audit findings
+├── ARCHITECTURE.md                 # System architecture
+├── DIAGRAMS.md                     # Visual diagrams
+├── FLOWCHARTS.md                   # User flow diagrams
+├── PLAN.md                         # Project plan
+├── AUDIT.md                        # Initial audit
+└── README.md                       # This file
+```
 
 ---
 
@@ -157,9 +270,9 @@ The app keeps working. Orders and requests are queued locally. When the connecti
 
 | Metric | Value |
 |---|---|
-| Total files | 4 active HTML files |
-| Total code | ~7,600 lines |
-| Total size | ~266 KB (all four apps combined) |
+| Total active files | 5 HTML files + 1 shared JS |
+| Total code | ~12,000+ lines |
+| Total size | ~420 KB (all apps combined) |
 | External dependencies | Firebase SDK, Google Fonts, QR code library |
 | Server required | None |
 | Build step | None |
@@ -200,117 +313,33 @@ One room or fifty rooms — the system works the same. Add more staff, more gues
 
 ---
 
-## What It Looks Like
-
-### Guest Portal
-
-```
-┌─────────────────────────────┐
-│ Good evening, Priya         │
-│ Mountain Double · ABX72K    │
-├─────────────────────────────┤
-│ Food  Requests  Concerns    │
-│ Guide  Experiences  Stay    │
-├─────────────────────────────┤
-│                             │
-│  🍲  Peculiar Poha    ₹120  │
-│  🍔  Garden Fresh     ₹180  │
-│  🥪  Habibi           ₹170  │
-│  🥗  Bodhi Bowl       ₹200  │
-│  ☕  Cold Kaapi       ₹140  │
-│                             │
-├─────────────────────────────┤
-│ 2 items · ₹300              │
-│ [Send to kitchen →]         │
-└─────────────────────────────┘
-```
-
-### Staff App — Queue
-
-```
-┌─────────────────────────────┐
-│ Good evening, Karan         │
-│ Kitchen & Café              │
-├─────────────────────────────┤
-│ Queue  Order  Nudge  Log Me │
-├─────────────────────────────┤
-│                             │
-│ Mountain Double · Portal    │
-│ Thukpa × 1, Butter naan × 2 │
-│ "Extra spicy please"        │
-│ 3 min ago                   │
-│ [Done ✓]        [Cancel]    │
-│                             │
-│ Dorm Bed 2 · Web order      │
-│ Shakshouka × 1, Lime Wire   │
-│ 8 min ago                   │
-│ [Done ✓]        [Cancel]    │
-│                             │
-└─────────────────────────────┘
-```
-
----
-
-## Technical Details (For Your IT Person)
-
-### Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    FIREBASE REALTIME DB                      │
-│  /orders/  /nudges/  /grievances/  /guest_access/            │
-│  /experiences/  /concierge/  /events/                        │
-└──────┬───────────────────────┬───────────────────────┬──────┘
-       │                       │                       │
-┌──────▼──────┐         ┌──────▼──────┐         ┌──────▼──────┐
-│  PUBLIC     │         │  GUEST      │         │  GUEST      │
-│  WEBSITE    │         │  PORTAL     │         │  ENTRY      │
-│ index.html  │         │ guest-      │         │ guest-      │
-│             │         │ portal.html │         │ entry.html  │
-└─────────────┘         └──────┬──────┘         └──────┬──────┘
-                               │                       │
-                        ┌──────▼──────┐                │
-                        │  RIDGE BELL │◄───────────────┘
-                        │  STAFF APP  │
-                        │ ridge-bell- │
-                        │ staff-app   │
-                        │ .html       │
-                        └─────────────┘
-```
+## Technical Details
 
 ### Tech Stack
 
 - **Frontend:** Vanilla HTML, CSS, JavaScript — no framework, no build step
 - **Database:** Firebase Realtime Database
 - **SDK:** Firebase v10.12.0
-- **Fonts:** Playfair Display, DM Sans (Google Fonts)
+- **Fonts:** Libre Baskerville, DM Mono, Instrument Sans (Google Fonts)
 - **QR Codes:** qrcode@1.5.3
 - **Audio:** Web Audio API (no external sound files)
 - **Mobile:** Designed for any phone, works in browser
 
-### Deployment
-
-Each file is self-contained. Deploy anywhere:
-
-- Firebase Hosting (recommended — free tier)
-- GitHub Pages
-- Netlify
-- Vercel
-- Any static file server
-
-No build step. No dependencies to install. Just upload the HTML files.
-
 ### Firebase Setup
 
-1. Create a Firebase project
+1. Create a Firebase project (`stars-and-pines-ridge`)
 2. Enable Realtime Database
-3. Set rules to allow read/write
-4. Copy the config into the four HTML files
-5. Done
+3. Set rules to allow read/write (see `database.rules.json`)
+4. Config is already in all HTML files
+5. Deploy with `firebase deploy`
 
 ### Access Tokens
 
 6-character codes (e.g., `ABX72K`). Generated at check-in. Active during stay. Expire 24 hours after checkout. Can be deactivated manually.
+
+### Offline Support
+
+The staff app queues all writes locally when offline. When the connection returns, everything syncs automatically. No data lost.
 
 ---
 
@@ -318,20 +347,24 @@ No build step. No dependencies to install. Just upload the HTML files.
 
 | Feature | Status | Notes |
 |---|---|---|
-| WhatsApp number | Ready | Replace placeholder with your number |
+| WhatsApp number | Ready | Replace `REPLACE_ME` in config with your number |
 | Database validation rules | Planned | Add type checking and field validation |
 | Dynamic menu from Firebase | Planned | Edit menu items without touching code |
 | Community events | Planned | Firepit gatherings, music nights, workshops |
 | Perool catalogue | Planned | Local woollens and crafts — browse, enquire via WhatsApp |
 | Android APK for staff | Planned | Package Ridge Bell as a native app |
+| Raspberry Pi integration | Planned | IoT control for lights, motor, music, sensors |
 
 ---
 
 ## What You Get
 
-- **4 HTML files** — website, guest portal, staff app, guest entry
-- **Complete Firebase schema** — orders, nudges, grievances, guest access, experiences, concierge
-- **Full documentation** — architecture, data flow, deployment guide
+- **5 HTML files** — website, guest portal, staff app, dashboard, guest entry
+- **Shared Firebase config** — single source of truth
+- **Firebase Hosting config** — ready to deploy
+- **Database security rules** — production-ready
+- **Seed data tool** — initialize your database
+- **Complete documentation** — architecture, data flow, deployment guide
 - **No ongoing cost** — Firebase free tier covers everything
 - **No maintenance** — no server, no updates, no dependencies
 - **No training** — if your staff can use WhatsApp, they can use this
