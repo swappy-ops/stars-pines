@@ -104,6 +104,22 @@ stars-pines/
 
 ## Deployment
 
+### Libretto (23.6") — Recommended Setup
+
+```bash
+# 1. Clone onto the Libretto
+git clone https://github.com/swappy-ops/stars-pines.git ~/stars-pines
+
+# 2. Run the full provisioning installer
+cd ~/stars-pines
+sudo ./install-stars-pines.sh
+
+# 3. Reboot to apply hostname change
+sudo reboot
+```
+
+After reboot, Firefox opens automatically to the Operations Dashboard.
+
 ### Auto-setup (any machine)
 ```bash
 bash setup.sh
@@ -112,17 +128,49 @@ bash setup.sh
 ### Manual deployment (Lubuntu laptop)
 ```bash
 sudo apt install -y nginx
-sudo mkdir -p /var/www/stars-pines/js
-cp index.html guest-portal.html employee-app.html dashboard.html guest-entry.html /var/www/stars-pines/
-cp js/*.js /var/www/stars-pines/js/
-# Configure Nginx (see docs/OPERATIONS-HANDBOOK.md Section 4.4)
-sudo systemctl enable nginx && sudo systemctl start nginx
+sudo mkdir -p /var/www/starsandpines/js
+cp index.html guest-portal.html employee-app.html dashboard.html guest-entry.html /var/www/starsandpines/
+cp js/*.js /var/www/starsandpines/js/
+cp firebase.json database.rules.json /var/www/starsandpines/
+sudo ln -sf /etc/nginx/sites-available/starsandpines /etc/nginx/sites-enabled/starsandpines
+sudo nginx -t && sudo systemctl enable nginx && sudo systemctl start nginx
 ```
 
 ### Deploy to Firebase Hosting
 ```bash
 firebase deploy --only hosting
 ```
+
+---
+
+## Libretto 23.6" Notes
+
+- **Display:** 1920x1080 — wallpaper spec targets this resolution
+- **User:** Log in as Reception (default operator account)
+- **Auto-start:** Firefox opens to `http://localhost/dashboard` on login
+- **Web server:** Nginx runs on port 80, auto-starts on boot
+- **Backup:** Runs daily at 3am, stored in `~/StarsAndPines/Backups/`
+- **Storage:** `~/StarsAndPines/` is on the 234GB SSD — plenty of room for guests, reports, media
+- **To add a wallpaper:** Download from `provision/branding/wallpaper-spec.md`, place in `~/StarsAndPines/Media/wallpapers/`, set via MX Linux settings
+
+---
+
+## Quick Reference
+
+| App | URL |
+|---|---|
+| Operations Dashboard | http://localhost/dashboard |
+| Guest Portal | http://localhost/portal |
+| Staff App | http://localhost/staff |
+| Guest Check-In | http://localhost/entry |
+| Public Website | http://localhost/ |
+
+| Script | Purpose |
+|---|---|
+| `install-stars-pines.sh` | Full workstation provisioning (run once, as sudo) |
+| `setup.sh` | Start local dev server (run each session) |
+| `~/StarsAndPines/Scripts/guest-checkin.sh` | Guest check-in + WhatsApp invite |
+| `/usr/local/bin/starsandpines-backup.sh` | Manual backup (runs auto daily) |
 
 ---
 
