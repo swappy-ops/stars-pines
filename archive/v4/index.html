@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stars & Pines — Crank's Ridge, Almora</title>
+  <meta name="description" content="A mountain house on Crank's Ridge. For seekers, writers, wanderers, and those who find it. Kasar Devi, Almora, Uttarakhand." />
+
+  <!-- ─── PHASE 1: FONT REDUCTION (was 4 families → 2) ─── -->
+  <!-- Removed: EB Garamond, Outfit — saves ~100–300kb -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+  <!-- ─── PRECONNECT: booking channels ─── -->
+  <link rel="preconnect" href="https://wa.me">
+  <link rel="preconnect" href="https://www.gstatic.com">
+
+  <!-- ─── JSON-LD: LodgingBusiness structured data ─── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    "name": "Stars & Pines",
+    "description": "A mountain house on Crank's Ridge, Kasar Devi, Almora. For seekers, writers, wanderers.",
+    "url": "https://starsandpines.in",
+    "telephone": "+919999999999",
+    "email": "stay@starsandpines.in",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Kasar Devi Road, Crank's Ridge",
+      "addressLocality": "Almora",
+      "addressRegion": "Uttarakhand",
+      "postalCode": "263601",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 29.6,
+      "longitude": 79.6,
+      "elevation": 1645
+    },
+    "priceRange": "₹₹",
+    "amenityFeature": [
+      {"@type": "LocationFeatureSpecification", "name": "Mountain Views", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Terrace", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Hot Showers", "value": true},
+      {"@type": "LocationFeatureSpecification", "name": "Fireplace", "value": true}
+    ],
+    "containsPlace": [
+      {"@type": "HotelRoom", "name": "Six-Bed Dormitory", "description": "Communal dorm for solo travellers", "offers": {"@type": "Offer", "price": "2640", "priceCurrency": "INR"}},
+      {"@type": "HotelRoom", "name": "Mountain Double", "description": "King bed, private balcony, fireplace", "offers": {"@type": "Offer", "price": "4200", "priceCurrency": "INR"}},
+      {"@type": "HotelRoom", "name": "Deluxe Twin", "description": "Two king beds, garden view", "offers": {"@type": "Offer", "price": "5800", "priceCurrency": "INR"}}
+    ],
+    "sameAs": ["https://www.instagram.com/starsandpiness"],
+    "keywords": "Kasar Devi, Crank's Ridge, Almora, homestay, mountain retreat, Uttarakhand, guesthouse"
+  }
+  </script>
+
+  <!-- ─── PHASE 2: CRITICAL CSS INLINED ─── -->
+  <!-- Hero + Nav + Above-fold only; rest deferred -->
+  <style>
+  /* ─── RESET + ROOT ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:   #1a1714;
+    --pine:  #253422;
+    --bark:  #4a3a26;
+    --earth: #7a6248;
+    --mist:  #ddd7cc;
+    --paper: #f2ede6;
+    --cream: #f8f4ef;
+    --gold:  #b8974a;
+    --warm:  #c4a870;
+    --smoke: #9a9188;
+    --snow:  #faf7f2;
+    --night: #0f1210;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--snow);
+    color: var(--ink);
+    /* PHASE 1: Outfit → DM Sans */
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ─── TYPOGRAPHY ─── */
+  /* PHASE 1: .garamond now maps to Playfair italic (EB Garamond removed) */
+  .serif   { font-family: 'Playfair Display', serif; }
+  .garamond { font-family: 'Playfair Display', serif; font-style: italic; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 800;
+    padding: 28px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.5s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(250,247,242,0.96);
+    padding: 18px 52px;
+    border-bottom: 1px solid rgba(154,145,136,0.15);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--cream);
+    text-decoration: none;
+    transition: color 0.4s;
+  }
+  nav.scrolled .nav-logo { color: var(--pine); }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(250,247,242,0.65);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  nav.scrolled .nav-links a { color: var(--earth); }
+  .nav-links a:hover { color: var(--warm); }
+  nav.scrolled .nav-links a:hover { color: var(--pine); }
+  .nav-book {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--pine) !important;
+    background: var(--warm);
+    padding: 10px 24px;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  .nav-book:hover { background: var(--gold) !important; }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+    /* Touch target */
+    min-width: 44px; min-height: 44px;
+    align-items: center; justify-content: center;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--cream);
+    transition: background 0.4s;
+  }
+  nav.scrolled .hamburger span { background: var(--pine); }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(15,18,16,0.3) 0%, rgba(15,18,16,0.05) 40%, rgba(15,18,16,0.55) 100%),
+      linear-gradient(160deg, #253422 0%, #1a2a1c 30%, #0f1210 60%, #1e2818 100%);
+    z-index: 0;
+  }
+  .hero-mountains {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 1; height: 55%;
+  }
+  /* ─── PHASE 3: Canvas replaces 50 DOM star nodes ─── */
+  #heroCanvas {
+    position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative; z-index: 3;
+    padding: 0 52px 80px;
+    max-width: 800px;
+  }
+  .hero-location {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.4rem, 7.5vw, 7rem);
+    font-weight: 400;
+    line-height: 1.0;
+    color: var(--cream);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.6s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--warm); }
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(250,247,242,0.5);
+    letter-spacing: 0.05em;
+    max-width: 400px;
+    line-height: 2;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.85s forwards;
+  }
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    opacity: 0;
+    animation: fadeUp 1s cubic-bezier(0.16,1,0.3,1) 1.1s forwards;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 16px 44px;
+    background: var(--warm);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--pine);
+    text-decoration: none;
+    font-weight: 400;
+    transition: background 0.3s;
+    /* Accessible touch target */
+    min-height: 44px; display: inline-flex; align-items: center;
+  }
+  .btn-primary:hover { background: var(--gold); }
+  .btn-ghost {
+    display: inline-flex; align-items: center;
+    padding: 14px 0;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(250,247,242,0.5);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(250,247,242,0.2);
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .btn-ghost:hover { color: var(--warm); border-color: var(--warm); }
+  .hero-coord {
+    position: absolute;
+    right: 52px; bottom: 80px; z-index: 3;
+    font-size: 0.58rem; letter-spacing: 0.18em;
+    color: rgba(250,247,242,0.3);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    animation: fadeIn 2s ease 1.5s forwards;
+    opacity: 0;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0;
+    animation: fadeIn 1.5s ease 1.8s forwards;
+  }
+  .hero-scroll span {
+    font-size: 0.52rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: rgba(250,247,242,0.3);
+  }
+  .scroll-track {
+    width: 1px; height: 52px;
+    background: linear-gradient(to bottom, transparent, rgba(250,247,242,0.4));
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%   { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+    50%  { opacity: 1;   transform: scaleY(1); }
+    100% { opacity: 0.3; transform: scaleY(0.6); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ─── STICKY BOOKING CTA ─── */
+  /* PHASE UX: Always-visible floating CTA */
+  #sticky-cta {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 900;
+    display: flex; flex-direction: column; gap: 10px;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.4s, transform 0.4s;
+    pointer-events: none;
+  }
+  #sticky-cta.visible {
+    opacity: 1; transform: translateY(0);
+    pointer-events: auto;
+  }
+  .sticky-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 400;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+    min-height: 44px;
+  }
+  .sticky-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+  .sticky-wa {
+    background: #25D366;
+    color: #fff;
+  }
+  .sticky-book {
+    background: var(--warm);
+    color: var(--pine);
+  }
+  </style>
+
+  <!-- ─── PHASE 2: DEFERRED NON-CRITICAL CSS ─── -->
+  <!-- Sections below fold; loaded async so hero renders first -->
+  <style id="deferred-css" media="print" onload="this.media='all'">
+
+  /* ─── SCROLL REVEAL (PHASE 2: extended content-visibility) ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal-slow { transition-duration: 1.4s; }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.30s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+
+  /* ─── CONTENT-VISIBILITY: below-fold sections ─── */
+  /* PHASE 2: Cuts render cost for sections not yet on screen */
+  #ridge, #why, #day, #house, #rooms, #guide, #reviews, #book, footer {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 1200px;
+  }
+
+  /* ─── PULL QUOTE BAND ─── */
+  .pull-band {
+    background: var(--pine);
+    padding: 52px;
+    display: flex; align-items: center; gap: 32px;
+    overflow: hidden;
+  }
+  .pull-band::before {
+    content: ''; width: 64px; height: 1px;
+    background: var(--warm); flex-shrink: 0;
+  }
+  .pull-band p {
+    /* PHASE 1: EB Garamond → Playfair italic */
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.05rem, 2.2vw, 1.5rem);
+    font-weight: 400; font-style: italic;
+    color: var(--mist); letter-spacing: 0.02em; line-height: 1.5;
+  }
+
+  /* ─── SECTION SCAFFOLDING ─── */
+  .section-wrap    { padding: 120px 52px; }
+  .section-wrap-lg { padding: 160px 52px; }
+  .section-wrap-sm { padding: 80px 52px; }
+  .label {
+    font-size: 0.58rem; letter-spacing: 0.38em;
+    text-transform: uppercase; color: var(--earth);
+    display: flex; align-items: center; gap: 14px; margin-bottom: 28px;
+  }
+  .label::before { content: ''; width: 28px; height: 1px; background: var(--earth); opacity: 0.6; }
+  .display-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    font-weight: 400; line-height: 1.1; color: var(--pine);
+  }
+  .display-heading em { font-style: italic; color: var(--earth); }
+  .body-text { font-size: 0.9rem; color: var(--earth); line-height: 2; max-width: 580px; }
+
+  /* ─── THE RIDGE ─── */
+  #ridge { background: var(--night); padding: 0; overflow: hidden; }
+  .ridge-intro {
+    padding: 120px 52px 80px;
+    display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: end;
+  }
+  .ridge-intro .label { color: var(--warm); }
+  .ridge-intro .label::before { background: var(--warm); }
+  .ridge-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    font-weight: 400; line-height: 1.0; color: var(--cream);
+  }
+  .ridge-heading em { font-style: italic; color: var(--warm); }
+  .ridge-lede { font-size: 1.05rem; color: rgba(221,215,204,0.55); line-height: 2; margin-bottom: 32px; }
+  .ridge-lede strong { color: var(--mist); font-weight: 400; }
+
+  /* Timeline */
+  .ridge-timeline {
+    padding: 0 52px 120px;
+    display: grid; grid-template-columns: 1px 1fr; gap: 0 52px;
+  }
+  .timeline-line {
+    background: linear-gradient(to bottom, transparent, var(--warm) 10%, var(--warm) 90%, transparent);
+    grid-row: 1 / -1; opacity: 0.35;
+  }
+  .timeline-entries { display: flex; flex-direction: column; gap: 0; }
+  .tl-entry {
+    padding: 48px 0;
+    border-bottom: 1px solid rgba(184,151,74,0.12);
+    display: grid; grid-template-columns: 120px 1fr; gap: 32px;
+    align-items: start; position: relative;
+  }
+  .tl-entry::before {
+    content: ''; position: absolute; left: -57px; top: 52px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--warm); opacity: 0.6;
+  }
+  .tl-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 400; color: var(--warm); line-height: 1; padding-top: 4px;
+  }
+  .tl-year small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(184,151,74,0.5); margin-top: 4px;
+  }
+  .tl-body h4 {
+    /* PHASE 1: EB Garamond → Playfair italic */
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--mist); font-weight: 400;
+    font-style: italic; margin-bottom: 10px;
+  }
+  .tl-body p { font-size: 0.82rem; color: rgba(221,215,204,0.45); line-height: 1.9; }
+
+  /* Ridge figures */
+  .ridge-figures {
+    padding: 0 52px 80px;
+    display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+  }
+  .ridge-figures::-webkit-scrollbar { display: none; }
+  .figure-card {
+    flex: 0 0 200px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(184,151,74,0.1);
+    padding: 32px 24px;
+    transition: background 0.4s, border-color 0.4s;
+  }
+  .figure-card:hover { background: rgba(184,151,74,0.05); border-color: rgba(184,151,74,0.25); }
+  .figure-name {
+    /* PHASE 1: EB Garamond → Playfair italic */
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; color: var(--mist); font-style: italic; margin-bottom: 4px;
+  }
+  .figure-desc {
+    font-size: 0.68rem; letter-spacing: 0.08em;
+    color: rgba(184,151,74,0.55); text-transform: uppercase;
+  }
+  .ridge-banner {
+    background: rgba(184,151,74,0.08);
+    border-top: 1px solid rgba(184,151,74,0.15);
+    border-bottom: 1px solid rgba(184,151,74,0.15);
+    padding: 32px 52px;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;
+  }
+  .ridge-stat { text-align: center; }
+  .ridge-stat .n {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--warm); line-height: 1; display: block;
+  }
+  .ridge-stat .l {
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(184,151,74,0.4); margin-top: 4px;
+  }
+
+  /* ─── WHY PEOPLE COME ─── */
+  #why { background: var(--paper); }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; margin-top: 72px; background: var(--mist);
+  }
+  .why-item {
+    background: var(--paper);
+    padding: 52px 44px;
+    transition: background 0.4s;
+  }
+  .why-item:hover { background: var(--cream); }
+  .why-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.7rem; color: var(--earth); opacity: 0.5; margin-bottom: 24px; letter-spacing: 0.1em;
+  }
+  .why-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 400; color: var(--pine); margin-bottom: 14px; line-height: 1.2;
+  }
+  .why-item p { font-size: 0.8rem; color: var(--earth); line-height: 1.9; }
+
+  /* ─── A DAY ─── */
+  #day { background: var(--cream); overflow: hidden; }
+  .day-header { margin-bottom: 80px; }
+  .day-timeline { display: flex; flex-direction: column; gap: 0; }
+  .day-entry {
+    display: grid; grid-template-columns: 140px 1fr; gap: 0;
+    border-top: 1px solid var(--mist);
+    transition: background 0.4s;
+  }
+  .day-entry:last-child { border-bottom: 1px solid var(--mist); }
+  .day-entry:hover { background: rgba(154,145,136,0.04); }
+  .day-time {
+    padding: 40px 0; border-right: 1px solid var(--mist); padding-right: 40px;
+  }
+  .day-time .t {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 400; color: var(--earth); line-height: 1; display: block;
+  }
+  .day-time .ampm {
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--smoke); margin-top: 6px; display: block;
+  }
+  .day-content { padding: 40px 0 40px 48px; }
+  .day-content h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-weight: 400; color: var(--pine); margin-bottom: 10px; line-height: 1.2;
+  }
+  .day-content p { font-size: 0.8rem; color: var(--earth); line-height: 1.9; max-width: 520px; }
+
+  /* ─── THE HOUSE ─── */
+  #house { background: var(--pine); color: var(--mist); }
+  .house-layout {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 100px; align-items: center;
+  }
+  .house-text .label { color: var(--warm); }
+  .house-text .label::before { background: var(--warm); }
+  .house-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    font-weight: 400; line-height: 1.1; color: var(--cream); margin-bottom: 32px;
+  }
+  .house-heading em { font-style: italic; color: var(--warm); }
+  .house-body { font-size: 0.88rem; color: rgba(221,215,204,0.6); line-height: 2.1; margin-bottom: 20px; }
+  .house-sig {
+    margin-top: 48px; padding-top: 32px;
+    border-top: 1px solid rgba(184,151,74,0.2);
+  }
+  .house-sig p {
+    /* PHASE 1: EB Garamond → Playfair italic */
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem; font-style: italic; color: var(--warm);
+  }
+  .house-sig span {
+    font-size: 0.62rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(184,151,74,0.4); display: block; margin-top: 6px;
+  }
+  .house-visual {
+    display: grid;
+    grid-template-rows: 280px 200px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .hv-block { overflow: hidden; position: relative; }
+  .hv-block:first-child { grid-row: 1 / 3; }
+  .hv-ph {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .hv-ph-1 { background: linear-gradient(135deg, #2d4530 0%, #1f3022 100%); }
+  .hv-ph-2 { background: linear-gradient(135deg, #3a4a3c 0%, #253022 100%); }
+  .hv-ph-3 { background: linear-gradient(135deg, #1e2d20 0%, #162218 100%); }
+  .hv-ph span { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,226,217,0.2); }
+
+  /* ─── ROOMS ─── */
+  #rooms { background: var(--snow); }
+  .rooms-intro {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 72px; gap: 40px;
+  }
+  .rooms-intro .body-text { text-align: right; font-size: 0.82rem; }
+  .rooms-stack { display: flex; flex-direction: column; gap: 0; }
+  .room-row {
+    display: grid; grid-template-columns: 1fr 1.6fr;
+    border-top: 1px solid var(--mist);
+    transition: background 0.4s; min-height: 220px;
+  }
+  .room-row:last-child { border-bottom: 1px solid var(--mist); }
+  .room-row:hover { background: var(--paper); }
+  .room-meta {
+    padding: 48px 40px 48px 0;
+    border-right: 1px solid var(--mist);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .room-type { font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--earth); margin-bottom: 12px; }
+  .room-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 400; color: var(--pine); margin-bottom: 8px; line-height: 1.2; }
+  .room-tagline { font-size: 0.78rem; color: var(--smoke); line-height: 1.7; }
+  .room-price { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--earth); margin-top: 24px; }
+  .room-price small {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem; letter-spacing: 0.12em; color: var(--smoke); text-transform: uppercase;
+  }
+  .room-details {
+    padding: 48px 0 48px 48px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; align-content: center;
+  }
+  .room-detail { font-size: 0.75rem; color: var(--earth); display: flex; align-items: baseline; gap: 10px; }
+  .room-detail::before { content: '—'; color: var(--warm); font-size: 0.7rem; flex-shrink: 0; }
+
+  /* ─── THE GUIDE ─── */
+  #guide { background: var(--ink); overflow: hidden; }
+  .guide-header-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 80px; gap: 40px;
+  }
+  .guide-header-row .label { color: var(--warm); }
+  .guide-header-row .label::before { background: var(--warm); }
+  .guide-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4vw, 3.6rem); font-weight: 400; line-height: 1.1; color: var(--cream);
+  }
+  .guide-sub { font-size: 0.82rem; color: rgba(221,215,204,0.4); line-height: 1.9; max-width: 320px; text-align: right; }
+  .guide-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 1px; background: rgba(255,255,255,0.04);
+  }
+  .guide-item {
+    background: var(--ink); padding: 40px 32px;
+    border-right: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.4s;
+  }
+  .guide-item:last-child { border-right: none; }
+  .guide-item:hover { background: rgba(184,151,74,0.06); }
+  .guide-cat { font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--warm); opacity: 0.6; margin-bottom: 20px; }
+  .guide-item h4 {
+    /* PHASE 1: EB Garamond → Playfair italic */
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-style: italic; color: var(--mist); margin-bottom: 10px; line-height: 1.3;
+  }
+  .guide-item p { font-size: 0.74rem; color: rgba(221,215,204,0.35); line-height: 1.85; }
+  .guide-dist { font-size: 0.6rem; letter-spacing: 0.12em; color: rgba(184,151,74,0.4); margin-top: 16px; display: block; }
+
+  /* ─── REVIEWS ─── */
+  #reviews { background: var(--cream); }
+  .review-header-row {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 80px; gap: 40px;
+  }
+  .review-rating { text-align: right; }
+  .review-rating .big {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem; font-weight: 400; color: var(--pine); line-height: 1;
+  }
+  .review-rating .context {
+    font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--smoke); display: block; margin-top: 4px;
+  }
+  .reviews-editorial { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 0; }
+  .review-featured { border: 1px solid var(--mist); border-right: none; padding: 56px 48px; }
+  .review-secondary {
+    border: 1px solid var(--mist); border-right: none;
+    padding: 40px 36px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .review-secondary:last-child { border-right: 1px solid var(--mist); }
+  .review-source {
+    font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--earth); margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .review-source::before { content: '★'; color: var(--warm); }
+  blockquote.pull {
+    /* PHASE 1: EB Garamond → Playfair italic */
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.05rem, 2vw, 1.4rem); font-style: italic;
+    color: var(--pine); line-height: 1.65; margin-bottom: 32px;
+  }
+  blockquote.sm {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-style: italic; color: var(--pine); line-height: 1.65; margin-bottom: 24px;
+  }
+  .review-author { font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--smoke); }
+
+  /* ─── BOOK YOUR STAY ─── */
+  #book { background: var(--pine); padding: 0; overflow: hidden; }
+  .book-inner {
+    padding: 120px 52px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center;
+  }
+  .book-text .label { color: var(--warm); }
+  .book-text .label::before { background: var(--warm); }
+  .book-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 400; line-height: 1.05;
+    color: var(--cream); margin-bottom: 24px;
+  }
+  .book-heading em { font-style: italic; color: var(--warm); }
+  .book-sub { font-size: 0.85rem; color: rgba(221,215,204,0.5); line-height: 2; margin-bottom: 48px; }
+  .book-channels { display: flex; flex-direction: column; gap: 0; }
+  .book-channel {
+    display: grid; grid-template-columns: 80px 1fr auto;
+    align-items: center; gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(184,151,74,0.12);
+    text-decoration: none;
+    transition: background 0.3s;
+    cursor: pointer;
+    /* Touch targets */
+    min-height: 52px;
+  }
+  .book-channel:first-child { border-top: 1px solid rgba(184,151,74,0.12); }
+  .book-channel:hover .bc-name { color: var(--warm); }
+  .book-channel:hover .bc-arrow { opacity: 1; transform: translate(3px, -1px); }
+  .bc-icon { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--warm); opacity: 0.5; }
+  .bc-name {
+    /* PHASE 1: EB Garamond → Playfair italic */
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; color: var(--mist); font-style: italic; transition: color 0.3s;
+  }
+  .bc-desc { font-size: 0.7rem; color: rgba(221,215,204,0.3); display: block; margin-top: 3px; }
+  .bc-arrow { color: rgba(184,151,74,0.3); font-size: 1rem; opacity: 0.4; transition: opacity 0.3s, transform 0.3s; }
+  .book-note {
+    padding: 52px;
+    background: rgba(184,151,74,0.06);
+    border: 1px solid rgba(184,151,74,0.12);
+    align-self: start;
+  }
+  .book-note-label {
+    font-size: 0.58rem; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--warm); opacity: 0.6; margin-bottom: 24px;
+  }
+  .book-note p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-style: italic; color: var(--mist); line-height: 1.8; margin-bottom: 20px;
+  }
+  .book-note .details {
+    font-size: 0.75rem; color: rgba(221,215,204,0.4); line-height: 1.9;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .book-note .details strong { color: rgba(221,215,204,0.65); font-weight: 400; }
+
+  /* ─── WHATSAPP FORM ─── */
+  .wa-booking-wrap { margin-top: 52px; padding-top: 48px; border-top: 1px solid rgba(184,151,74,0.15); }
+  .wa-booking-label {
+    font-size: 0.55rem; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--warm); opacity: 0.8; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .wa-booking-label::before { content: ''; width: 20px; height: 1px; background: var(--warm); opacity: 0.5; }
+  .wa-booking-intro {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-style: italic; color: rgba(221,215,204,0.6); line-height: 1.7; margin-bottom: 28px;
+  }
+  .wa-form { display: flex; flex-direction: column; gap: 12px; }
+  .wa-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .wa-field { display: flex; flex-direction: column; gap: 5px; }
+  .wa-field label {
+    font-size: 0.52rem; letter-spacing: 0.22em;
+    text-transform: uppercase; color: rgba(221,215,204,0.7);
+  }
+  .wa-field input,
+  .wa-field select,
+  .wa-field textarea {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(184,151,74,0.2);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 300;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+    -webkit-appearance: none; appearance: none; width: 100%;
+    /* Mobile: ensure 16px to prevent iOS zoom */
+    font-size: max(16px, 0.82rem);
+  }
+  .wa-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b8974a' stroke-width='1.5' fill='none' opacity='0.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+    padding-right: 36px; cursor: pointer;
+  }
+  .wa-field select option { background: #1f3022; color: var(--cream); }
+  .wa-field input:focus, .wa-field select:focus, .wa-field textarea:focus {
+    border-color: rgba(184,151,74,0.5); background: rgba(184,151,74,0.08);
+  }
+  .wa-field textarea { resize: none; min-height: 72px; line-height: 1.6; }
+  .wa-field input::placeholder, .wa-field textarea::placeholder { color: rgba(221,215,204,0.3); }
+  .wa-field input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7) sepia(1) hue-rotate(5deg); opacity: 0.6; cursor: pointer;
+  }
+  .wa-send-btn {
+    display: flex; align-items: center; gap: 14px;
+    background: #25D366; color: #fff; border: none;
+    padding: 16px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase;
+    cursor: pointer; transition: background 0.3s;
+    align-self: flex-start; margin-top: 4px;
+    min-height: 44px;
+  }
+  .wa-send-btn:hover { background: #1da851; }
+  .wa-preview {
+    margin-top: 16px; padding: 16px 20px;
+    background: rgba(37,211,102,0.08);
+    border: 1px solid rgba(37,211,102,0.2);
+    font-size: 0.72rem; color: rgba(221,215,204,0.6); line-height: 1.7;
+    display: none; white-space: pre-wrap;
+  }
+  .wa-preview.visible { display: block; }
+  .wa-preview-label {
+    font-size: 0.48rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: rgba(37,211,102,0.6); margin-bottom: 8px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer { background: var(--night); padding: 80px 52px 48px; }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 72px;
+  }
+  .footer-brand .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; color: var(--cream); font-weight: 400; letter-spacing: 0.04em; margin-bottom: 16px;
+  }
+  .footer-brand p { font-size: 0.78rem; color: rgba(221,215,204,0.3); line-height: 2; max-width: 260px; }
+  .footer-col h5 {
+    font-size: 0.55rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--warm); opacity: 0.5; margin-bottom: 24px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 14px; }
+  .footer-col ul li a {
+    font-size: 0.78rem; color: rgba(221,215,204,0.35);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .footer-col ul li a:hover { color: var(--mist); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(221,215,204,0.18); }
+  .footer-bottom a { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(184,151,74,0.35); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--warm); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .ridge-intro { grid-template-columns: 1fr; gap: 40px; }
+    .house-layout { grid-template-columns: 1fr; }
+    .house-visual { display: none; }
+    .guide-grid { grid-template-columns: repeat(2,1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .book-inner { grid-template-columns: 1fr; gap: 60px; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .section-wrap, .section-wrap-lg { padding: 80px 24px; }
+    .section-wrap-sm { padding: 52px 24px; }
+    .pull-band { padding: 36px 24px; flex-direction: column; gap: 20px; }
+    .pull-band::before { width: 32px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .room-row { grid-template-columns: 1fr; }
+    .room-details { display: none; }
+    .room-meta { border-right: none; padding: 32px 0; border-bottom: 1px solid var(--mist); }
+    .guide-grid { grid-template-columns: 1fr; }
+    .reviews-editorial { grid-template-columns: 1fr; }
+    .review-secondary { border-right: 1px solid var(--mist); }
+    .review-header-row { flex-direction: column; align-items: flex-start; }
+    .review-rating { text-align: left; }
+    .rooms-intro { flex-direction: column; }
+    .rooms-intro .body-text { text-align: left; }
+    .guide-header-row { flex-direction: column; align-items: flex-start; }
+    .guide-sub { text-align: left; }
+    .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+    .hero-content { padding: 0 24px 72px; }
+    .hero-coord { display: none; }
+    .ridge-timeline { padding: 0 24px 80px; gap: 0 32px; }
+    .ridge-banner { padding: 24px; justify-content: center; gap: 32px; }
+    .tl-entry { grid-template-columns: 80px 1fr; gap: 20px; }
+    .ridge-figures { padding: 0 24px 60px; }
+    .day-entry { grid-template-columns: 90px 1fr; }
+    .day-time { padding-right: 20px; }
+    .day-content { padding-left: 24px; }
+    .book-inner { padding: 72px 24px; }
+    #sticky-cta { bottom: 16px; right: 16px; }
+    .sticky-btn { font-size: 0.58rem; padding: 12px 16px; }
+  }
+  @media (max-width: 480px) {
+    .hero-title { font-size: 3.2rem; }
+    .hero-cta-row { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .wa-row { grid-template-columns: 1fr; }
+    .wa-send-btn { align-self: stretch; justify-content: center; }
+  }
+  </style>
+  <noscript><link rel="stylesheet" href="#" onload=""></noscript>
+</head>
+<body>
+
+<!-- ─── STICKY BOOKING CTA ─── -->
+<!-- PHASE UX: Always-visible float, appears after hero scroll -->
+<div id="sticky-cta" role="complementary" aria-label="Book your stay">
+  <a href="https://wa.me/919999999999" target="_blank" rel="noopener" class="sticky-btn sticky-wa"
+     onclick="track('sticky_whatsapp_click')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.849L.054 23.454a.5.5 0 00.606.65l5.803-1.527A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.722 9.722 0 01-4.98-1.367l-.357-.213-3.702.973.989-3.614-.233-.373A9.706 9.706 0 012.25 12c0-5.376 4.374-9.75 9.75-9.75S21.75 6.624 21.75 12 17.376 21.75 12 21.75z"/>
+    </svg>
+    WhatsApp
+  </a>
+  <a href="#book" class="sticky-btn sticky-book" onclick="track('sticky_book_click')">
+    Book Stay
+  </a>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo">Stars & Pines</a>
+  <ul class="nav-links">
+    <li><a href="#ridge">The Ridge</a></li>
+    <li><a href="#day">A Day Here</a></li>
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="#guide">The Guide</a></li>
+    <li><a href="#book" class="nav-book" onclick="track('nav_book_click')">Begin Your Stay</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section id="hero" aria-label="Stars and Pines — Crank's Ridge">
+  <div class="hero-bg" aria-hidden="true"></div>
+
+  <!-- PHASE 3: Canvas starfield (replaces 50 DOM nodes) -->
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+
+  <!-- Mountain SVG silhouette — inline, zero HTTP request -->
+  <svg class="hero-mountains" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMax slice"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="mtGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#253422" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#1a2a1c" stop-opacity="1"/>
+      </linearGradient>
+      <linearGradient id="mtGrad2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1f3022" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#0f1210" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,300 L80,220 L160,240 L240,180 L340,200 L420,140 L500,170 L580,120 L680,160 L760,100 L840,140 L920,110 L1000,150 L1080,130 L1160,160 L1260,200 L1360,240 L1440,260 L1440,400 L0,400 Z" fill="url(#mtGrad)"/>
+    <path d="M0,340 L60,280 L90,300 L130,260 L160,280 L210,240 L260,265 L310,230 L380,255 L430,220 L490,245 L560,210 L620,230 L700,200 L760,220 L820,195 L880,215 L940,190 L1000,210 L1070,185 L1130,210 L1200,230 L1280,260 L1360,290 L1440,310 L1440,400 L0,400 Z" fill="url(#mtGrad2)"/>
+    <g fill="#0f1210" opacity="0.9">
+      <polygon points="40,340 55,290 70,340"/>
+      <polygon points="100,335 118,280 136,335"/>
+      <polygon points="150,338 165,295 180,338"/>
+      <polygon points="1270,338 1285,292 1300,338"/>
+      <polygon points="1320,340 1337,285 1354,340"/>
+      <polygon points="1380,335 1396,290 1412,335"/>
+    </g>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-location">Crank's Ridge · Kasar Devi · Almora · 1,645m</p>
+    <h1 class="hero-title">
+      The ridge<br>
+      <em>finds</em><br>
+      people.
+    </h1>
+    <p class="hero-sub">
+      A mountain house on one of the most quietly legendary ridges in modern India. Open to those who find it — and those who don't, yet.
+    </p>
+    <div class="hero-cta-row">
+      <a href="#ridge" class="btn-primary">Explore the Ridge</a>
+      <a href="#book" class="btn-ghost" onclick="track('hero_book_click')">Begin your stay →</a>
+    </div>
+  </div>
+
+  <p class="hero-coord" aria-hidden="true">29.6°N · 79.6°E · 1645m · Uttarakhand</p>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="scroll-track"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ─── PULL QUOTE ─── -->
+<div class="pull-band reveal">
+  <p>"Some places make you want to stay quiet. Crank's Ridge is one of those — and there's a house there now, if you need somewhere to put your bag."</p>
+</div>
+
+<!-- ─── THE RIDGE ─── -->
+<section id="ridge" aria-labelledby="ridge-heading">
+  <div class="ridge-intro reveal">
+    <div>
+      <div class="label">The Ridge</div>
+      <h2 id="ridge-heading" class="ridge-heading">
+        Crank's Ridge<br>
+        is not a<br>
+        <em>destination.</em>
+      </h2>
+    </div>
+    <div>
+      <p class="ridge-lede">
+        It is a <strong>frequency</strong>. Something about the air at 1,645 metres — the particular angle of the Himalayan light, the way the ridge falls away on both sides into valleys older than memory — has drawn a very specific kind of person here, again and again, for over a hundred years.
+      </p>
+      <p class="ridge-lede">
+        Artists. Wanderers. Those between one life and the next. People who needed to think, or to stop thinking. The ridge doesn't care why you came. It just tends to <strong>keep you longer than you planned</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="ridge-banner reveal">
+    <div class="ridge-stat"><span class="n">1,645m</span><span class="l">Elevation</span></div>
+    <div class="ridge-stat"><span class="n">100+</span><span class="l">Years of seekers</span></div>
+    <div class="ridge-stat"><span class="n">29.6°N</span><span class="l">Latitude</span></div>
+    <div class="ridge-stat"><span class="n">0.1km</span><span class="l">To Kasar Devi Temple</span></div>
+    <div class="ridge-stat"><span class="n">∞</span><span class="l">Stars on a clear night</span></div>
+  </div>
+
+  <div class="ridge-timeline reveal">
+    <div class="timeline-line" aria-hidden="true"></div>
+    <div class="timeline-entries">
+      <div class="tl-entry">
+        <div class="tl-year">~1890<small>Early Records</small></div>
+        <div class="tl-body">
+          <h4>The temple and the ridge</h4>
+          <p>Kasar Devi temple, dedicated to the goddess Kaseswari, draws pilgrims and wanderers to this edge of the Kumaon hills. The ridge becomes a gathering point before it knows what it's gathering.</p>
+        </div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-year">1920s<small>First wave</small></div>
+        <div class="tl-body">
+          <h4>Swami Vivekananda meditates here</h4>
+          <p>Word spreads through spiritual networks. The silence of the ridge — unusually still, even by mountain standards — is spoken of in places far from here.</p>
+        </div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-year">1930–60<small>Literary era</small></div>
+        <div class="tl-body">
+          <h4>Writers find the ridge</h4>
+          <p>D.H. Lawrence writes here. Alfred Sorensen — Sunyata, the Danish mystic — settles on the ridge for decades. The altitude seems to loosen the internal censor. Manuscripts get finished. Letters get written. People stay longer than intended.</p>
+        </div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-year">1960s–70s<small>The Crank's Ridge era</small></div>
+        <div class="tl-body">
+          <h4>The counterculture discovers it</h4>
+          <p>Cat Stevens. Bob Dylan's entourage. Timothy Leary. Hippies on the overland trail to Kathmandu make a detour and never quite leave. The locals start calling it Crank's Ridge — affectionately, mostly. The ridge absorbs everyone.</p>
+        </div>
+      </div>
+      <div class="tl-entry">
+        <div class="tl-year">Now<small>A mountain house</small></div>
+        <div class="tl-body">
+          <h4>A mountain house opens</h4>
+          <p>The tradition continues. A place that holds the quality of the ridge without performing it. The seekers still come. The conversations still happen. The stars are the same.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ridge-figures reveal" role="list" aria-label="Notable visitors to Crank's Ridge">
+    <div class="figure-card" role="listitem">
+      <div class="figure-name">Swami Vivekananda</div>
+      <div class="figure-desc">Philosopher · Meditator</div>
+    </div>
+    <div class="figure-card" role="listitem">
+      <div class="figure-name">D.H. Lawrence</div>
+      <div class="figure-desc">Writer · Wanderer</div>
+    </div>
+    <div class="figure-card" role="listitem">
+      <div class="figure-name">Sunyata</div>
+      <div class="figure-desc">Mystic · Resident</div>
+    </div>
+    <div class="figure-card" role="listitem">
+      <div class="figure-name">Cat Stevens</div>
+      <div class="figure-desc">Musician · Seeker</div>
+    </div>
+    <div class="figure-card" role="listitem">
+      <div class="figure-name">Timothy Leary</div>
+      <div class="figure-desc">Writer · Traveller</div>
+    </div>
+    <div class="figure-card" role="listitem">
+      <div class="figure-name">Ram Dass</div>
+      <div class="figure-desc">Teacher · Pilgrim</div>
+    </div>
+    <div class="figure-card" role="listitem">
+      <div class="figure-name">You</div>
+      <div class="figure-desc">Next</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY PEOPLE COME ─── -->
+<section id="why" class="section-wrap" aria-labelledby="why-heading">
+  <div class="reveal">
+    <div class="label">Why people come</div>
+    <h2 id="why-heading" class="display-heading">Not for the rooms.<br><em>For this.</em></h2>
+  </div>
+  <div class="why-grid reveal">
+    <div class="why-item">
+      <div class="why-number">01</div>
+      <h3>Silence</h3>
+      <p>The kind that has texture. Pine trees, wind, occasional temple bells in the distance. The rest is yours to fill or not fill.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-number">02</div>
+      <h3>Stars</h3>
+      <p>At 1,645 metres, away from city light, the sky does what it used to do. Bring a blanket to the terrace. Stay until you lose track of time.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-number">03</div>
+      <h3>Conversations</h3>
+      <p>The ridge selects for a particular kind of traveller. Firepit conversations go long. Some last connections begin here over tea and nothing in particular.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-number">04</div>
+      <h3>Slow mornings</h3>
+      <p>Clouds in the valley, Himalayan peaks beyond, tea in hand. There's a version of a morning that this place has perfected. Come for it specifically.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-number">05</div>
+      <h3>Thinking</h3>
+      <p>Writers come here to unstick themselves. Something about the altitude or the distance from everything normal. The ridge is good for the kind of clarity that doesn't happen at sea level.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-number">06</div>
+      <h3>The trails</h3>
+      <p>We know a few that aren't in any guide. Ask at the desk after breakfast. The best ones start before the day heats up and take you somewhere the tourists never reach.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── A DAY ─── -->
+<section id="day" class="section-wrap" aria-labelledby="day-heading">
+  <div class="day-header reveal">
+    <div class="label">A day at Stars & Pines</div>
+    <h2 id="day-heading" class="display-heading">How a good day<br>looks from here.</h2>
+  </div>
+  <div class="day-timeline">
+    <div class="day-entry reveal">
+      <div class="day-time"><span class="t">6:00</span><span class="ampm">Morning</span></div>
+      <div class="day-content">
+        <h4>The cloud sea arrives</h4>
+        <p>The valley below fills with mist. The peaks above catch the first light. This is a specific combination that happens most mornings here, and it is worth waking up for.</p>
+      </div>
+    </div>
+    <div class="day-entry reveal reveal-delay-1">
+      <div class="day-time"><span class="t">8:00</span><span class="ampm">Breakfast</span></div>
+      <div class="day-content">
+        <h4>Tea on the terrace</h4>
+        <p>Garhwali tea, parathas, the newspaper nobody reads. Conversations begin slowly. Someone mentions a trail. Plans are made or unmade. The day hasn't decided yet what it will be.</p>
+      </div>
+    </div>
+    <div class="day-entry reveal reveal-delay-2">
+      <div class="day-time"><span class="t">10:00</span><span class="ampm">Morning</span></div>
+      <div class="day-content">
+        <h4>The temple or the trail</h4>
+        <p>Kasar Devi temple is a ten-minute walk. The trails above the ridge are longer, quieter, and mostly yours. Or you stay and read. Nobody is managing your experience here.</p>
+      </div>
+    </div>
+    <div class="day-entry reveal reveal-delay-1">
+      <div class="day-time"><span class="t">2:00</span><span class="ampm">Afternoon</span></div>
+      <div class="day-content">
+        <h4>The slow middle of the day</h4>
+        <p>Almora town for lunch if you want it. Old Crank's Ridge Café. Or back to the terrace with a book. The pines make good company.</p>
+      </div>
+    </div>
+    <div class="day-entry reveal reveal-delay-2">
+      <div class="day-time"><span class="t">5:00</span><span class="ampm">Evening</span></div>
+      <div class="day-content">
+        <h4>The light changes</h4>
+        <p>Mountain light at dusk is the ridge's most generous hour. The peaks go pink, then orange, then deep. This is when most guests stop pretending they're going to leave tomorrow.</p>
+      </div>
+    </div>
+    <div class="day-entry reveal">
+      <div class="day-time"><span class="t">7:00</span><span class="ampm">Evening</span></div>
+      <div class="day-content">
+        <h4>Fire and conversation</h4>
+        <p>The outdoor firepit. Whoever's staying. Stories from the road, books compared, music someone has on their phone. The evening finds its own shape.</p>
+      </div>
+    </div>
+    <div class="day-entry reveal reveal-delay-1">
+      <div class="day-time"><span class="t">11:00</span><span class="ampm">Night</span></div>
+      <div class="day-content">
+        <h4>The reason you came</h4>
+        <p>Lie on your back on the terrace. No phone. Let your eyes adjust. The Milky Way is not metaphorical from here. The ridge has been doing this for everyone who came before you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── THE HOUSE ─── -->
+<section id="house" class="section-wrap" aria-labelledby="house-heading">
+  <div class="house-layout">
+    <div class="house-text reveal">
+      <div class="label">The house</div>
+      <h2 id="house-heading" class="house-heading">
+        A place built<br>
+        for the ridge,<br>
+        not a <em>product.</em>
+      </h2>
+      <p class="house-body">
+        Stars & Pines started the way good mountain places do — from knowing what this ridge feels like and wanting others to feel it too. Not from hospitality training. From the ridge itself. From the particular quality of silence at 1,645 metres that makes you want to build something honest around it.
+      </p>
+      <p class="house-body">
+        The house is honest. Not designed to impress. Designed to get out of the way of the mountains, and to make sure that when you wake up, the peaks are the first thing you see and the warmth of the space is the second.
+      </p>
+      <p class="house-body">
+        Your name is known before check-in. A trail you won't find on Google is waiting to be recommended. And when you ask about extending your stay — and you will ask — the availability has already been checked.
+      </p>
+      <div class="house-sig">
+        <p>This is not a hostel. This is a mountain house with beds.</p>
+        <span>Stars & Pines, Crank's Ridge</span>
+      </div>
+    </div>
+    <div class="house-visual reveal reveal-delay-1" aria-hidden="true">
+      <div class="hv-block">
+        <div class="hv-ph hv-ph-1"><span>Stars & Pines exterior</span></div>
+      </div>
+      <div class="hv-block">
+        <div class="hv-ph hv-ph-2"><span>Common area</span></div>
+      </div>
+      <div class="hv-block">
+        <div class="hv-ph hv-ph-3"><span>The terrace</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ROOMS ─── -->
+<section id="rooms" class="section-wrap" aria-labelledby="rooms-heading">
+  <div class="rooms-intro reveal">
+    <div>
+      <div class="label">Where you rest</div>
+      <h2 id="rooms-heading" class="display-heading">Three ways<br>to sleep well.</h2>
+    </div>
+    <p class="body-text">Rooms come after everything else here. They're the least important part. But they're thought about. Every bed faces the right direction. Starting from ₹2,640 / night.</p>
+  </div>
+
+  <div class="rooms-stack">
+    <div class="room-row reveal">
+      <div class="room-meta">
+        <div>
+          <div class="room-type">Dormitory</div>
+          <div class="room-name">Six-Bed Dorm</div>
+          <div class="room-tagline">For solo travellers who want company. Communal sleep, private mind. The ridge has always been this way.</div>
+        </div>
+        <div class="room-price">₹2,640 <small>/ night / bed</small></div>
+      </div>
+      <div class="room-details">
+        <div class="room-detail">Six beds, private lockers</div>
+        <div class="room-detail">Hot showers</div>
+        <div class="room-detail">Common room access</div>
+        <div class="room-detail">Mountain-facing windows</div>
+        <div class="room-detail">Bedside charging</div>
+        <div class="room-detail">Linen included</div>
+      </div>
+    </div>
+    <div class="room-row reveal reveal-delay-1">
+      <div class="room-meta">
+        <div>
+          <div class="room-type">Double Room</div>
+          <div class="room-name">Mountain Double</div>
+          <div class="room-tagline">King bed, balcony, fireplace. The view is the room's best feature and the room knows it.</div>
+        </div>
+        <div class="room-price">₹4,200 <small>/ night</small></div>
+      </div>
+      <div class="room-details">
+        <div class="room-detail">King bed</div>
+        <div class="room-detail">Private balcony</div>
+        <div class="room-detail">Fireplace</div>
+        <div class="room-detail">Mountain views</div>
+        <div class="room-detail">Private bathroom</div>
+        <div class="room-detail">In-room tea service</div>
+      </div>
+    </div>
+    <div class="room-row reveal reveal-delay-2">
+      <div class="room-meta">
+        <div>
+          <div class="room-type">Deluxe</div>
+          <div class="room-name">Deluxe Twin</div>
+          <div class="room-tagline">Two kings, garden view, everything slightly more of everything. For those who want the ridge at full volume.</div>
+        </div>
+        <div class="room-price">₹5,800 <small>/ night</small></div>
+      </div>
+      <div class="room-details">
+        <div class="room-detail">Two king beds</div>
+        <div class="room-detail">Garden view</div>
+        <div class="room-detail">Private bath</div>
+        <div class="room-detail">Extra floor space</div>
+        <div class="room-detail">Writing desk</div>
+        <div class="room-detail">Priority terrace access</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── THE GUIDE ─── -->
+<section id="guide" aria-labelledby="guide-heading">
+  <div class="section-wrap-lg">
+    <div class="guide-header-row reveal">
+      <div>
+        <div class="label">The Kasar Guide</div>
+        <h2 id="guide-heading" class="guide-heading">What we'd<br>tell you<br>over breakfast.</h2>
+      </div>
+      <p class="guide-sub">Not the tourist circuit. The actual ridge. Places you'll return to every morning, conversations you'll remember a year from now.</p>
+    </div>
+
+    <div class="guide-grid reveal">
+      <div class="guide-item">
+        <div class="guide-cat">Temple</div>
+        <h4>Kasar Devi Temple</h4>
+        <p>Go early. Before 7AM before the day crowd. The silence in the compound at dawn is a different kind of silence to anywhere else on the ridge.</p>
+        <span class="guide-dist">0.1 km from the house</span>
+      </div>
+      <div class="guide-item">
+        <div class="guide-cat">Trail</div>
+        <h4>The Ridge Walk (unmarked)</h4>
+        <p>Ask at the desk for the route. It's not on Maps. Takes about two hours. Ends somewhere with a view that'll make you want to stay another night.</p>
+        <span class="guide-dist">Starts at the gate</span>
+      </div>
+      <div class="guide-item">
+        <div class="guide-cat">Cafe</div>
+        <h4>Crank's Ridge Café</h4>
+        <p>The one that's been here forever. Order the momos. Stay for the chai. The owner knows everyone who's passed through this ridge in thirty years.</p>
+        <span class="guide-dist">5 min walk</span>
+      </div>
+      <div class="guide-item">
+        <div class="guide-cat">Sunrise</div>
+        <h4>The Terrace, 5:45 AM</h4>
+        <p>Don't sleep through it. On clear days — October through March especially — the Nanda Devi range appears in full. It doesn't happen in cities. Only at altitude.</p>
+        <span class="guide-dist">In the house</span>
+      </div>
+      <div class="guide-item">
+        <div class="guide-cat">Town</div>
+        <h4>Almora Bazaar</h4>
+        <p>Old hill-town bazaar with copper shops, wool sellers, and a sweet shop that makes bal mithai better than anywhere else in Kumaon. Worth the 5km drive.</p>
+        <span class="guide-dist">5 km from the ridge</span>
+      </div>
+      <div class="guide-item">
+        <div class="guide-cat">Temple</div>
+        <h4>Chitai Temple</h4>
+        <p>Thousands of bells and handwritten wishes for Gollu Devata — the local deity of justice. Strange, beautiful, and deeply Kumaoni. An essential hour.</p>
+        <span class="guide-dist">5 km</span>
+      </div>
+      <div class="guide-item">
+        <div class="guide-cat">Bookshelf</div>
+        <h4>Reading the ridge</h4>
+        <p>Ask for our ridge reading list at the desk. Includes Sunyata's memoirs, a Kumaon history, and a few novels by people who passed through here. Copies in the common room.</p>
+        <span class="guide-dist">At the house</span>
+      </div>
+      <div class="guide-item">
+        <div class="guide-cat">Day trip</div>
+        <h4>Binsar Wildlife Sanctuary</h4>
+        <p>An hour by road. Dense oak forest, a zero-light zone, and panoramic Himalayan views from the rest house at the top. A full day worth taking.</p>
+        <span class="guide-dist">35 km</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── REVIEWS ─── -->
+<section id="reviews" class="section-wrap" aria-labelledby="reviews-heading">
+  <div class="review-header-row reveal">
+    <div>
+      <div class="label">What guests say</div>
+      <h2 id="reviews-heading" class="display-heading">Honest accounts<br>from the ridge.</h2>
+    </div>
+    <div class="review-rating">
+      <span class="big" aria-label="4.4 out of 5 stars">4.4</span>
+      <span class="context">149 Google Reviews</span>
+    </div>
+  </div>
+
+  <div class="reviews-editorial reveal">
+    <div class="review-featured">
+      <div class="review-source">Solo Traveller · Delhi · 5 stars</div>
+      <blockquote class="pull">
+        "The staff made it feel like we were guests at a home, not a hotel. Their warmth sets the tone for everything here. I came for two nights and stayed for six. The ridge did the rest."
+      </blockquote>
+      <div class="review-author">— Priya K., Delhi</div>
+    </div>
+    <div class="review-secondary">
+      <div>
+        <div class="review-source">Couple · Bengaluru · 5 stars</div>
+        <blockquote class="sm">
+          "Woke up to mountains and had breakfast on the terrace. Some mornings just stay with you. This was one of them."
+        </blockquote>
+        <div class="review-author">— Arjun & Meena, Bengaluru</div>
+      </div>
+    </div>
+    <div class="review-secondary">
+      <div>
+        <div class="review-source">Group Stay · Mumbai · 4 stars</div>
+        <blockquote class="sm">
+          "The ridge itself is magnetic. The house is quiet enough to hear the pines, alive enough to find good company."
+        </blockquote>
+        <div class="review-author">— Group of five, Mumbai</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BOOK YOUR STAY ─── -->
+<section id="book" aria-labelledby="book-heading">
+  <div class="book-inner">
+    <div class="book-text reveal">
+      <div class="label">Begin your stay</div>
+      <h2 id="book-heading" class="book-heading">
+        When you're<br>
+        ready for<br>
+        <em>the ridge.</em>
+      </h2>
+      <p class="book-sub">
+        Reach out directly — to the property, through whatever channel feels right. Or fill in your dates below and it goes straight to WhatsApp. The ridge has always worked this way.
+      </p>
+      <div class="book-channels">
+        <a href="https://wa.me/919999999999" target="_blank" rel="noopener" class="book-channel"
+           onclick="track('whatsapp_click')">
+          <span class="bc-icon">WhatsApp</span>
+          <div>
+            <span class="bc-name">Chat on WhatsApp</span>
+            <span class="bc-desc">Quickest way. He's usually on the ridge.</span>
+          </div>
+          <span class="bc-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="https://www.instagram.com/starsandpiness" target="_blank" rel="noopener" class="book-channel"
+           onclick="track('instagram_click')">
+          <span class="bc-icon">Instagram</span>
+          <div>
+            <span class="bc-name">@starsandpiness</span>
+            <span class="bc-desc">DMs open. Also for what the ridge looks like right now.</span>
+          </div>
+          <span class="bc-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="https://www.booking.com" target="_blank" rel="noopener" class="book-channel"
+           onclick="track('booking_click')">
+          <span class="bc-icon">Booking.com</span>
+          <div>
+            <span class="bc-name">Online Availability</span>
+            <span class="bc-desc">Real-time calendar. Instant confirmation.</span>
+          </div>
+          <span class="bc-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="mailto:stay@starsandpines.in" class="book-channel"
+           onclick="track('email_click')">
+          <span class="bc-icon">Email</span>
+          <div>
+            <span class="bc-name">stay@starsandpines.in</span>
+            <span class="bc-desc">For longer inquiries, group stays, extended retreats.</span>
+          </div>
+          <span class="bc-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <!-- ─── WHATSAPP BOOKING FORM ─── -->
+      <div class="wa-booking-wrap">
+        <div class="wa-booking-label">Quick WhatsApp enquiry</div>
+        <p class="wa-booking-intro">Tell us your dates and we'll take it from there. We usually respond within the hour.</p>
+        <div class="wa-form" role="form" aria-label="WhatsApp booking enquiry">
+          <div class="wa-row">
+            <div class="wa-field">
+              <label for="wa-checkin">Check-in</label>
+              <input type="date" id="wa-checkin" autocomplete="off" />
+            </div>
+            <div class="wa-field">
+              <label for="wa-checkout">Check-out</label>
+              <input type="date" id="wa-checkout" autocomplete="off" />
+            </div>
+          </div>
+          <div class="wa-row">
+            <div class="wa-field">
+              <label for="wa-room">Room type</label>
+              <select id="wa-room">
+                <option value="">— select —</option>
+                <option value="Six-Bed Dormitory">Six-Bed Dormitory</option>
+                <option value="Mountain Double">Mountain Double</option>
+                <option value="Deluxe Twin">Deluxe Twin</option>
+                <option value="Not sure yet">Not sure yet</option>
+              </select>
+            </div>
+            <div class="wa-field">
+              <label for="wa-guests">No. of guests</label>
+              <select id="wa-guests">
+                <option value="1">1 guest</option>
+                <option value="2" selected>2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+                <option value="5+">5 or more</option>
+              </select>
+            </div>
+          </div>
+          <div class="wa-field">
+            <label for="wa-name">Your name</label>
+            <input type="text" id="wa-name" placeholder="Your name" autocomplete="name" />
+          </div>
+          <div class="wa-field">
+            <label for="wa-note">Anything else? (optional)</label>
+            <textarea id="wa-note" placeholder="Dietary needs, special occasion, just need quiet…"></textarea>
+          </div>
+
+          <div class="wa-preview" id="wa-preview" aria-live="polite">
+            <div class="wa-preview-label">Message preview</div>
+            <span id="wa-preview-text"></span>
+          </div>
+
+          <button class="wa-send-btn" id="wa-send-btn" type="button" onclick="sendWhatsApp()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.849L.054 23.454a.5.5 0 00.606.65l5.803-1.527A11.942 11.942 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.722 9.722 0 01-4.98-1.367l-.357-.213-3.702.973.989-3.614-.233-.373A9.706 9.706 0 012.25 12c0-5.376 4.374-9.75 9.75-9.75S21.75 6.624 21.75 12 17.376 21.75 12 21.75z"/>
+            </svg>
+            Send to WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="book-note reveal reveal-delay-1">
+      <div class="book-note-label">Getting here</div>
+      <p>"The journey is half of it. The last stretch, from the plains into the Kumaon hills — that's where the altitude starts to work on you."</p>
+      <div class="details">
+        <strong>By air:</strong> Pantnagar Airport, 115 km. Taxi up through the hills — 3.5 hrs.<br><br>
+        <strong>By rail:</strong> Kathgodam or Haldwani. Shatabdi from Delhi in ~5.5 hrs. Taxi from station, 3–3.5 hrs.<br><br>
+        <strong>By road:</strong> Delhi to Almora via NH9, ~8h 45min. Long. Beautiful once you leave the plains.<br><br>
+        <strong>Address:</strong> Kasar Devi Road, Almora, Uttarakhand — 263601
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer role="contentinfo">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-text">Stars & Pines</div>
+      <p>A mountain house on Crank's Ridge, Almora. Open to those who find it — and those who don't, yet. Kasar Devi, Uttarakhand.</p>
+    </div>
+    <div class="footer-col">
+      <h5>The Ridge</h5>
+      <ul>
+        <li><a href="#ridge">History</a></li>
+        <li><a href="#ridge">Who came here</a></li>
+        <li><a href="#why">Why people come</a></li>
+        <li><a href="#day">A day here</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Stay</h5>
+      <ul>
+        <li><a href="#rooms">Six-Bed Dormitory</a></li>
+        <li><a href="#rooms">Mountain Double</a></li>
+        <li><a href="#rooms">Deluxe Twin</a></li>
+        <li><a href="#book">Book your stay</a></li>
+        <li><a href="guest-portal.html">Guest portal</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Find us</h5>
+      <ul>
+        <li><a href="https://www.instagram.com/starsandpiness" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://wa.me/919999999999" onclick="track('footer_whatsapp_click')">WhatsApp</a></li>
+        <li><a href="mailto:stay@starsandpines.in">Email</a></li>
+        <li><a href="#guide">The Kasar Guide</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Stars & Pines · Crank's Ridge · Almora · Uttarakhand</p>
+    <a href="https://www.instagram.com/starsandpiness" target="_blank" rel="noopener">@starsandpiness</a>
+  </div>
+</footer>
+
+<!-- ─── APP CONFIG ─── -->
+<script>
+const APP_CONFIG = {
+  whatsappNumber: 'REPLACE_ME',
+  firebaseConfig: {
+    apiKey: 'AIzaSyAJtVjg6zv1KK2puu57NICrW8mU7OTybUA',
+    authDomain: 'stars-and-pines-ridge.firebaseapp.com',
+    databaseURL: 'https://stars-and-pines-ridge-default-rtdb.asia-southeast1.firebasedatabase.app',
+    projectId: 'stars-and-pines-ridge',
+    storageBucket: 'stars-and-pines-ridge.firebasestorage.app',
+    messagingSenderId: '8285256236',
+    appId: '1:8285256236:web:e03af2dff72e80eed26f89'
+  }
+};
+</script>
+
+<!-- Firebase SDK (deferred — not needed for first paint) -->
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script defer>
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof firebase !== 'undefined') {
+    firebase.initializeApp(APP_CONFIG.firebaseConfig);
+  }
+  // Update WhatsApp links from config
+  if (APP_CONFIG.whatsappNumber !== 'REPLACE_ME') {
+    document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+      a.href = a.href.replace('919999999999', APP_CONFIG.whatsappNumber);
+    });
+  }
+});
+</script>
+
+<script>
+// ─── PHASE 3: CANVAS STARFIELD (replaces 50 DOM nodes + CSS animations)
+// Single canvas, requestAnimationFrame — less layout, less memory
+(function initStarfield() {
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  // Star data — generated once, not per-frame DOM manipulation
+  const STAR_COUNT = 50;
+  let stars = [];
+  let raf, W, H;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push({
+        x:     Math.random() * W,
+        y:     Math.random() * H * 0.65,
+        r:     Math.random() < 0.7 ? 0.5 : Math.random() < 0.85 ? 0.75 : 1,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.4 + Math.random() * 0.8,
+        minOp: 0.2 + Math.random() * 0.3,
+      });
+    }
+  }
+
+  let lastT = 0;
+  function draw(t) {
+    raf = requestAnimationFrame(draw);
+    const dt = (t - lastT) / 1000;
+    lastT = t;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#ffffff';
+
+    for (let s of stars) {
+      s.phase += dt * s.speed;
+      const op = s.minOp + (1 - s.minOp) * (0.5 + 0.5 * Math.sin(s.phase));
+      ctx.globalAlpha = op;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // Respect prefers-reduced-motion
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  resize();
+  initStars();
+
+  if (prefersReduced) {
+    // Draw static stars only — no animation
+    for (let s of stars) {
+      ctx.globalAlpha = s.minOp + 0.2;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  } else {
+    raf = requestAnimationFrame(draw);
+  }
+
+  // PHASE 2: IntersectionObserver to pause canvas when hero not visible
+  // Saves CPU when user scrolls down
+  const heroEl = document.getElementById('hero');
+  if (heroEl && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) {
+          cancelAnimationFrame(raf);
+        } else if (!prefersReduced) {
+          lastT = 0;
+          raf = requestAnimationFrame(draw);
+        }
+      });
+    }, { threshold: 0.01 }).observe(heroEl);
+  }
+
+  // Debounced resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { resize(); initStars(); }, 200);
+  }, { passive: true });
+})();
+
+// ─── NAV SCROLL (PHASE 2: throttled via rAF — no scroll listener polling)
+const nav = document.getElementById('nav');
+let scrollTicking = false;
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) {
+    requestAnimationFrame(() => {
+      const scrolled = window.scrollY > 60;
+      nav.classList.toggle('scrolled', scrolled);
+      scrollTicking = false;
+    });
+    scrollTicking = true;
+  }
+}, { passive: true });
+
+// ─── STICKY CTA (appears after hero)
+const stickyCta = document.getElementById('sticky-cta');
+const heroSection = document.getElementById('hero');
+if (stickyCta && heroSection && 'IntersectionObserver' in window) {
+  // PHASE 2: IntersectionObserver instead of scroll listener
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      stickyCta.classList.toggle('visible', !e.isIntersecting);
+    });
+  }, { threshold: 0.3 }).observe(heroSection);
+}
+
+// ─── SCROLL REVEAL (PHASE 2: IntersectionObserver — no scroll listeners)
+const reveals = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revealObs.unobserve(e.target); // fire once
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(r => revealObs.observe(r));
+} else {
+  // Fallback: show all for old browsers
+  reveals.forEach(r => r.classList.add('in'));
+}
+
+// ─── MOBILE NAV
+const hamburger = document.getElementById('hamburger');
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    if (!links) return;
+    const open = links.style.display === 'flex';
+    const next = !open;
+    hamburger.setAttribute('aria-expanded', next);
+    links.style.cssText = open ? '' :
+      'display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,18,16,0.96);align-items:center;justify-content:center;gap:32px;z-index:790;';
+    links.querySelectorAll('a').forEach(a => {
+      a.style.cssText = open ? '' : 'font-size:1rem;color:rgba(250,247,242,0.7);';
+    });
+  });
+}
+
+// ─── WHATSAPP BOOKING FORM
+function fmtDate(val) {
+  if (!val) return null;
+  const d = new Date(val);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function buildMessage() {
+  const checkin  = document.getElementById('wa-checkin')?.value;
+  const checkout = document.getElementById('wa-checkout')?.value;
+  const room     = document.getElementById('wa-room')?.value;
+  const guests   = document.getElementById('wa-guests')?.value;
+  const name     = document.getElementById('wa-name')?.value.trim();
+  const note     = document.getElementById('wa-note')?.value.trim();
+
+  let msg = `Hi — I'd like to enquire about staying at Stars & Pines.\n\n`;
+  if (name)     msg += `Name: ${name}\n`;
+  if (checkin)  msg += `Check-in: ${fmtDate(checkin)}\n`;
+  if (checkout) msg += `Check-out: ${fmtDate(checkout)}\n`;
+  if (room)     msg += `Room: ${room}\n`;
+  if (guests)   msg += `Guests: ${guests}\n`;
+  if (note)     msg += `\n${note}`;
+  msg += `\n\nLooking forward to hearing from you.`;
+  return msg;
+}
+
+['wa-checkin','wa-checkout','wa-room','wa-guests','wa-name','wa-note'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', () => {
+    const preview = document.getElementById('wa-preview');
+    const text = document.getElementById('wa-preview-text');
+    if (text) text.textContent = buildMessage();
+    if (preview) preview.classList.add('visible');
+  });
+});
+
+const today = new Date().toISOString().split('T')[0];
+const ciEl = document.getElementById('wa-checkin');
+const coEl = document.getElementById('wa-checkout');
+if (ciEl) ciEl.min = today;
+if (coEl) coEl.min = today;
+if (ciEl) ciEl.addEventListener('change', () => {
+  if (coEl && ciEl.value) coEl.min = ciEl.value;
+});
+
+function sendWhatsApp() {
+  track('whatsapp_form_send');
+  const msg = buildMessage();
+  const phone = APP_CONFIG.whatsappNumber;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ─── CONVERSION TRACKING (PHASE CONVERSION)
+// Lightweight — no external dependency. Sends to Firebase when available.
+const _conversionLog = [];
+
+function track(event, data = {}) {
+  const entry = { event, ts: Date.now(), ...data };
+  _conversionLog.push(entry);
+
+  // Log to console in dev
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    console.log('[track]', entry);
+  }
+
+  // Send to Firebase (when SDK loaded and number configured)
+  try {
+    if (typeof firebase !== 'undefined' && APP_CONFIG.whatsappNumber !== 'REPLACE_ME') {
+      firebase.database().ref('events').push(entry);
+    }
+  } catch(e) { /* Firebase not yet loaded — event already in _conversionLog */ }
+}
+
+// ─── SCROLL DEPTH TRACKING (PHASE CONVERSION)
+// Tracks 25 / 50 / 75 / 100% scroll milestones — fires once each
+const _depthFired = new Set();
+window.addEventListener('scroll', () => {
+  if (!scrollTicking) { // reuse existing rAF throttle
+    requestAnimationFrame(() => {
+      const pct = Math.round(
+        (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+      );
+      [25, 50, 75, 100].forEach(m => {
+        if (pct >= m && !_depthFired.has(m)) {
+          _depthFired.add(m);
+          track('scroll_depth', { pct: m });
+        }
+      });
+    });
+  }
+}, { passive: true });
+
+// ─── SECTION VISIBILITY (PHASE CONVERSION)
+// Tells you which sections actually get seen — critical for knowing what converts
+const _sectionsSeen = new Set();
+const sectionIds = ['ridge','why','day','house','rooms','guide','reviews','book'];
+sectionIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (!el || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !_sectionsSeen.has(id)) {
+        _sectionsSeen.add(id);
+        track('section_view', { section: id });
+      }
+    });
+  }, { threshold: 0.3 }).observe(el);
+});
+</script>
+
+</body>
+</html>

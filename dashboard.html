@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stars & Pines — Operations Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&family=DM+Mono&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --night:#131a12;--pine:#1f2f1d;--pine-light:#2a3f28;
+  --gold:#d4b880;--cream:#f6f1ea;--mist:#e8e2d8;
+  --alert:#d4885a;--green:#4a8a62;--red:#c45a5a;
+  --radius:12px;--sidebar-w:220px;
+}
+html{font-size:15px}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--night);color:var(--cream);min-height:100vh;display:flex}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600}
+.mono{font-family:'DM Mono',monospace}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select{font-family:inherit;font-size:14px;background:var(--pine-light);color:var(--cream);border:1px solid rgba(212,184,128,0.2);border-radius:8px;padding:10px 14px;outline:none}
+input:focus,select:focus{border-color:var(--gold)}
+label{font-size:12px;color:var(--mist);margin-bottom:4px;display:block}
+
+/* ─── Sidebar ─── */
+.sidebar{width:var(--sidebar-w);background:var(--pine);border-right:1px solid rgba(212,184,128,0.1);position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar-brand{padding:20px 16px;border-bottom:1px solid rgba(212,184,128,0.1)}
+.sidebar-brand h2{font-size:16px;color:var(--gold)}
+.sidebar-brand small{font-size:11px;color:var(--mist)}
+.sidebar-nav{flex:1;padding:12px 0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;color:var(--mist);font-size:13px;cursor:pointer;transition:all 0.2s;border-left:3px solid transparent}
+.nav-item:hover{background:var(--pine-light);color:var(--cream)}
+.nav-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(212,184,128,0.05)}
+.nav-item .nav-icon{font-size:16px;width:20px;text-align:center}
+.nav-item .nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:10px}
+.sidebar-footer{padding:16px;border-top:1px solid rgba(212,184,128,0.1);font-size:11px;color:var(--mist)}
+
+/* ─── Main Content ─── */
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:50;background:var(--night);border-bottom:1px solid rgba(212,184,128,0.1);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px)}
+.topbar-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold)}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-clock{font-family:'DM Mono',monospace;font-size:14px;color:var(--mist)}
+.topbar-sync{display:flex;align-items:center;gap:6px;font-size:12px;padding:4px 12px;border-radius:20px;background:var(--pine)}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.sync-dot.offline{background:var(--red)}
+.sync-dot.syncing{background:var(--gold);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.content{padding:24px}
+.page{display:none}
+.page.active{display:block}
+
+/* ─── Cards ─── */
+.card{background:var(--pine);border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid rgba(212,184,128,0.08)}
+.card-title{font-size:15px;font-weight:600;color:var(--cream);margin-bottom:8px}
+.card-body{font-size:13px;color:var(--mist);line-height:1.5}
+.card-meta{font-size:11px;color:var(--mist);margin-top:8px}
+
+/* ─── Heartbeat Bar ─── */
+.heartbeat{display:flex;gap:12px;overflow-x:auto;padding:16px 0;margin-bottom:20px}
+.heartbeat::-webkit-scrollbar{display:none}
+.hb-item{flex:0 0 auto;background:var(--pine);border-radius:var(--radius);padding:12px 16px;text-align:center;min-width:100px}
+.hb-value{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold)}
+.hb-label{font-size:11px;color:var(--mist);margin-top:2px}
+
+/* ─── Stats Grid ─── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--pine);border-radius:var(--radius);padding:20px;text-align:center}
+.stat-value{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);margin-bottom:4px}
+.stat-label{font-size:12px;color:var(--mist)}
+
+/* ─── Tables ─── */
+.table-wrap{overflow-x:auto;margin-bottom:16px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:10px 12px;font-size:12px;color:var(--mist);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid rgba(212,184,128,0.1)}
+td{padding:10px 12px;font-size:13px;border-bottom:1px solid rgba(212,184,128,0.05)}
+tr:hover td{background:rgba(212,184,128,0.03)}
+
+/* ─── Badges ─── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-paid{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-pending{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-overdue{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-open{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-resolved{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-acknowledged{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-checked-in{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-checked-out{background:rgba(136,136,136,0.2);color:#888}
+.badge-awaiting{background:rgba(212,136,90,0.2);color:var(--alert)}
+
+/* ─── Buttons ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:600;transition:all 0.2s;min-height:38px}
+.btn-primary{background:var(--gold);color:var(--night)}
+.btn-secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-sm{padding:6px 12px;font-size:11px;min-height:30px}
+
+/* ─── Activity Feed ─── */
+.feed-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(212,184,128,0.05)}
+.feed-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:6px;flex-shrink:0}
+.feed-text{font-size:13px;color:var(--cream)}
+.feed-time{font-size:11px;color:var(--mist);margin-top:2px}
+
+/* ─── Section Headers ─── */
+.section-header{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:20px 0 12px;font-weight:600}
+
+/* ─── Empty State ─── */
+.empty-state{text-align:center;padding:32px 16px;color:var(--mist)}
+.empty-state p{font-size:13px}
+
+/* ─── Responsive ─── */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h2>Stars & Pines</h2>
+    <small>Operations Dashboard</small>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active" onclick="showPage('overview')" data-page="overview">
+      <span class="nav-icon">📊</span>Overview
+    </div>
+    <div class="nav-item" onclick="showPage('arrivals')" data-page="arrivals">
+      <span class="nav-icon">📥</span>Arrivals
+    </div>
+    <div class="nav-item" onclick="showPage('inhouse')" data-page="inhouse">
+      <span class="nav-icon">🏠</span>In-House
+    </div>
+    <div class="nav-item" onclick="showPage('departures')" data-page="departures">
+      <span class="nav-icon">📤</span>Departures
+    </div>
+    <div class="nav-item" onclick="showPage('outstanding')" data-page="outstanding">
+      <span class="nav-icon">💰</span>Outstanding
+      <span class="nav-badge" id="nav-outstanding-badge" style="display:none">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('grievances')" data-page="grievances">
+      <span class="nav-icon">⚠</span>Grievances
+      <span class="nav-badge" id="nav-grievance-badge" style="display:none">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('services')" data-page="services">
+      <span class="nav-icon">🛎</span>Service Requests
+    </div>
+    <div class="nav-item" onclick="showPage('activity')" data-page="activity">
+      <span class="nav-icon">📜</span>Activity Feed
+    </div>
+    <div class="nav-item" onclick="showPage('financial')" data-page="financial">
+      <span class="nav-icon">📈</span>Financial
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    Stars & Pines · v2.0<br>
+    Local-first · Offline-capable
+  </div>
+</aside>
+
+<!-- ─── Main ─── -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">Overview</div>
+    <div class="topbar-right">
+      <div class="topbar-sync">
+        <span class="sync-dot" id="sync-dot"></span>
+        <span id="sync-label">Synced</span>
+      </div>
+      <div class="topbar-clock" id="clock"></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- PAGE: Overview -->
+    <div class="page active" id="page-overview">
+      <div class="heartbeat" id="heartbeat-bar"></div>
+      <div class="stats-grid" id="overview-stats"></div>
+      <div class="section-header">Live Activity Feed</div>
+      <div class="card" id="live-feed"></div>
+      <div class="section-header">Open Grievances</div>
+      <div id="overview-grievances"></div>
+    </div>
+
+    <!-- PAGE: Arrivals -->
+    <div class="page" id="page-arrivals">
+      <div class="section-header">Today's Arrivals</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Guest</th><th>Room</th><th>Check-In</th><th>Phone</th><th>Deposit</th><th>Code</th></tr></thead>
+          <tbody id="arrivals-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE: In-House -->
+    <div class="page" id="page-inhouse">
+      <div class="section-header">Currently In-House</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Guest</th><th>Room</th><th>Check-In</th><th>Check-Out</th><th>Outstanding</th><th>Status</th></tr></thead>
+          <tbody id="inhouse-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE: Departures -->
+    <div class="page" id="page-departures">
+      <div class="section-header">Today's Departures</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Guest</th><th>Room</th><th>Check-Out</th><th>Outstanding</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="departures-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE: Outstanding -->
+    <div class="page" id="page-outstanding">
+      <div class="stats-grid" id="outstanding-stats"></div>
+      <div class="section-header">Outstanding Payments</div>
+      <div id="outstanding-list"></div>
+      <div class="section-header">Pay Later Records</div>
+      <div id="paylater-list"></div>
+    </div>
+
+    <!-- PAGE: Grievances -->
+    <div class="page" id="page-grievances">
+      <div class="section-header">All Grievances</div>
+      <div id="all-grievances"></div>
+    </div>
+
+    <!-- PAGE: Service Requests -->
+    <div class="page" id="page-services">
+      <div class="section-header">Nudges / House Requests</div>
+      <div id="nudges-list"></div>
+      <div class="section-header">Experiences</div>
+      <div id="experiences-list"></div>
+      <div class="section-header">Concierge</div>
+      <div id="concierge-list"></div>
+    </div>
+
+    <!-- PAGE: Activity Feed -->
+    <div class="page" id="page-activity">
+      <div class="section-header">Activity Log</div>
+      <div class="card" id="activity-feed"></div>
+    </div>
+
+    <!-- PAGE: Financial -->
+    <div class="page" id="page-financial">
+      <div class="stats-grid" id="financial-stats"></div>
+      <div class="section-header">Recent Payments</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Booking</th><th>Amount</th><th>Method</th><th>Status</th></tr></thead>
+          <tbody id="payments-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SCRIPTS
+═══════════════════════════════════════ -->
+<script src="js/firebase-config.js"></script>
+<script src="js/shared-utils.js"></script>
+<script src="js/local-db.js"></script>
+<script src="js/sync-engine.js"></script>
+<script src="js/payment-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  PaymentEngine.init(SyncEngine, SP_UTILS);
+
+  function init() {
+    SyncEngine.init(LocalDB, SP_DB).then(function() {
+      SyncEngine.onStatusChange(function(status) {
+        var dot = document.getElementById('sync-dot');
+        var label = document.getElementById('sync-label');
+        dot.className = 'sync-dot' + (status === 'offline' ? ' offline' : status === 'syncing' ? ' syncing' : '');
+        label.textContent = status === 'offline' ? 'Offline' : status === 'syncing' ? 'Syncing...' : 'Synced';
+      });
+
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      startListeners();
+      refreshAll();
+    });
+  }
+
+  function updateClock() {
+    var el = document.getElementById('clock');
+    if (el) el.textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // ─── Page Navigation ─────────────────────────────────────────────
+  window.showPage = function(page) {
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    document.getElementById('page-' + page).classList.add('active');
+    var nav = document.querySelector('[data-page="' + page + '"]');
+    if (nav) nav.classList.add('active');
+
+    var titles = { overview:'Overview', arrivals:'Arrivals', inhouse:'In-House Guests', departures:'Departures', outstanding:'Outstanding Payments', grievances:'Grievances', services:'Service Requests', activity:'Activity Feed', financial:'Financial Overview' };
+    document.getElementById('page-title').textContent = titles[page] || page;
+
+    if (page === 'financial') refreshFinancial();
+    if (page === 'outstanding') refreshOutstanding();
+  };
+
+  // ─── Firebase Listeners ──────────────────────────────────────────
+  function startListeners() {
+    SP_DB.ref('orders').on('child_changed', function() { refreshHeartbeat(); });
+    SP_DB.ref('orders').on('child_added', function() { refreshHeartbeat(); });
+    SP_DB.ref('grievances').on('value', function() { refreshGrievances(); updateGrievanceBadge(); });
+    SP_DB.ref('guest_access').on('value', function() { refreshBookings(); refreshHeartbeat(); });
+    SP_DB.ref('nudges').on('value', function() { refreshServices(); });
+    SP_DB.ref('experiences').on('value', function() { refreshServices(); });
+    SP_DB.ref('concierge').on('value', function() { refreshServices(); });
+    SP_DB.ref('activity_feed').on('child_added', function() { refreshActivity(); });
+    SP_DB.ref('payments').on('value', function() { refreshOutstanding(); updateOutstandingBadge(); });
+  }
+
+  function refreshAll() {
+    refreshHeartbeat();
+    refreshBookings();
+    refreshGrievances();
+    refreshServices();
+    refreshActivity();
+    refreshFinancial();
+    refreshOutstanding();
+  }
+
+  // ─── Heartbeat Bar ───────────────────────────────────────────────
+  function refreshHeartbeat() {
+    var todayStart = SP_UTILS.todayStart();
+    var todayEnd = SP_UTILS.todayEnd();
+
+    SP_DB.ref('guest_access').once('value').then(function(guestSnap) {
+      var guests = 0, inHouse = 0;
+      guestSnap.forEach(function(c) {
+        var g = c.val();
+        if (g.active) { guests++; inHouse++; }
+      });
+
+      SP_DB.ref('orders').orderByChild('status').equalTo('pending').once('value').then(function(orderSnap) {
+        var pendingOrders = orderSnap.numChildren();
+
+        SP_DB.ref('grievances').orderByChild('status').equalTo('open').once('value').function(grievSnap) {
+          var openGrievances = grievSnap.numChildren();
+
+          document.getElementById('heartbeat-bar').innerHTML =
+            '<div class="hb-item"><div class="hb-value">' + inHouse + '</div><div class="hb-label">In-House</div></div>' +
+            '<div class="hb-item"><div class="hb-value">' + pendingOrders + '</div><div class="hb-label">Pending Orders</div></div>' +
+            '<div class="hb-item"><div class="hb-value">' + openGrievances + '</div><div class="hb-label">Open Concerns</div></div>' +
+            '<div class="hb-item"><div class="hb-value">38</div><div class="hb-label">Total Beds</div></div>' +
+            '<div class="hb-item"><div class="hb-value">' + (38 - inHouse) + '</div><div class="hb-label">Available</div></div>';
+        }).once('value');
+      });
+    });
+  }
+
+  // Fix: the above has a chaining bug. Let me rewrite refreshHeartbeat properly.
+  function refreshHeartbeat() {
+    var promises = {
+      guests: SP_DB.ref('guest_access').once('value'),
+      orders: SP_DB.ref('orders').orderByChild('status').equalTo('pending').once('value'),
+      grievances: SP_DB.ref('grievances').orderByChild('status').equalTo('open').once('value')
+    };
+
+    Promise.all([promises.guests, promises.orders, promises.grievances]).then(function(results) {
+      var inHouse = 0;
+      results[0].forEach(function(c) { var g = c.val(); if (g.active) inHouse++; });
+      var pendingOrders = results[1].numChildren();
+      var openGrievances = results[2].numChildren();
+
+      document.getElementById('heartbeat-bar').innerHTML =
+        '<div class="hb-item"><div class="hb-value">' + inHouse + '</div><div class="hb-label">In-House</div></div>' +
+        '<div class="hb-item"><div class="hb-value">' + pendingOrders + '</div><div class="hb-label">Pending Orders</div></div>' +
+        '<div class="hb-item"><div class="hb-value">' + openGrievances + '</div><div class="hb-label">Open Concerns</div></div>' +
+        '<div class="hb-item"><div class="hb-value">38</div><div class="hb-label">Total Beds</div></div>' +
+        '<div class="hb-item"><div class="hb-value">' + (38 - inHouse) + '</div><div class="hb-label">Available</div></div>';
+    });
+  }
+
+  // ─── Bookings (Arrivals, In-House, Departures) ───────────────────
+  function refreshBookings() {
+    var todayStart = SP_UTILS.todayStart();
+    var todayEnd = SP_UTILS.todayEnd();
+
+    SP_DB.ref('guest_access').once('value').then(function(snapshot) {
+      var arrivals = [], inhouse = [], departures = [];
+
+      snapshot.forEach(function(child) {
+        var g = child.val();
+        if (!g.active) return;
+        var ci = g.checkin || 0;
+        var co = g.checkout || 0;
+
+        if (ci >= todayStart && ci <= todayEnd) arrivals.push(g);
+        else if (ci < todayStart && co >= todayStart) inhouse.push(g);
+        else if (co >= todayStart && co <= todayEnd) departures.push(g);
+      });
+
+      renderTable('arrivals-table', arrivals.map(function(g) {
+        return '<tr><td>' + esc(g.guestName) + '</td><td>' + esc(g.room) + '</td><td>' + SP_UTILS.formatDate(g.checkin) + '</td><td class="mono">' + esc(g.phone) + '</td><td>' + SP_UTILS.formatCurrency(g.depositAmount || 0) + '</td><td class="mono" style="color:var(--gold)">' + esc(g.token) + '</td></tr>';
+      }));
+
+      renderTable('inhouse-table', inhouse.map(function(g) {
+        return '<tr><td>' + esc(g.guestName) + '</td><td>' + esc(g.room) + '</td><td>' + SP_UTILS.formatDate(g.checkin) + '</td><td>' + SP_UTILS.formatDate(g.checkout) + '</td><td>—</td><td><span class="badge badge-checked-in">In-House</span></td></tr>';
+      }));
+
+      renderTable('departures-table', departures.map(function(g) {
+        return '<tr><td>' + esc(g.guestName) + '</td><td>' + esc(g.room) + '</td><td>' + SP_UTILS.formatDate(g.checkout) + '</td><td>—</td><td><span class="badge badge-awaiting">Pending</span></td><td><button class="btn btn-sm btn-primary" onclick="checkoutGuest(\'' + esc(g.token) + '\')">Check Out</button></td></tr>';
+      }));
+
+      // Overview stats
+      document.getElementById('overview-stats').innerHTML =
+        '<div class="stat-card"><div class="stat-value">' + arrivals.length + '</div><div class="stat-label">Arriving Today</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + inhouse.length + '</div><div class="stat-label">In-House</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + departures.length + '</div><div class="stat-label">Departing Today</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + (38 - inhouse.length) + '</div><div class="stat-label">Beds Available</div></div>';
+    });
+  }
+
+  window.checkoutGuest = function(token) {
+    SP_DB.ref('guest_access/' + token).update({ active: false, status: 'checked-out', checkout: Date.now() }).then(function() {
+      SP_UTILS.showToast('Guest checked out', 1500);
+      refreshBookings();
+    });
+  };
+
+  // ─── Grievances ──────────────────────────────────────────────────
+  function refreshGrievances() {
+    SP_DB.ref('grievances').once('value').then(function(snapshot) {
+      var grievances = [];
+      snapshot.forEach(function(child) {
+        var g = child.val();
+        g.key = child.key;
+        grievances.push(g);
+      });
+
+      grievances.sort(function(a, b) {
+        var sev = { urgent: 0, high: 1, medium: 2, low: 3 };
+        return (sev[a.severity] || 3) - (sev[b.severity] || 3);
+      });
+
+      var open = grievances.filter(function(g) { return g.status === 'open' || g.status === 'acknowledged'; });
+
+      // Overview
+      var overviewDiv = document.getElementById('overview-grievances');
+      if (overviewDiv) {
+        if (open.length === 0) overviewDiv.innerHTML = '<div class="empty-state"><p>No open grievances</p></div>';
+        else overviewDiv.innerHTML = open.slice(0, 5).map(function(g) {
+          return '<div class="card"><div class="card-header"><div class="card-title">' + esc(g.room) + '</div><span class="badge badge-' + (g.severity === 'urgent' ? 'overdue' : g.severity === 'high' ? 'open' : 'pending') + '">' + esc(g.severity) + '</span></div><div class="card-body">' + esc(g.type) + ': ' + esc(g.message) + '</div><div class="card-meta">' + SP_UTILS.formatDateTime(g.createdAt) + '</div></div>';
+        }).join('');
+      }
+
+      // Full list
+      var allDiv = document.getElementById('all-grievances');
+      if (allDiv) {
+        if (grievances.length === 0) allDiv.innerHTML = '<div class="empty-state"><p>No grievances recorded</p></div>';
+        else allDiv.innerHTML = grievances.map(function(g) {
+          var statusBadge = g.status === 'open' ? 'badge-open' : g.status === 'acknowledged' ? 'badge-acknowledged' : 'badge-resolved';
+          return '<div class="card"><div class="card-header"><div class="card-title">' + esc(g.room) + ' — ' + esc(g.guestName) + '</div><span class="badge ' + statusBadge + '">' + esc(g.status) + '</span></div><div class="card-body"><strong>' + esc(g.type) + '</strong> (' + esc(g.severity) + '): ' + esc(g.message) + '</div><div class="card-meta">' + SP_UTILS.formatDateTime(g.createdAt) + (g.resolvedBy ? ' · Resolved by ' + esc(g.resolvedBy) : '') + '</div></div>';
+        }).join('');
+      }
+    });
+  }
+
+  function updateGrievanceBadge() {
+    SP_DB.ref('grievances').orderByChild('status').equalTo('open').once('value').then(function(s) {
+      var badge = document.getElementById('nav-grievance-badge');
+      if (s.numChildren() > 0) { badge.style.display = 'inline'; badge.textContent = s.numChildren(); }
+      else badge.style.display = 'none';
+    });
+  }
+
+  // ─── Service Requests ────────────────────────────────────────────
+  function refreshServices() {
+    SP_DB.ref('nudges').once('value').then(function(s) {
+      var nudges = [];
+      s.forEach(function(c) { var n = c.val(); n.key = c.key; nudges.push(n); });
+      nudges.sort(function(a, b) { return b.createdAt - a.createdAt; });
+      var div = document.getElementById('nudges-list');
+      if (div) {
+        if (nudges.length === 0) div.innerHTML = '<div class="empty-state"><p>No house requests</p></div>';
+        else div.innerHTML = nudges.slice(0, 20).map(function(n) {
+          return '<div class="card"><div class="card-header"><div class="card-title">' + esc(n.room) + '</div><span class="badge badge-' + (n.status === 'resolved' ? 'resolved' : 'pending') + '">' + esc(n.status) + '</span></div><div class="card-body">' + esc(n.type) + ': ' + esc(n.message) + '</div><div class="card-meta">' + SP_UTILS.formatDateTime(n.createdAt) + (n.guestName ? ' · ' + esc(n.guestName) : '') + '</div></div>';
+        }).join('');
+      }
+    });
+
+    SP_DB.ref('experiences').once('value').then(function(s) {
+      var exps = [];
+      s.forEach(function(c) { var e = c.val(); e.key = c.key; exps.push(e); });
+      exps.sort(function(a, b) { return b.createdAt - a.createdAt; });
+      var div = document.getElementById('experiences-list');
+      if (div) {
+        if (exps.length === 0) div.innerHTML = '<div class="empty-state"><p>No experience requests</p></div>';
+        else div.innerHTML = exps.slice(0, 20).map(function(e) {
+          return '<div class="card"><div class="card-header"><div class="card-title">' + esc(e.type) + '</div><span class="badge badge-' + (e.status === 'completed' ? 'resolved' : 'pending') + '">' + esc(e.status) + '</span></div><div class="card-body">' + esc(e.room) + (e.guestName ? ' · ' + esc(e.guestName) : '') + '</div><div class="card-meta">' + SP_UTILS.formatDateTime(e.createdAt) + '</div></div>';
+        }).join('');
+      }
+    });
+
+    SP_DB.ref('concierge').once('value').then(function(s) {
+      var concs = [];
+      s.forEach(function(c) { var c2 = c.val(); c2.key = c.key; concs.push(c2); });
+      concs.sort(function(a, b) { return b.createdAt - a.createdAt; });
+      var div = document.getElementById('concierge-list');
+      if (div) {
+        if (concs.length === 0) div.innerHTML = '<div class="empty-state"><p>No concierge requests</p></div>';
+        else div.innerHTML = concs.slice(0, 20).map(function(c) {
+          return '<div class="card"><div class="card-header"><div class="card-title">' + esc(c.type) + '</div><span class="badge badge-' + (c.status === 'completed' ? 'resolved' : 'pending') + '">' + esc(c.status) + '</span></div><div class="card-body">' + esc(c.room) + (c.guestName ? ' · ' + esc(c.guestName) : '') + '</div><div class="card-meta">' + SP_UTILS.formatDateTime(c.createdAt) + '</div></div>';
+        }).join('');
+      }
+    });
+  }
+
+  // ─── Activity Feed ───────────────────────────────────────────────
+  function refreshActivity() {
+    SP_DB.ref('activity_feed').limitToLast(50).once('value').then(function(snapshot) {
+      var entries = [];
+      snapshot.forEach(function(child) { entries.push(child.val()); });
+      entries.reverse();
+
+      var div = document.getElementById('activity-feed');
+      var liveDiv = document.getElementById('live-feed');
+      var html = entries.slice(0, 30).map(function(e) {
+        return '<div class="feed-item"><div class="feed-dot"></div><div><div class="feed-text"><strong>' + esc(e.type) + '</strong> — ' + esc(e.details) + (e.actor ? ' <span style="color:var(--mist)">by ' + esc(e.actor) + '</span>' : '') + '</div><div class="feed-time">' + SP_UTILS.formatDateTime(e.timestamp) + '</div></div></div>';
+      }).join('');
+
+      if (div) div.innerHTML = html || '<div class="empty-state"><p>No activity yet</p></div>';
+      if (liveDiv) liveDiv.innerHTML = html || '<div class="empty-state"><p>No activity yet</p></div>';
+    });
+  }
+
+  // ─── Financial ───────────────────────────────────────────────────
+  function refreshFinancial() {
+    PaymentEngine.getFinancialSummary().then(function(summary) {
+      document.getElementById('financial-stats').innerHTML =
+        '<div class="stat-card"><div class="stat-value">' + SP_UTILS.formatCurrency(summary.revenueToday) + '</div><div class="stat-label">Revenue Today</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + SP_UTILS.formatCurrency(summary.revenueThisMonth) + '</div><div class="stat-label">Revenue This Month</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + SP_UTILS.formatCurrency(summary.totalOutstanding) + '</div><div class="stat-label">Outstanding Balance</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + SP_UTILS.formatCurrency(summary.totalDeposits) + '</div><div class="stat-label">Booking Deposits</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + SP_UTILS.formatCurrency(summary.totalPaid) + '</div><div class="stat-label">Total Paid</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + summary.pendingPayments + '</div><div class="stat-label">Pending Payments</div></div>';
+    });
+
+    SP_DB.ref('payments').once('value').then(function(snapshot) {
+      var payments = [];
+      snapshot.forEach(function(child) { var p = child.val(); p.key = child.key; payments.push(p); });
+      payments.sort(function(a, b) { return b.createdAt - a.createdAt; });
+
+      renderTable('payments-table', payments.slice(0, 30).map(function(p) {
+        var statusBadge = p.status === 'confirmed' ? 'badge-paid' : 'badge-pending';
+        return '<tr><td>' + SP_UTILS.formatDate(p.createdAt) + '</td><td class="mono">' + esc(p.bookingId) + '</td><td>' + SP_UTILS.formatCurrency(p.amount) + '</td><td>' + esc(p.method) + '</td><td><span class="badge ' + statusBadge + '">' + esc(p.status) + '</span></td></tr>';
+      }));
+    });
+  }
+
+  // ─── Outstanding ─────────────────────────────────────────────────
+  function refreshOutstanding() {
+    PaymentEngine.getFinancialSummary().then(function(summary) {
+      document.getElementById('outstanding-stats').innerHTML =
+        '<div class="stat-card"><div class="stat-value">' + SP_UTILS.formatCurrency(summary.totalOutstanding) + '</div><div class="stat-label">Total Outstanding</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + summary.pendingPayments + '</div><div class="stat-label">Pending Payments</div></div>' +
+        '<div class="stat-card"><div class="stat-value">' + summary.payLaterCount + '</div><div class="stat-label">Pay Later Records</div></div>';
+    });
+
+    PaymentEngine.getOutstandingPayments().then(function(payments) {
+      var div = document.getElementById('outstanding-list');
+      if (!div) return;
+      if (payments.length === 0) { div.innerHTML = '<div class="empty-state"><p>No outstanding payments</p></div>'; return; }
+      div.innerHTML = payments.map(function(p) {
+        return '<div class="card"><div class="card-header"><div class="card-title">' + SP_UTILS.formatCurrency(p.amount) + '</div><span class="badge badge-pending">' + esc(p.method) + '</span></div><div class="card-body">Booking: ' + esc(p.bookingId) + '</div><div class="card-meta">' + SP_UTILS.formatDateTime(p.createdAt) + '</div></div>';
+      }).join('');
+    });
+
+    PaymentEngine.getPayLaterRecords().then(function(payments) {
+      var div = document.getElementById('paylater-list');
+      if (!div) return;
+      if (payments.length === 0) { div.innerHTML = '<div class="empty-state"><p>No pay-later records</p></div>'; return; }
+      div.innerHTML = payments.map(function(p) {
+        return '<div class="card"><div class="card-header"><div class="card-title">' + SP_UTILS.formatCurrency(p.amount) + '</div><span class="badge badge-overdue">Pay Later</span></div><div class="card-body">Booking: ' + esc(p.bookingId) + '</div><div class="card-meta">' + SP_UTILS.formatDateTime(p.createdAt) + '</div></div>';
+      }).join('');
+    });
+  }
+
+  function updateOutstandingBadge() {
+    PaymentEngine.getOutstandingPayments().then(function(p) {
+      var badge = document.getElementById('nav-outstanding-badge');
+      if (p.length > 0) { badge.style.display = 'inline'; badge.textContent = p.length; }
+      else badge.style.display = 'none';
+    });
+  }
+
+  // ─── Helpers ─────────────────────────────────────────────────────
+  function renderTable(id, rows) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="6" style="text-align:center;color:var(--mist);padding:24px">No records</td></tr>';
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ─── Start ───────────────────────────────────────────────────────
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

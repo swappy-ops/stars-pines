@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Stars & Pines — Employee App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --night:#131a12;--pine:#1f2f1d;--pine-light:#2a3f28;
+  --gold:#d4b880;--cream:#f6f1ea;--mist:#e8e2d8;
+  --alert:#d4885a;--green:#4a8a62;--red:#c45a5a;
+  --radius:12px;--radius-lg:16px;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--night);color:var(--cream);min-height:100vh;min-height:100dvh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Playfair Display',serif;font-weight:600}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:inherit;font-size:16px;background:var(--pine-light);color:var(--cream);border:1px solid rgba(212,184,128,0.2);border-radius:8px;padding:12px 16px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+label{font-size:13px;color:var(--mist);margin-bottom:4px;display:block}
+
+/* ─── Lock Screen ─── */
+.lock-screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+.lock-logo{width:80px;height:80px;margin-bottom:24px}
+.lock-brand{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);margin-bottom:4px}
+.lock-sub{font-size:14px;color:var(--mist);margin-bottom:32px}
+.lock-who{font-size:18px;color:var(--cream);margin-bottom:24px}
+.user-pills{display:flex;flex-direction:column;gap:16px;width:100%;max-width:320px}
+.user-pill{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--pine);border-radius:var(--radius-lg);cursor:pointer;transition:all 0.2s;border:1px solid transparent}
+.user-pill:hover,.user-pill:active{border-color:var(--gold);transform:scale(1.02)}
+.user-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--pine-light)}
+.user-pname{font-size:18px;font-weight:600;color:var(--cream)}
+.user-role{font-size:13px;color:var(--mist)}
+.lock-enter{margin-top:32px;font-size:13px;color:var(--mist)}
+
+/* ─── Main App ─── */
+.screen{display:none}
+.screen.active{display:block}
+#screen-main{padding-bottom:80px}
+
+/* ─── Top Bar ─── */
+.topbar{position:sticky;top:0;z-index:100;background:var(--night);border-bottom:1px solid rgba(212,184,128,0.1);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px)}
+.topbar-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold)}
+.topbar-user{font-size:13px;color:var(--mist);display:flex;align-items:center;gap:8px}
+.topbar-user .avatar{width:28px;height:28px;border-radius:50%;background:var(--pine);display:flex;align-items:center;justify-content:center;font-size:14px}
+
+/* ─── Tabs ─── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--night);border-top:1px solid rgba(212,184,128,0.1);display:flex;padding:8px 0 env(safe-area-inset-bottom,8px)}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;background:none;color:var(--mist);font-size:10px;transition:color 0.2s}
+.tab-btn.active{color:var(--gold)}
+.tab-btn .tab-icon{font-size:20px}
+.tab-btn .tab-badge{position:absolute;top:4px;right:50%;transform:translateX(12px);background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px;min-width:16px;text-align:center}
+
+/* ─── Tab Content ─── */
+.tab-content{display:none;padding:16px}
+.tab-content.active{display:block}
+
+/* ─── Cards ─── */
+.card{background:var(--pine);border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid rgba(212,184,128,0.08)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.card-title{font-size:16px;font-weight:600;color:var(--cream)}
+.card-meta{font-size:12px;color:var(--mist)}
+.card-body{font-size:14px;color:var(--mist);line-height:1.5}
+
+/* ─── Status Badges ─── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.badge-paid{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-pending{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-overdue{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-checked-in{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-checked-out{background:rgba(136,136,136,0.2);color:#888}
+.badge-awaiting{background:rgba(212,136,90,0.2);color:var(--alert)}
+.badge-open{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-resolved{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-acknowledged{background:rgba(212,184,128,0.2);color:var(--gold)}
+
+/* ─── Buttons ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s;min-height:44px}
+.btn-primary{background:var(--gold);color:var(--night)}
+.btn-primary:hover{background:#c4a870}
+.btn-secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-sm{padding:8px 14px;font-size:12px;min-height:36px}
+.btn-block{width:100%}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ─── Forms ─── */
+.form-group{margin-bottom:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-actions{display:flex;gap:12px;margin-top:20px}
+
+/* ─── Guest List ─── */
+.guest-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+.guest-item:active{background:var(--pine-light)}
+.guest-avatar{width:40px;height:40px;border-radius:50%;background:var(--pine-light);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.guest-info{flex:1;min-width:0}
+.guest-name{font-size:15px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.guest-detail{font-size:12px;color:var(--mist)}
+.guest-actions{display:flex;gap:6px;flex-shrink:0}
+
+/* ─── Order Queue ─── */
+.order-item{border-left:3px solid var(--gold);padding:12px 16px;background:var(--pine);border-radius:0 var(--radius) var(--radius) 0;margin-bottom:8px}
+.order-item.urgent{border-left-color:var(--red)}
+.order-item.late{border-left-color:var(--alert);background:rgba(212,136,90,0.1)}
+.order-room{font-size:14px;font-weight:600;color:var(--cream)}
+.order-items{font-size:13px;color:var(--mist);margin:4px 0}
+.order-time{font-size:11px;color:var(--mist)}
+.order-actions{display:flex;gap:8px;margin-top:8px}
+
+/* ─── QR Display ─── */
+.qr-container{text-align:center;padding:24px}
+.qr-container canvas{margin:16px auto;border-radius:12px}
+.qr-code-display{font-family:'DM Mono',monospace;font-size:32px;color:var(--gold);letter-spacing:8px;text-align:center;padding:16px;background:var(--pine);border-radius:var(--radius);margin:16px 0}
+
+/* ─── Section Headers ─── */
+.section-header{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:20px 0 12px;font-weight:600}
+
+/* ─── Empty State ─── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--mist)}
+.empty-state .empty-icon{font-size:48px;margin-bottom:12px;opacity:0.5}
+.empty-state p{font-size:14px}
+
+/* ─── Financial Summary ─── */
+.fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.fin-card{background:var(--pine);border-radius:var(--radius);padding:16px;text-align:center}
+.fin-value{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin-bottom:4px}
+.fin-label{font-size:12px;color:var(--mist)}
+
+/* ─── Animations ─── */
+@keyframes spFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes spSlideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+@keyframes spPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.sp-pulse{animation:spPulse 2s infinite}
+
+/* ─── Modal overrides ─── */
+.sp-modal-overlay{animation:spFadeIn 0.2s ease}
+.sp-modal{animation:spSlideUp 0.3s ease}
+
+/* ─── Responsive ─── */
+@media(min-width:480px){
+  .tab-bar{max-width:480px;left:50%;transform:translateX(-50%);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  LOCK SCREEN
+═══════════════════════════════════════ -->
+<div class="screen active" id="screen-lock">
+  <div class="lock-screen">
+    <svg class="lock-logo" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="38" stroke="#d4b880" stroke-width="2"/>
+      <path d="M40 12 L44 28 L60 28 L48 38 L52 54 L40 44 L28 54 L32 38 L20 28 L36 28Z" fill="#d4b880" opacity="0.8"/>
+      <circle cx="40" cy="40" r="4" fill="#131a12"/>
+    </svg>
+    <div class="lock-brand">Stars & Pines</div>
+    <div class="lock-sub">Employee App · Crank's Ridge</div>
+    <div class="lock-who">Who's on today?</div>
+    <div class="user-pills">
+      <div class="user-pill" onclick="loginAs('Mona','🏡','Caretaker','ua-1')">
+        <div class="user-avatar ua-1">🏡</div>
+        <div><div class="user-pname">Mona</div><div class="user-role">Caretaker</div></div>
+      </div>
+      <div class="user-pill" onclick="loginAs('Harsh','🔧','Operations','ua-2')">
+        <div class="user-avatar ua-2">🔧</div>
+        <div><div class="user-pname">Harsh</div><div class="user-role">Operations</div></div>
+      </div>
+    </div>
+    <div class="lock-enter">Tap your name to enter</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  MAIN APP
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-main">
+  <div class="topbar">
+    <div class="topbar-title">Stars & Pines</div>
+    <div class="topbar-user">
+      <span class="avatar" id="topbar-avatar">🏡</span>
+      <span id="topbar-name">Mona</span>
+    </div>
+  </div>
+
+  <!-- TAB: Bookings -->
+  <div class="tab-content active" id="tab-bookings">
+    <div class="btn-group" style="margin-bottom:16px">
+      <button class="btn btn-primary btn-block" onclick="showNewBookingForm()">+ New Booking</button>
+    </div>
+    <div class="section-header">Today's Arrivals</div>
+    <div id="arrivals-list"></div>
+    <div class="section-header">In-House Guests</div>
+    <div id="inhouse-list"></div>
+    <div class="section-header">Today's Departures</div>
+    <div id="departures-list"></div>
+  </div>
+
+  <!-- TAB: Orders -->
+  <div class="tab-content" id="tab-orders">
+    <div class="section-header">Order Queue</div>
+    <div id="order-queue"></div>
+  </div>
+
+  <!-- TAB: Payments -->
+  <div class="tab-content" id="tab-payments">
+    <div class="fin-grid">
+      <div class="fin-card"><div class="fin-value" id="fin-today">₹0</div><div class="fin-label">Revenue Today</div></div>
+      <div class="fin-card"><div class="fin-value" id="fin-month">₹0</div><div class="fin-label">Revenue This Month</div></div>
+      <div class="fin-card"><div class="fin-value" id="fin-outstanding">₹0</div><div class="fin-label">Outstanding</div></div>
+      <div class="fin-card"><div class="fin-value" id="fin-deposits">₹0</div><div class="fin-label">Deposits</div></div>
+    </div>
+    <div class="section-header">Outstanding Payments</div>
+    <div id="outstanding-list"></div>
+    <div class="section-header">Pay Later Records</div>
+    <div id="paylater-list"></div>
+  </div>
+
+  <!-- TAB: Grievances -->
+  <div class="tab-content" id="tab-grievances">
+    <div class="section-header">Open Concerns</div>
+    <div id="grievance-list"></div>
+  </div>
+
+  <!-- TAB: Me -->
+  <div class="tab-content" id="tab-me">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title" id="me-name">Mona</div>
+        <span class="badge badge-checked-in" id="me-role">Caretaker</span>
+      </div>
+      <div class="card-body">Stars & Pines · Crank's Ridge · Kasar Devi</div>
+    </div>
+
+    <div class="section-header">Guest Check-In</div>
+    <div class="card">
+      <div class="form-group">
+        <label>Guest Name</label>
+        <input type="text" id="checkin-name" placeholder="Priya K." />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="checkin-phone" placeholder="+91 98765 43210" />
+        </div>
+        <div class="form-group">
+          <label>Room</label>
+          <select id="checkin-room">
+            <option value="Mountain Double">Mountain Double</option>
+            <option value="Deluxe Twin">Deluxe Twin</option>
+            <option value="Dorm A">Dorm A</option>
+            <option value="Dorm B">Dorm B</option>
+            <option value="Dorm C">Dorm C</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Check-In</label>
+          <input type="date" id="checkin-date" />
+        </div>
+        <div class="form-group">
+          <label>Check-Out</label>
+          <input type="date" id="checkout-date" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Deposit Amount (₹)</label>
+        <input type="number" id="checkin-deposit" placeholder="2000" />
+      </div>
+      <button class="btn btn-primary btn-block" onclick="createBooking()">Create Booking & Generate Code</button>
+    </div>
+
+    <div id="qr-result" style="display:none">
+      <div class="card qr-container">
+        <div class="card-title" style="margin-bottom:8px">Guest Access Code</div>
+        <div class="qr-code-display" id="generated-code"></div>
+        <div id="qr-canvas"></div>
+        <div style="margin-top:16px">
+          <button class="btn btn-primary btn-block" onclick="sendWhatsAppLink()" style="margin-bottom:8px">Send WhatsApp Link</button>
+          <button class="btn btn-secondary btn-block" onclick="resetCheckinForm()">New Check-In</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">Quick Actions</div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="forceSync()" style="flex:1">Sync Now</button>
+      <button class="btn btn-secondary" onclick="logout()" style="flex:1">Logout</button>
+    </div>
+
+    <div style="margin-top:24px;text-align:center;font-size:11px;color:var(--mist)">
+      Ridge Line v2.0 — Stars & Pines Employee App<br>
+      Local-first · Offline-capable
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('bookings')" data-tab="bookings">
+      <span class="tab-icon">📋</span>Bookings
+    </button>
+    <button class="tab-btn" onclick="switchTab('orders')" data-tab="orders">
+      <span class="tab-icon">🍽</span>Orders
+      <span class="tab-badge" id="order-badge" style="display:none">0</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('payments')" data-tab="payments">
+      <span class="tab-icon">💰</span>Payments
+    </button>
+    <button class="tab-btn" onclick="switchTab('grievances')" data-tab="grievances">
+      <span class="tab-icon">⚠</span>Concerns
+      <span class="tab-badge" id="grievance-badge" style="display:none">0</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('me')" data-tab="me">
+      <span class="tab-icon">👤</span>Me
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  SCRIPTS
+═══════════════════════════════════════ -->
+<script src="js/firebase-config.js"></script>
+<script src="js/shared-utils.js"></script>
+<script src="js/local-db.js"></script>
+<script src="js/sync-engine.js"></script>
+<script src="js/payment-engine.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ─── State ───────────────────────────────────────────────────────
+  var currentUser = null;
+  var currentBooking = null; // Last created booking (for QR/WhatsApp)
+  var portalUrl = window.location.origin + '/portal';
+
+  // ─── Initialize ──────────────────────────────────────────────────
+  function init() {
+    SyncEngine.init(LocalDB, SP_DB).then(function() {
+      SyncEngine.onStatusChange(function(status) {
+        SP_UTILS.updateSyncBadge(status);
+      });
+      SP_UTILS.createSyncBadge();
+      SP_UTILS.updateSyncBadge('online');
+
+      // Set default dates
+      var today = new Date();
+      var tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      SP_UTILS.setFormValue('checkin-date', today.toISOString().split('T')[0]);
+      SP_UTILS.setFormValue('checkout-date', tomorrow.toISOString().split('T')[0]);
+
+      // Start listeners
+      startListeners();
+    }).catch(function(err) {
+      console.error('Init error:', err);
+      SP_UTILS.showToast('Failed to initialize database', 3000, '#c45a5a');
+    });
+
+    PaymentEngine.init(SyncEngine, SP_UTILS);
+  }
+
+  // ─── Firebase Listeners ──────────────────────────────────────────
+  function startListeners() {
+    // Listen for new orders
+    SP_DB.ref('orders').on('child_added', function(snapshot) {
+      var order = snapshot.val();
+      if (order.status === 'pending' && currentUser) {
+        renderOrderQueue();
+        updateOrderBadge();
+        playAlert();
+      }
+    });
+
+    SP_DB.ref('orders').on('child_changed', function() {
+      renderOrderQueue();
+    });
+
+    // Listen for grievances
+    SP_DB.ref('grievances').on('value', function() {
+      renderGrievances();
+      updateGrievanceBadge();
+    });
+
+    // Listen for guest_access (backward compat)
+    SP_DB.ref('guest_access').on('value', function() {
+      renderBookings();
+    });
+  }
+
+  // ─── Login ───────────────────────────────────────────────────────
+  window.loginAs = function(name, icon, role) {
+    currentUser = { name: name, icon: icon, role: role };
+    document.getElementById('screen-lock').classList.remove('active');
+    document.getElementById('screen-main').classList.add('active');
+    document.getElementById('topbar-name').textContent = name;
+    document.getElementById('topbar-avatar').textContent = icon;
+    document.getElementById('me-name').textContent = name;
+    document.getElementById('me-role').textContent = role;
+    renderBookings();
+    renderOrderQueue();
+    renderGrievances();
+    renderFinancials();
+    SP_UTILS.showToast('Welcome, ' + name, 1500);
+  };
+
+  window.logout = function() {
+    currentUser = null;
+    document.getElementById('screen-main').classList.remove('active');
+    document.getElementById('screen-lock').classList.add('active');
+  };
+
+  // ─── Tab Switching ───────────────────────────────────────────────
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
+
+    if (tab === 'payments') renderFinancials();
+    if (tab === 'bookings') renderBookings();
+  };
+
+  // ─── Booking Creation ────────────────────────────────────────────
+  window.createBooking = function() {
+    var guestName = SP_UTILS.getFormValue(null, 'checkin-name');
+    var phone = SP_UTILS.getFormValue(null, 'checkin-phone');
+    var room = SP_UTILS.getFormValue(null, 'checkin-room');
+    var checkinStr = SP_UTILS.getFormValue(null, 'checkin-date');
+    var checkoutStr = SP_UTILS.getFormValue(null, 'checkout-date');
+    var deposit = parseFloat(SP_UTILS.getFormValue(null, 'checkin-deposit')) || 0;
+
+    if (!guestName) { SP_UTILS.showToast('Enter guest name'); return; }
+    if (!phone) { SP_UTILS.showToast('Enter phone number'); return; }
+    if (!checkinStr || !checkoutStr) { SP_UTILS.showToast('Select dates'); return; }
+
+    var checkinDate = new Date(checkinStr).getTime();
+    var checkoutDate = new Date(checkoutStr).getTime();
+    if (checkoutDate <= checkinDate) { SP_UTILS.showToast('Check-out must be after check-in'); return; }
+
+    var guestId = SP_UTILS.generateGuestId();
+    var bookingId = SP_UTILS.generateBookingId();
+    var accessCode = SP_UTILS.generateAccessCode();
+    var nights = SP_UTILS.daysBetween(checkinDate, checkoutDate);
+
+    // Create guest record
+    var guest = {
+      guestId: guestId,
+      name: guestName,
+      phone: SP_UTILS.normalizePhone(phone),
+      accessCode: accessCode,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      syncStatus: 'pending'
+    };
+
+    // Create booking record
+    var booking = {
+      bookingId: bookingId,
+      guestId: guestId,
+      guestName: guestName,
+      phone: SP_UTILS.normalizePhone(phone),
+      room: room,
+      accessCode: accessCode,
+      checkInDate: checkinDate,
+      checkOutDate: checkoutDate,
+      nights: nights,
+      status: 'confirmed',
+      depositAmount: deposit,
+      depositStatus: deposit > 0 ? 'paid' : 'pending',
+      depositDate: deposit > 0 ? Date.now() : null,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      syncStatus: 'pending'
+    };
+
+    // Save locally first
+    SyncEngine.create('guests', guest, 2).then(function() {
+      return SyncEngine.create('bookings', booking, 2);
+    }).then(function() {
+      // Record deposit if any
+      if (deposit > 0) {
+        return PaymentEngine.recordCashPayment(bookingId, guestId, deposit, currentUser.name, 'Booking deposit');
+      }
+    }).then(function() {
+      // Also write to guest_access for backward compatibility
+      SP_DB.ref('guest_access/' + accessCode).set({
+        token: accessCode,
+        guestName: guestName,
+        room: room,
+        active: true,
+        validUntil: checkoutDate + 86400000,
+        createdAt: Date.now(),
+        phone: SP_UTILS.normalizePhone(phone),
+        checkin: checkinDate,
+        checkout: checkoutDate,
+        bookingId: bookingId,
+        guestId: guestId,
+        source: 'employee-app'
+      });
+
+      // Log activity
+      SP_UTILS.logActivity(SyncEngine, 'booking_created', currentUser.name, bookingId,
+        guestName + ' — ' + room + ' — ' + nights + ' nights');
+
+      // Show QR result
+      currentBooking = { guest: guest, booking: booking, accessCode: accessCode };
+      document.getElementById('generated-code').textContent = accessCode;
+      document.getElementById('qr-result').style.display = 'block';
+
+      var qrDiv = document.getElementById('qr-canvas');
+      qrDiv.innerHTML = '';
+      var portalLink = portalUrl + '?code=' + accessCode;
+      SP_UTILS.generateQR(qrDiv, portalLink, 200);
+
+      SP_UTILS.showToast('Booking created: ' + bookingId, 2000);
+      renderBookings();
+    }).catch(function(err) {
+      console.error('Booking error:', err);
+      SP_UTILS.showToast('Error creating booking', 3000, '#c45a5a');
+    });
+  };
+
+  // ─── WhatsApp Onboarding ─────────────────────────────────────────
+  window.sendWhatsAppLink = function() {
+    if (!currentBooking) return;
+    var b = currentBooking.booking;
+    var g = currentBooking.guest;
+    var code = currentBooking.accessCode;
+
+    var msg = 'Welcome to Stars & Pines.\n\n' +
+      'Your booking has been created.\n\n' +
+      'Guest Portal:\n' + portalUrl + '?code=' + code + '\n\n' +
+      'Access Code:\n' + code + '\n\n' +
+      'Please keep this code safe.\n' +
+      'You will need it along with the last 4 digits of your registered phone number to access the portal.';
+
+    var url = SP_UTILS.formatWhatsAppUrl(b.phone, msg);
+    window.open(url, '_blank');
+
+    SP_UTILS.logActivity(SyncEngine, 'whatsapp_sent', currentUser.name, b.bookingId,
+      'Onboarding message sent to ' + b.guestName);
+  };
+
+  window.resetCheckinForm = function() {
+    document.getElementById('checkin-name').value = '';
+    document.getElementById('checkin-phone').value = '';
+    document.getElementById('checkin-deposit').value = '';
+    document.getElementById('qr-result').style.display = 'none';
+    currentBooking = null;
+  };
+
+  // ─── Render Bookings ─────────────────────────────────────────────
+  function renderBookings() {
+    var todayStart = SP_UTILS.todayStart();
+    var todayEnd = SP_UTILS.todayEnd();
+
+    SyncEngine.getAll('bookings').then(function(bookings) {
+      var arrivals = [], inhouse = [], departures = [];
+
+      bookings.forEach(function(b) {
+        if (b.checkInDate >= todayStart && b.checkInDate <= todayEnd) arrivals.push(b);
+        else if (b.checkInDate < todayStart && b.checkOutDate >= todayStart) inhouse.push(b);
+        else if (b.checkOutDate >= todayStart && b.checkOutDate <= todayEnd) departures.push(b);
+      });
+
+      renderGuestList('arrivals-list', arrivals, 'badge-checked-in', 'Arriving Today');
+      renderGuestList('inhouse-list', inhouse, 'badge-paid', 'In-House');
+      renderGuestList('departures-list', departures, 'badge-awaiting', 'Departing Today');
+    });
+  }
+
+  function renderGuestList(containerId, bookings, badgeClass, label) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+
+    if (bookings.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No ' + label.toLowerCase() + '</p></div>';
+      return;
+    }
+
+    container.innerHTML = bookings.map(function(b) {
+      var statusBadge = '<span class="badge ' + badgeClass + '">' + label + '</span>';
+      return '<div class="guest-item" onclick="showGuestDetail(\'' + b.bookingId + '\')">' +
+        '<div class="guest-avatar">👤</div>' +
+        '<div class="guest-info">' +
+          '<div class="guest-name">' + escHtml(b.guestName) + '</div>' +
+          '<div class="guest-detail">' + escHtml(b.room) + ' · ' + SP_UTILS.formatDate(b.checkInDate) + ' — ' + SP_UTILS.formatDate(b.checkOutDate) + '</div>' +
+        '</div>' +
+        '<div>' + statusBadge + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // ─── Guest Detail Modal ──────────────────────────────────────────
+  window.showGuestDetail = function(bookingId) {
+    SyncEngine.get('bookings', bookingId).then(function(booking) {
+      if (!booking) return;
+
+      var content = '<div class="form-group"><label>Guest</label><div style="font-size:16px;font-weight:600">' + escHtml(booking.guestName) + '</div></div>' +
+        '<div class="form-row">' +
+          '<div class="form-group"><label>Room</label><div>' + escHtml(booking.room) + '</div></div>' +
+          '<div class="form-group"><label>Access Code</label><div style="font-family:monospace;font-size:18px;color:var(--gold);letter-spacing:4px">' + escHtml(booking.accessCode) + '</div></div>' +
+        '</div>' +
+        '<div class="form-row">' +
+          '<div class="form-group"><label>Check-In</label><div>' + SP_UTILS.formatDate(booking.checkInDate) + '</div></div>' +
+          '<div class="form-group"><label>Check-Out</label><div>' + SP_UTILS.formatDate(booking.checkOutDate) + '</div></div>' +
+        '</div>' +
+        '<div class="form-group"><label>Phone</label><div>' + escHtml(booking.phone) + '</div></div>' +
+        '<div class="form-group"><label>Deposit</label><div>' + SP_UTILS.formatCurrency(booking.depositAmount) + ' (' + escHtml(booking.depositStatus) + ')</div></div>' +
+        '<div class="form-group"><label>Booking ID</label><div style="font-family:monospace;font-size:12px">' + escHtml(booking.bookingId) + '</div></div>';
+
+      SP_UTILS.showModal('Guest Details', content, null, null);
+    });
+  };
+
+  // ─── Order Queue ─────────────────────────────────────────────────
+  function renderOrderQueue() {
+    SP_DB.ref('orders').orderByChild('status').equalTo('pending').once('value').then(function(snapshot) {
+      var container = document.getElementById('order-queue');
+      if (!container) return;
+
+      var orders = [];
+      snapshot.forEach(function(child) {
+        var o = child.val();
+        o.key = child.key;
+        orders.push(o);
+      });
+
+      if (orders.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">🍽</div><p>No pending orders</p></div>';
+        return;
+      }
+
+      orders.sort(function(a, b) { return a.createdAt - b.createdAt; });
+
+      container.innerHTML = orders.map(function(o) {
+        var elapsed = Math.floor((Date.now() - o.createdAt) / 60000);
+        var isLate = elapsed > 10;
+        var isUrgent = o.source === 'portal' || o.source === 'website';
+        var items = Array.isArray(o.items) ? o.items.map(function(i) { return i.name + ' ×' + (i.qty || 1); }).join(', ') : o.items;
+
+        return '<div class="order-item' + (isLate ? ' late' : '') + (isUrgent ? ' urgent' : '') + '">' +
+          '<div class="order-room">' + escHtml(o.room) + (o.guestName ? ' — ' + escHtml(o.guestName) : '') + '</div>' +
+          '<div class="order-items">' + escHtml(items) + '</div>' +
+          '<div class="order-time">' + elapsed + ' min ago' + (o.source ? ' · ' + escHtml(o.source) : '') + (o.notes ? ' · "' + escHtml(o.notes) + '"' : '') + '</div>' +
+          '<div class="order-actions">' +
+            '<button class="btn btn-primary btn-sm" onclick="markOrderDone(\'' + o.key + '\')">Done ✓</button>' +
+            '<button class="btn btn-secondary btn-sm" onclick="markOrderCancelled(\'' + o.key + '\')">Cancel</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      updateOrderBadge();
+    });
+  }
+
+  window.markOrderDone = function(key) {
+    SP_DB.ref('orders/' + key).update({
+      status: 'delivered',
+      updatedAt: Date.now(),
+      statusHistory: firebase.database.ServerValue.increment ? [{ status: 'delivered', at: Date.now() }] : undefined
+    }).then(function() {
+      SP_UTILS.logActivity(SyncEngine, 'order_delivered', currentUser.name, key, 'Order marked delivered');
+      SP_UTILS.showToast('Order marked as delivered', 1500);
+      renderOrderQueue();
+    });
+  };
+
+  window.markOrderCancelled = function(key) {
+    SP_DB.ref('orders/' + key).update({
+      status: 'cancelled',
+      updatedAt: Date.now()
+    }).then(function() {
+      SP_UTILS.logActivity(SyncEngine, 'order_cancelled', currentUser.name, key, 'Order cancelled');
+      SP_UTILS.showToast('Order cancelled', 1500);
+      renderOrderQueue();
+    });
+  };
+
+  function updateOrderBadge() {
+    SP_DB.ref('orders').orderByChild('status').equalTo('pending').once('value').then(function(snapshot) {
+      var count = snapshot.numChildren();
+      var badge = document.getElementById('order-badge');
+      if (count > 0) {
+        badge.style.display = 'block';
+        badge.textContent = count;
+      } else {
+        badge.style.display = 'none';
+      }
+    });
+  }
+
+  // ─── Grievances ──────────────────────────────────────────────────
+  function renderGrievances() {
+    SP_DB.ref('grievances').orderByChild('status').once('value').then(function(snapshot) {
+      var container = document.getElementById('grievance-list');
+      if (!container) return;
+
+      var grievances = [];
+      snapshot.forEach(function(child) {
+        var g = child.val();
+        g.key = child.key;
+        grievances.push(g);
+      });
+
+      var open = grievances.filter(function(g) { return g.status === 'open' || g.status === 'acknowledged'; });
+      open.sort(function(a, b) {
+        var sevOrder = { urgent: 0, high: 1, medium: 2, low: 3 };
+        return (sevOrder[a.severity] || 3) - (sevOrder[b.severity] || 3);
+      });
+
+      if (open.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">✓</div><p>No open concerns</p></div>';
+        return;
+      }
+
+      container.innerHTML = open.map(function(g) {
+        var sevColor = g.severity === 'urgent' ? 'badge-overdue' : g.severity === 'high' ? 'badge-open' : g.severity === 'medium' ? 'badge-pending' : '';
+        var statusBadge = g.status === 'open' ? 'badge-open' : 'badge-acknowledged';
+
+        return '<div class="card">' +
+          '<div class="card-header">' +
+            '<div class="card-title">' + escHtml(g.room) + '</div>' +
+            '<span class="badge ' + sevColor + '">' + escHtml(g.severity) + '</span>' +
+          '</div>' +
+          '<div class="card-body">' + escHtml(g.type) + ': ' + escHtml(g.message) + '</div>' +
+          '<div class="card-meta" style="margin-top:8px">' + SP_UTILS.formatDateTime(g.createdAt) + ' · ' + (g.guestName || '') + '</div>' +
+          '<div class="btn-group" style="margin-top:12px">' +
+            (g.status === 'open' ? '<button class="btn btn-secondary btn-sm" onclick="acknowledgeGrievance(\'' + g.key + '\')">Acknowledge</button>' : '') +
+            '<button class="btn btn-primary btn-sm" onclick="resolveGrievance(\'' + g.key + '\')">Resolve</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      updateGrievanceBadge();
+    });
+  }
+
+  window.acknowledgeGrievance = function(key) {
+    SP_DB.ref('grievances/' + key).update({
+      status: 'acknowledged',
+      acknowledgedBy: currentUser.name,
+      acknowledgedAt: Date.now(),
+      updatedAt: Date.now()
+    }).then(function() {
+      SP_UTILS.showToast('Grievance acknowledged', 1500);
+      renderGrievances();
+    });
+  };
+
+  window.resolveGrievance = function(key) {
+    SP_DB.ref('grievances/' + key).update({
+      status: 'resolved',
+      resolvedBy: currentUser.name,
+      resolvedAt: Date.now(),
+      updatedAt: Date.now()
+    }).then(function() {
+      SP_UTILS.showToast('Grievance resolved', 1500);
+      renderGrievances();
+    });
+  };
+
+  function updateGrievanceBadge() {
+    SP_DB.ref('grievances').orderByChild('status').equalTo('open').once('value').then(function(snapshot) {
+      var count = snapshot.numChildren();
+      var badge = document.getElementById('grievance-badge');
+      if (count > 0) {
+        badge.style.display = 'block';
+        badge.textContent = count;
+      } else {
+        badge.style.display = 'none';
+      }
+    });
+  }
+
+  // ─── Financials ──────────────────────────────────────────────────
+  function renderFinancials() {
+    PaymentEngine.getFinancialSummary().then(function(summary) {
+      document.getElementById('fin-today').textContent = SP_UTILS.formatCurrency(summary.revenueToday);
+      document.getElementById('fin-month').textContent = SP_UTILS.formatCurrency(summary.revenueThisMonth);
+      document.getElementById('fin-outstanding').textContent = SP_UTILS.formatCurrency(summary.totalOutstanding);
+      document.getElementById('fin-deposits').textContent = SP_UTILS.formatCurrency(summary.totalDeposits);
+    });
+
+    // Outstanding payments
+    PaymentEngine.getOutstandingPayments().then(function(payments) {
+      var container = document.getElementById('outstanding-list');
+      if (!container) return;
+      if (payments.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No outstanding payments</p></div>';
+        return;
+      }
+      container.innerHTML = payments.map(function(p) {
+        return '<div class="card">' +
+          '<div class="card-header">' +
+            '<div class="card-title">' + SP_UTILS.formatCurrency(p.amount) + '</div>' +
+            '<span class="badge badge-pending">' + escHtml(p.method) + '</span>' +
+          '</div>' +
+          '<div class="card-body">Booking: ' + escHtml(p.bookingId) + '</div>' +
+          '<div class="card-meta">' + SP_UTILS.formatDateTime(p.createdAt) + '</div>' +
+          (p.method === 'qr' ? '<button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="confirmQR(\'' + p.paymentId + '\')">Confirm Payment Received</button>' : '') +
+        '</div>';
+      }).join('');
+    });
+
+    // Pay later
+    PaymentEngine.getPayLaterRecords().then(function(payments) {
+      var container = document.getElementById('paylater-list');
+      if (!container) return;
+      if (payments.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No pay-later records</p></div>';
+        return;
+      }
+      container.innerHTML = payments.map(function(p) {
+        return '<div class="card">' +
+          '<div class="card-header">' +
+            '<div class="card-title">' + SP_UTILS.formatCurrency(p.amount) + '</div>' +
+            '<span class="badge badge-overdue">Pay Later</span>' +
+          '</div>' +
+          '<div class="card-body">Booking: ' + escHtml(p.bookingId) + '</div>' +
+          '<div class="card-meta">' + SP_UTILS.formatDateTime(p.createdAt) + '</div>' +
+        '</div>';
+      }).join('');
+    });
+  }
+
+  window.confirmQR = function(paymentId) {
+    PaymentEngine.confirmQRPayment(paymentId, currentUser.name).then(function() {
+      SP_UTILS.showToast('Payment confirmed', 1500);
+      renderFinancials();
+    });
+  };
+
+  // ─── Sync ────────────────────────────────────────────────────────
+  window.forceSync = function() {
+    SP_UTILS.showToast('Syncing...', 1000);
+    SyncEngine.forceSync().then(function() {
+      SP_UTILS.showToast('Sync complete', 1500);
+    });
+  };
+
+  // ─── Alert Sound ─────────────────────────────────────────────────
+  function playAlert() {
+    try {
+      var ctx = new (window.AudioContext || window.webkitAudioContext)();
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = 880;
+      osc.type = 'sine';
+      gain.gain.value = 0.1;
+      osc.start();
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.stop(ctx.currentTime + 0.5);
+    } catch(e) {}
+    if (navigator.vibrate) navigator.vibrate(200);
+  }
+
+  // ─── Helpers ─────────────────────────────────────────────────────
+  function escHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  window.showNewBookingForm = function() {
+    switchTab('me');
+    document.getElementById('checkin-name').focus();
+  };
+
+  // ─── Start ───────────────────────────────────────────────────────
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>

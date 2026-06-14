@@ -1,0 +1,307 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "guest_access": {
+      "$token": {
+        ".validate": "newData.hasChildren(['token', 'guestName', 'room', 'active', 'validUntil', 'createdAt'])",
+        "token": { ".validate": "newData.isString() && newData.val().length <= 10" },
+        "guestName": { ".validate": "newData.isString() && newData.val().length <= 100" },
+        "room": { ".validate": "newData.isString() && newData.val().length <= 50" },
+        "active": { ".validate": "newData.isBoolean()" },
+        "validUntil": { ".validate": "newData.isNumber()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "phone": { ".validate": "!newData.exists() || newData.isString()" },
+        "email": { ".validate": "!newData.exists() || newData.isString()" },
+        "status": { ".validate": "!newData.exists() || newData.isString()" },
+        "checkout": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "orders": {
+      "$orderId": {
+        ".validate": "newData.hasChildren(['id', 'room', 'items', 'total', 'status', 'createdAt'])",
+        "id": { ".validate": "newData.isString()" },
+        "room": { ".validate": "newData.isString()" },
+        "items": { ".validate": "newData.isString() || newData.hasChildren()" },
+        "total": { ".validate": "newData.isNumber()" },
+        "status": {
+          ".validate": "newData.val() === 'pending' || newData.val() === 'preparing' || newData.val() === 'ready' || newData.val() === 'delivered' || newData.val() === 'cancelled'"
+        },
+        "source": { ".validate": "!newData.exists() || newData.val() === 'portal' || newData.val() === 'staff' || newData.val() === 'website'" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "notes": { ".validate": "!newData.exists() || newData.isString()" },
+        "guestToken": { ".validate": "!newData.exists() || newData.isString()" },
+        "guestName": { ".validate": "!newData.exists() || newData.isString()" },
+        "statusHistory": { ".validate": "!newData.exists() || newData.hasChildren()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "nudges": {
+      "$nudgeId": {
+        ".validate": "newData.hasChildren(['id', 'room', 'type', 'message', 'status', 'createdAt'])",
+        "id": { ".validate": "newData.isString()" },
+        "room": { ".validate": "newData.isString()" },
+        "type": { ".validate": "newData.isString()" },
+        "message": { ".validate": "newData.isString()" },
+        "status": { ".validate": "newData.val() === 'sent' || newData.val() === 'resolved'" },
+        "source": { ".validate": "!newData.exists() || newData.val() === 'portal' || newData.val() === 'staff'" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "guestToken": { ".validate": "!newData.exists() || newData.isString()" },
+        "guestName": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "grievances": {
+      "$grievanceId": {
+        ".validate": "newData.hasChildren(['id', 'room', 'type', 'message', 'severity', 'status', 'source', 'createdAt'])",
+        "id": { ".validate": "newData.isString()" },
+        "room": { ".validate": "newData.isString()" },
+        "type": { ".validate": "newData.isString()" },
+        "message": { ".validate": "newData.isString()" },
+        "severity": {
+          ".validate": "newData.val() === 'low' || newData.val() === 'medium' || newData.val() === 'high' || newData.val() === 'urgent'"
+        },
+        "status": {
+          ".validate": "newData.val() === 'open' || newData.val() === 'acknowledged' || newData.val() === 'resolved' || newData.val() === 'escalated'"
+        },
+        "source": { ".validate": "newData.val() === 'portal' || newData.val() === 'staff'" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "guestToken": { ".validate": "newData.isString()" },
+        "guestName": { ".validate": "!newData.exists() || newData.isString()" },
+        "acknowledgedBy": { ".validate": "!newData.exists() || newData.isString()" },
+        "acknowledgedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "resolvedBy": { ".validate": "!newData.exists() || newData.isString()" },
+        "resolvedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "statusHistory": { ".validate": "!newData.exists() || newData.hasChildren()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "experiences": {
+      "$expId": {
+        ".validate": "newData.hasChildren(['id', 'type', 'room', 'guestToken', 'status', 'createdAt'])",
+        "id": { ".validate": "newData.isString()" },
+        "type": { ".validate": "newData.isString()" },
+        "room": { ".validate": "newData.isString()" },
+        "guestToken": { ".validate": "newData.isString()" },
+        "guestName": { ".validate": "!newData.exists() || newData.isString()" },
+        "status": { ".validate": "newData.val() === 'requested' || newData.val() === 'completed'" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "concierge": {
+      "$conciergeId": {
+        ".validate": "newData.hasChildren(['id', 'type', 'room', 'guestToken', 'status', 'createdAt'])",
+        "id": { ".validate": "newData.isString()" },
+        "type": { ".validate": "newData.isString()" },
+        "room": { ".validate": "newData.isString()" },
+        "guestToken": { ".validate": "newData.isString()" },
+        "guestName": { ".validate": "!newData.exists() || newData.isString()" },
+        "status": { ".validate": "newData.val() === 'requested' || newData.val() === 'completed'" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "rooms": {
+      "$roomId": {
+        ".validate": "newData.hasChildren(['name', 'type', 'beds'])",
+        "name": { ".validate": "newData.isString()" },
+        "type": { ".validate": "newData.val() === 'dorm' || newData.val() === 'private'" },
+        "beds": { ".validate": "newData.isNumber()" },
+        "occupied": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "cleaningStatus": { ".validate": "!newData.exists() || newData.val() === 'clean' || newData.val() === 'dirty' || newData.val() === 'cleaning'" },
+        "maintenanceStatus": { ".validate": "!newData.exists() || newData.val() === 'ok' || newData.val() === 'needs_attention' || newData.val() === 'under_maintenance'" },
+        "notes": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "inventory": {
+      "$category": {
+        "$itemId": {
+          ".validate": "newData.hasChildren(['name', 'current', 'minimum', 'unit'])",
+          "name": { ".validate": "newData.isString()" },
+          "current": { ".validate": "newData.isNumber()" },
+          "minimum": { ".validate": "newData.isNumber()" },
+          "unit": { ".validate": "newData.isString()" },
+          "lastUpdated": { ".validate": "!newData.exists() || newData.isNumber()" },
+          "notes": { ".validate": "!newData.exists() || newData.isString()" },
+          "$other": { ".validate": false }
+        }
+      }
+    },
+    "tasks": {
+      "$taskId": {
+        ".validate": "newData.hasChildren(['id', 'title', 'status', 'createdAt'])",
+        "id": { ".validate": "newData.isString()" },
+        "title": { ".validate": "newData.isString()" },
+        "description": { ".validate": "!newData.exists() || newData.isString()" },
+        "status": { ".validate": "newData.val() === 'open' || newData.val() === 'in_progress' || newData.val() === 'done' || newData.val() === 'cancelled'" },
+        "priority": { ".validate": "!newData.exists() || newData.val() === 'low' || newData.val() === 'medium' || newData.val() === 'high' || newData.val() === 'urgent'" },
+        "assignee": { ".validate": "!newData.exists() || newData.isString()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "completedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "notifications": {
+      "$notifId": {
+        ".validate": "newData.hasChildren(['type', 'message', 'priority', 'createdAt'])",
+        "type": { ".validate": "newData.isString()" },
+        "message": { ".validate": "newData.isString()" },
+        "priority": { ".validate": "newData.val() === 'low' || newData.val() === 'normal' || newData.val() === 'high' || newData.val() === 'urgent'" },
+        "target": { ".validate": "!newData.exists() || newData.isString()" },
+        "read": { ".validate": "!newData.exists() || newData.isBoolean()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "devices": {
+      "$deviceId": {
+        "state": { ".validate": "newData.isString() || newData.isBoolean() || newData.isNumber()" },
+        "lastUpdated": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "activity_feed": {
+      "$entryId": {
+        ".validate": "newData.hasChildren(['type', 'timestamp'])",
+        "type": { ".validate": "newData.isString()" },
+        "actor": { ".validate": "!newData.exists() || newData.isString()" },
+        "target": { ".validate": "!newData.exists() || newData.isString()" },
+        "details": { ".validate": "!newData.exists() || newData.isString()" },
+        "timestamp": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "events": {
+      "$eventId": {
+        ".validate": "newData.hasChildren(['event', 'ts'])",
+        "event": { ".validate": "newData.isString()" },
+        "ts": { ".validate": "newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "settings": {
+      "$settingId": {
+        ".validate": "newData.hasChildren(['key', 'value'])",
+        "key": { ".validate": "newData.isString()" },
+        "value": { ".validate": true },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "staff": {
+      "$staffId": {
+        ".validate": "newData.hasChildren(['name', 'role'])",
+        "name": { ".validate": "newData.isString()" },
+        "role": { ".validate": "newData.isString()" },
+        "onDuty": { ".validate": "!newData.exists() || newData.isBoolean()" },
+        "lastSeen": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "guests": {
+      "$guestId": {
+        ".validate": "newData.hasChildren(['guestId', 'name', 'phone', 'accessCode'])",
+        "guestId": { ".validate": "newData.isString()" },
+        "name": { ".validate": "newData.isString()" },
+        "phone": { ".validate": "newData.isString()" },
+        "accessCode": { ".validate": "newData.isString()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "syncStatus": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "bookings": {
+      "$bookingId": {
+        ".validate": "newData.hasChildren(['bookingId', 'guestId', 'guestName', 'room', 'accessCode', 'checkInDate', 'checkOutDate', 'status'])",
+        "bookingId": { ".validate": "newData.isString()" },
+        "guestId": { ".validate": "newData.isString()" },
+        "guestName": { ".validate": "newData.isString()" },
+        "phone": { ".validate": "!newData.exists() || newData.isString()" },
+        "room": { ".validate": "newData.isString()" },
+        "accessCode": { ".validate": "newData.isString()" },
+        "checkInDate": { ".validate": "newData.isNumber()" },
+        "checkOutDate": { ".validate": "newData.isNumber()" },
+        "nights": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "status": { ".validate": "newData.val() === 'confirmed' || newData.val() === 'checked_in' || newData.val() === 'checked_out' || newData.val() === 'cancelled'" },
+        "depositAmount": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "depositStatus": { ".validate": "!newData.exists() || newData.val() === 'paid' || newData.val() === 'pending' || newData.val() === 'partial'" },
+        "depositDate": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "syncStatus": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "payments": {
+      "$paymentId": {
+        ".validate": "newData.hasChildren(['paymentId', 'bookingId', 'amount', 'method', 'status'])",
+        "paymentId": { ".validate": "newData.isString()" },
+        "bookingId": { ".validate": "newData.isString()" },
+        "guestId": { ".validate": "!newData.exists() || newData.isString()" },
+        "guestToken": { ".validate": "!newData.exists() || newData.isString()" },
+        "amount": { ".validate": "newData.isNumber()" },
+        "method": { ".validate": "newData.val() === 'razorpay' || newData.val() === 'qr' || newData.val() === 'cash' || newData.val() === 'pay_later'" },
+        "status": { ".validate": "newData.val() === 'pending' || newData.val() === 'confirmed' || newData.val() === 'failed' || newData.val() === 'refunded'" },
+        "razorpayPaymentId": { ".validate": "!newData.exists() || newData.isString()" },
+        "razorpayOrderId": { ".validate": "!newData.exists() || newData.isString()" },
+        "razorpaySignature": { ".validate": "!newData.exists() || newData.isString()" },
+        "qrReference": { ".validate": "!newData.exists() || newData.isString()" },
+        "confirmedBy": { ".validate": "!newData.exists() || newData.isString()" },
+        "confirmedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "notes": { ".validate": "!newData.exists() || newData.isString()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "syncStatus": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "service_requests": {
+      "$requestId": {
+        ".validate": "newData.hasChildren(['requestId', 'type', 'status'])",
+        "requestId": { ".validate": "newData.isString()" },
+        "guestId": { ".validate": "!newData.exists() || newData.isString()" },
+        "type": { ".validate": "newData.isString()" },
+        "status": { ".validate": "newData.val() === 'requested' || newData.val() === 'in_progress' || newData.val() === 'completed' || newData.val() === 'cancelled'" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "syncStatus": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "checkout_records": {
+      "$checkoutId": {
+        ".validate": "newData.hasChildren(['checkoutId', 'guestId', 'status'])",
+        "checkoutId": { ".validate": "newData.isString()" },
+        "guestId": { ".validate": "newData.isString()" },
+        "bookingId": { ".validate": "!newData.exists() || newData.isString()" },
+        "status": { ".validate": "newData.val() === 'completed' || newData.val() === 'awaiting_payment'" },
+        "totalAmount": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "paidAmount": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "checkoutDate": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "syncStatus": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    },
+    "sync_status": {
+      "$deviceId": {
+        ".validate": "newData.hasChildren(['deviceId', 'lastSync'])",
+        "deviceId": { ".validate": "newData.isString()" },
+        "lastSync": { ".validate": "newData.isNumber()" },
+        "pendingCount": { ".validate": "!newData.exists() || newData.isNumber()" },
+        "status": { ".validate": "!newData.exists() || newData.isString()" },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seed Firebase Data — Stars & Pines</title>
+<style>
+  body { font-family: monospace; padding: 40px; background: #1a1a1a; color: #e0e0e0; max-width: 800px; margin: 0 auto; }
+  h1 { color: #c4a870; font-size: 1.2rem; margin-bottom: 20px; }
+  .log { background: #111; padding: 16px; border-radius: 6px; margin-bottom: 12px; font-size: 0.85rem; line-height: 1.6; }
+  .log.success { border-left: 3px solid #4a8a62; }
+  .log.error { border-left: 3px solid #b05050; }
+  .log.info { border-left: 3px solid #4a88a8; }
+  button { background: #c4a870; color: #1a1a1a; border: none; padding: 12px 24px; font-family: monospace; font-size: 0.9rem; cursor: pointer; border-radius: 4px; margin-right: 8px; }
+  button:hover { background: #d4b880; }
+  .controls { margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<h1>Seed Firebase Data — Stars & Pines</h1>
+<div class="controls">
+  <button onclick="seedAll()">Seed All Data</button>
+  <button onclick="seedRooms()">Seed Rooms Only</button>
+  <button onclick="seedInventory()">Seed Inventory Only</button>
+  <button onclick="seedDevices()">Seed Devices Only</button>
+  <button onclick="seedStaff()">Seed Staff Only</button>
+  <button onclick="seedSettings()">Seed Settings Only</button>
+  <button onclick="clearAll()" style="background:#b05050;color:#fff;">Clear All Data</button>
+</div>
+<div id="log"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="js/firebase-config.js"></script>
+<script>
+const db = firebase.database();
+const logEl = document.getElementById('log');
+
+function log(msg, type = 'info') {
+  const div = document.createElement('div');
+  div.className = 'log ' + type;
+  div.textContent = msg;
+  logEl.appendChild(div);
+}
+
+async function seedRooms() {
+  const rooms = {
+    'dorm_a': { name: 'Six-Bed Dorm A', type: 'dorm', beds: 6, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' },
+    'dorm_b': { name: 'Six-Bed Dorm B', type: 'dorm', beds: 6, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' },
+    'dorm_c': { name: 'Six-Bed Dorm C', type: 'dorm', beds: 6, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' },
+    'mountain_double_1': { name: 'Mountain Double 1', type: 'private', beds: 2, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' },
+    'mountain_double_2': { name: 'Mountain Double 2', type: 'private', beds: 2, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' },
+    'deluxe_twin_1': { name: 'Deluxe Twin 1', type: 'private', beds: 2, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' },
+    'deluxe_twin_2': { name: 'Deluxe Twin 2', type: 'private', beds: 2, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' },
+    'suite_1': { name: 'Ridge Suite', type: 'private', beds: 2, occupied: 0, cleaningStatus: 'clean', maintenanceStatus: 'ok', notes: '' }
+  };
+  await db.ref('rooms').set(rooms);
+  log('Rooms seeded: ' + Object.keys(rooms).length + ' rooms', 'success');
+}
+
+async function seedInventory() {
+  const inventory = {
+    'vegetables': {
+      'onions': { name: 'Onions', current: 12, minimum: 5, unit: 'kg', lastUpdated: Date.now() },
+      'tomatoes': { name: 'Tomatoes', current: 8, minimum: 4, unit: 'kg', lastUpdated: Date.now() },
+      'potatoes': { name: 'Potatoes', current: 15, minimum: 8, unit: 'kg', lastUpdated: Date.now() },
+      'paneer': { name: 'Paneer', current: 3, minimum: 2, unit: 'kg', lastUpdated: Date.now() },
+      'mushrooms': { name: 'Mushrooms', current: 2, minimum: 1, unit: 'kg', lastUpdated: Date.now() },
+      'greens': { name: 'Mixed Greens', current: 4, minimum: 2, unit: 'kg', lastUpdated: Date.now() }
+    },
+    'dairy': {
+      'milk': { name: 'Milk', current: 10, minimum: 5, unit: 'litres', lastUpdated: Date.now() },
+      'butter': { name: 'Butter', current: 3, minimum: 2, unit: 'kg', lastUpdated: Date.now() },
+      'cream': { name: 'Cream', current: 2, minimum: 1, unit: 'litres', lastUpdated: Date.now() },
+      'cheese': { name: 'Cheese', current: 1, minimum: 1, unit: 'kg', lastUpdated: Date.now() }
+    },
+    'beverages': {
+      'tea': { name: 'Tea', current: 5, minimum: 2, unit: 'kg', lastUpdated: Date.now() },
+      'coffee': { name: 'Coffee', current: 3, minimum: 1, unit: 'kg', lastUpdated: Date.now() },
+      'juice': { name: 'Juice', current: 8, minimum: 4, unit: 'bottles', lastUpdated: Date.now() },
+      'water': { name: 'Water (20L)', current: 12, minimum: 6, unit: 'jars', lastUpdated: Date.now() }
+    },
+    'snacks': {
+      'naan': { name: 'Naan (frozen)', current: 40, minimum: 20, unit: 'pieces', lastUpdated: Date.now() },
+      'bread': { name: 'Bread', current: 6, minimum: 3, unit: 'loaves', lastUpdated: Date.now() },
+      'chips': { name: 'Chips', current: 10, minimum: 5, unit: 'packets', lastUpdated: Date.now() }
+    },
+    'housekeeping': {
+      'towels': { name: 'Towels', current: 30, minimum: 15, unit: 'pieces', lastUpdated: Date.now() },
+      'sheets': { name: 'Bed Sheets', current: 20, minimum: 10, unit: 'pieces', lastUpdated: Date.now() },
+      'soap': { name: 'Soap', current: 25, minimum: 10, unit: 'pieces', lastUpdated: Date.now() },
+      'shampoo': { name: 'Shampoo', current: 8, minimum: 4, unit: 'bottles', lastUpdated: Date.now() },
+      'toilet_paper': { name: 'Toilet Paper', current: 20, minimum: 10, unit: 'rolls', lastUpdated: Date.now() }
+    },
+    'linen': {
+      'blankets': { name: 'Blankets', current: 25, minimum: 10, unit: 'pieces', lastUpdated: Date.now() },
+      'pillows': { name: 'Pillows', current: 20, minimum: 8, unit: 'pieces', lastUpdated: Date.now() },
+      'mattress_protectors': { name: 'Mattress Protectors', current: 10, minimum: 5, unit: 'pieces', lastUpdated: Date.now() }
+    }
+  };
+  await db.ref('inventory').set(inventory);
+  log('Inventory seeded: ' + Object.keys(inventory).length + ' categories', 'success');
+}
+
+async function seedDevices() {
+  const devices = {
+    'motor': { state: 'off', lastUpdated: Date.now() },
+    'dining_lights': { state: 'off', brightness: 0, lastUpdated: Date.now() },
+    'terrace_lights': { state: 'off', brightness: 0, lastUpdated: Date.now() },
+    'firepit_lights': { state: 'off', brightness: 0, lastUpdated: Date.now() },
+    'common_room_lights': { state: 'off', brightness: 0, lastUpdated: Date.now() },
+    'dining_speaker': { state: 'off', volume: 50, source: 'spotify', lastUpdated: Date.now() },
+    'terrace_speaker': { state: 'off', volume: 40, source: 'spotify', lastUpdated: Date.now() },
+    'water_tank': { level: 75, lastUpdated: Date.now() }
+  };
+  await db.ref('devices').set(devices);
+  log('Devices seeded: ' + Object.keys(devices).length + ' devices', 'success');
+}
+
+async function seedStaff() {
+  const staff = {
+    'karan': { name: 'Karan', role: 'Kitchen & Café', onDuty: true, lastSeen: Date.now() },
+    'priya': { name: 'Priya', role: 'Housekeeping', onDuty: false, lastSeen: Date.now() - 3600000 },
+    'raj': { name: 'Raj', role: 'Maintenance', onDuty: false, lastSeen: Date.now() - 7200000 }
+  };
+  await db.ref('staff').set(staff);
+  log('Staff seeded: ' + Object.keys(staff).length + ' staff members', 'success');
+}
+
+async function seedSettings() {
+  const settings = {
+    'kitchen_open': { key: 'kitchen_open', value: true, updatedAt: Date.now() },
+    'kitchen_message': { key: 'kitchen_message', value: 'Breakfast until 10 AM', updatedAt: Date.now() },
+    'whatsapp_number': { key: 'whatsapp_number', value: 'REPLACE_ME', updatedAt: Date.now() },
+    'property_name': { key: 'property_name', value: 'Stars & Pines', updatedAt: Date.now() }
+  };
+  await db.ref('settings').set(settings);
+  log('Settings seeded: ' + Object.keys(settings).length + ' settings', 'success');
+}
+
+async function seedTasks() {
+  const tasks = {
+    'task_1': { id: 'task_1', title: 'Deep clean Dorm A', description: 'Full deep clean including under beds', status: 'open', priority: 'medium', assignee: 'Priya', createdAt: Date.now() - 86400000 },
+    'task_2': { id: 'task_2', title: 'Restock kitchen towels', description: 'Order 50 more kitchen towels', status: 'in_progress', priority: 'high', assignee: 'Karan', createdAt: Date.now() - 43200000 },
+    'task_3': { id: 'task_3', title: 'Fix terrace light', description: 'One bulb flickering on terrace', status: 'open', priority: 'low', assignee: 'Raj', createdAt: Date.now() - 172800000 }
+  };
+  await db.ref('tasks').set(tasks);
+  log('Tasks seeded: ' + Object.keys(tasks).length + ' tasks', 'success');
+}
+
+async function seedAll() {
+  log('Seeding all data...', 'info');
+  await seedRooms();
+  await seedInventory();
+  await seedDevices();
+  await seedStaff();
+  await seedSettings();
+  await seedTasks();
+  log('All data seeded successfully!', 'success');
+}
+
+async function clearAll() {
+  if (!confirm('This will delete ALL data in Firebase. Are you sure?')) return;
+  await db.ref().set(null);
+  log('All data cleared.', 'error');
+}
+</script>
+</body>
+</html>

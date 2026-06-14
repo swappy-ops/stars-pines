@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stars & Pines — Kasar Ridge, Uttarakhand</title>
+  <meta name="description" content="A house for curious people. Kasar Ridge, Almora, Uttarakhand." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+  /* ═══════════════════════════════════════════
+     ROOT
+     ═══════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --paper:       #F5F1EA;
+    --paper-dark:  #EAE3D8;
+    --ink:         #1F1B18;
+    --ink-soft:    #5A544C;
+    --pine-deep:   #2D3D31;
+    --pine-mist:   #546659;
+    --warm-lamp:   #C9A874;
+    --warm-lamp-soft: #E2C89A;
+    --fog:         #C8C1B7;
+    --night:       #121512;
+    --font-serif:  'Playfair Display', serif;
+    --font-sans:   'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ═══════════════════════════════════════════
+     ATMOSPHERIC BACKGROUND
+     ═══════════════════════════════════════════ */
+  #atmosphere {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(201,168,116,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(45,61,49,0.04) 0%, transparent 50%),
+      var(--paper);
+  }
+
+  /* ═══════════════════════════════════════════
+     LANDING SCREEN
+     ═══════════════════════════════════════════ */
+  #landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    position: relative;
+  }
+
+  /* Subtle mountain silhouette */
+  #landing::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 35vh;
+    background:
+      linear-gradient(to top, var(--paper-dark) 0%, transparent 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 400'%3E%3Cpath d='M0,300 L120,220 L240,260 L360,180 L480,220 L600,140 L720,180 L840,120 L960,160 L1080,140 L1200,200 L1320,240 L1440,260 L1440,400 L0,400 Z' fill='%232D3D31' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: bottom;
+    opacity: 0;
+    animation: pageIn 2s ease 0.5s forwards;
+  }
+
+  .landing-name {
+    font-family: var(--font-serif);
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: pageIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+
+  .landing-place {
+    font-size: 0.68rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 16px;
+    opacity: 0;
+    animation: pageIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+  }
+
+  .landing-tagline {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--pine-mist);
+    margin-top: 40px;
+    opacity: 0;
+    animation: pageIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.4s forwards;
+  }
+
+  .cursor-line {
+    margin-top: 56px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    animation: pageIn 1s ease 2s forwards;
+  }
+
+  .cursor-blink {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background: var(--ink-soft);
+    animation: blink 1.2s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+  }
+
+  .landing-question {
+    margin-top: 28px;
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    color: var(--ink);
+    opacity: 0;
+    animation: pageIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.8s forwards;
+  }
+
+  .landing-choices {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    opacity: 0;
+    animation: pageIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 3.4s forwards;
+  }
+
+  .choice-btn {
+    background: none;
+    border: 1px solid var(--fog);
+    color: var(--ink-soft);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 300;
+    padding: 14px 32px;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 280px;
+    text-align: center;
+    position: relative;
+    letter-spacing: 0.02em;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--pine-deep);
+    color: var(--ink);
+    background: var(--paper-dark);
+    transform: translateY(-1px);
+  }
+
+  @keyframes pageIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ═══════════════════════════════════════════
+     CONVERSATION AREA
+     ═══════════════════════════════════════════ */
+  #conversation {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 80px 24px 160px;
+    display: none;
+  }
+
+  #conversation.active {
+    display: block;
+  }
+
+  .exchange {
+    margin-bottom: 64px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .exchange.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Visitor message */
+  .visitor-msg {
+    text-align: right;
+    margin-bottom: 32px;
+  }
+
+  .visitor-msg p {
+    display: inline-block;
+    background: var(--paper-dark);
+    border: 1px solid var(--fog);
+    padding: 10px 18px;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    max-width: 70%;
+    line-height: 1.6;
+  }
+
+  /* House response — visual, sparse */
+  .house-msg {
+    margin-bottom: 32px;
+    padding-left: 0;
+  }
+
+  .house-msg p {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--ink);
+    max-width: 480px;
+  }
+
+  .house-msg p + p {
+    margin-top: 20px;
+  }
+
+  .house-msg .quiet {
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 1rem;
+  }
+
+  .house-msg .large {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .house-msg .tiny {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fog);
+  }
+
+  /* Visual divider */
+  .visual-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 48px 0;
+    color: var(--fog);
+  }
+
+  .visual-divider::before,
+  .visual-divider::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--fog);
+    opacity: 0.5;
+  }
+
+  .visual-divider span {
+    font-size: 0.5rem;
+    letter-spacing: 0.4em;
+  }
+
+  /* Follow-up choices */
+  .follow-up-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .follow-up-choices .choice-btn {
+    min-width: auto;
+    text-align: left;
+    font-size: 0.84rem;
+    padding: 12px 22px;
+    max-width: 320px;
+  }
+
+  /* ═══════════════════════════════════════════
+     VISUAL CARDS — GALLERY, PACT, ETC
+     ═══════════════════════════════════════════ */
+  .visual-card {
+    margin: 32px 0;
+    border: 1px solid var(--fog);
+    background: var(--paper-dark);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .visual-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .visual-card .card-image {
+    width: 100%;
+    aspect-ratio: 16/10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .visual-card .card-image .mood {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 24px;
+    z-index: 1;
+  }
+
+  .visual-card .card-caption {
+    padding: 14px 18px;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fog);
+    border-top: 1px solid rgba(200,193,183,0.3);
+  }
+
+  /* Mood backgrounds for gallery cards */
+  .mood-corner {
+    background: linear-gradient(135deg, #3a4a3c 0%, #253022 50%, #1a2518 100%);
+  }
+  .mood-window {
+    background: linear-gradient(160deg, #4a5a4c 0%, #2d3d31 40%, #1f2a22 100%);
+  }
+  .mood-table {
+    background: linear-gradient(145deg, #5a4a3c 0%, #3a3028 50%, #2a2018 100%);
+  }
+  .mood-view {
+    background: linear-gradient(180deg, #6a7a6c 0%, #4a5a4c 30%, #2d3d31 60%, #1a2518 100%);
+  }
+
+  /* ═══════════════════════════════════════════
+     PACT — VISUAL
+     ═══════════════════════════════════════════ */
+  .pact-card {
+    margin: 40px 0;
+    padding: 40px 32px;
+    border: 1px solid var(--fog);
+    background: var(--paper-dark);
+    position: relative;
+  }
+
+  .pact-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--warm-lamp), var(--pine-mist), var(--warm-lamp));
+    opacity: 0.5;
+  }
+
+  .pact-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+
+  .pact-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pact-items li {
+    font-family: var(--font-serif);
+    font-size: 0.92rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .pact-items li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--warm-lamp);
+  }
+
+  /* ═══════════════════════════════════════════
+     GUESTBOOK — VISUAL NOTES
+     ═══════════════════════════════════════════ */
+  .guestbook-section {
+    margin: 48px 0;
+  }
+
+  .guestbook-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 36px;
+    letter-spacing: 0.06em;
+  }
+
+  .guest-notes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .guest-note {
+    padding: 20px;
+    background: var(--paper-dark);
+    border: 1px solid rgba(200,193,183,0.3);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .guest-note.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .guest-note:nth-child(odd) {
+    transform: translateY(8px) rotate(-0.5deg);
+  }
+
+  .guest-note:nth-child(even) {
+    transform: translateY(8px) rotate(0.5deg);
+  }
+
+  .guest-note.visible:nth-child(odd),
+  .guest-note.visible:nth-child(even) {
+    transform: rotate(0deg);
+  }
+
+  .guest-note p {
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .guest-note .note-meta {
+    font-family: var(--font-sans);
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fog);
+    margin-top: 10px;
+    font-style: normal;
+  }
+
+  /* ═══════════════════════════════════════════
+     BOOKING — VISUAL CHANNELS
+     ═══════════════════════════════════════════ */
+  .booking-pathway {
+    margin: 40px 0;
+  }
+
+  .booking-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 20px;
+    border: 1px solid var(--fog);
+  }
+
+  .booking-channel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(200,193,183,0.3);
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    transition: all 0.4s ease;
+    cursor: pointer;
+  }
+
+  .booking-channel:last-child {
+    border-bottom: none;
+  }
+
+  .booking-channel:hover {
+    color: var(--pine-deep);
+    background: var(--paper-dark);
+  }
+
+  .booking-channel .ch-icon {
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm-lamp);
+    min-width: 72px;
+  }
+
+  .booking-channel .ch-name {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.98rem;
+  }
+
+  .booking-channel .ch-arrow {
+    margin-left: auto;
+    color: var(--fog);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+  }
+
+  .booking-channel:hover .ch-arrow {
+    transform: translateX(3px);
+    color: var(--pine-deep);
+  }
+
+  /* ═══════════════════════════════════════════
+     HIDDEN STARS
+     ═══════════════════════════════════════════ */
+  .hidden-star {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.12;
+    transition: opacity 0.6s ease;
+    vertical-align: middle;
+    margin: 0 6px;
+  }
+
+  .hidden-star::before {
+    content: '✦';
+    font-size: 7px;
+    color: var(--warm-lamp);
+  }
+
+  .hidden-star:hover {
+    opacity: 0.5;
+  }
+
+  .hidden-star .star-reveal {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--night);
+    color: var(--paper);
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    font-style: italic;
+    padding: 10px 16px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 100;
+  }
+
+  .hidden-star .star-reveal::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--night);
+  }
+
+  .hidden-star.revealed .star-reveal {
+    opacity: 1;
+  }
+
+  /* ═══════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════ */
+  #footer {
+    padding: 48px 24px;
+    text-align: center;
+    border-top: 1px solid rgba(200,193,183,0.3);
+    margin-top: 80px;
+    display: none;
+  }
+
+  #footer p {
+    font-size: 0.64rem;
+    color: var(--fog);
+    letter-spacing: 0.14em;
+  }
+
+  #footer a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  #footer a:hover {
+    color: var(--pine-deep);
+  }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════ */
+  @media (max-width: 640px) {
+    .landing-choices .choice-btn {
+      min-width: 240px;
+      font-size: 0.84rem;
+    }
+
+    .house-msg p {
+      font-size: 1.05rem;
+    }
+
+    .follow-up-choices .choice-btn {
+      max-width: 100%;
+    }
+
+    .guest-notes {
+      grid-template-columns: 1fr;
+    }
+
+    .booking-channel .ch-arrow {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  </style>
+</head>
+<body>
+
+<div id="atmosphere"></div>
+
+<!-- ═══════════════════════════════════════════
+     LANDING
+     ═══════════════════════════════════════════ -->
+<section id="landing">
+  <h1 class="landing-name">Stars & Pines</h1>
+  <p class="landing-place">Kasar Ridge, Uttarakhand</p>
+  <p class="landing-tagline">A house for curious people.</p>
+
+  <div class="cursor-line">
+    <span class="cursor-blink"></span>
+  </div>
+
+  <p class="landing-question">What brings you here?</p>
+
+  <div class="landing-choices" id="landing-choices">
+    <button class="choice-btn" data-choice="quiet">I need quiet.</button>
+    <button class="choice-btn" data-choice="distance">I need distance.</button>
+    <button class="choice-btn" data-choice="coffee">I need coffee.</button>
+    <button class="choice-btn" data-choice="think">A place to think.</button>
+    <button class="choice-btn" data-choice="curious">Just curious.</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CONVERSATION
+     ═══════════════════════════════════════════ -->
+<div id="conversation"></div>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════ -->
+<footer id="footer">
+  <p>Stars & Pines · Crank's Ridge · Almora</p>
+  <p style="margin-top:8px;"><a href="https://www.instagram.com/starsandpiness" target="_blank" rel="noopener">@starsandpiness</a></p>
+</footer>
+
+<script>
+const APP_CONFIG = { whatsappNumber: 'REPLACE_ME' };
+
+// ═══════════════════════════════════════════
+// NARRATIVES — SHORT, VISUAL, SPARSE
+// ═══════════════════════════════════════════
+const narratives = {
+
+  quiet: {
+    visitor: 'I need quiet.',
+    house: [
+      { text: 'Good.', cls: 'large' },
+      { text: 'Most people arrive carrying too much noise.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Show me the rooms.', next: 'rooms_quiet' },
+      { text: 'Tell me about the house.', next: 'about' },
+      { text: 'What kind of people come here?', next: 'visitors' },
+    ],
+  },
+
+  distance: {
+    visitor: 'I need distance.',
+    house: [
+      { text: 'The ridge is good at that.' },
+      { text: 'Everything below feels very far away.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'How far?', next: 'location' },
+      { text: 'Tell me about the house.', next: 'about' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  coffee: {
+    visitor: 'I need coffee.',
+    house: [
+      { text: 'We can do that.' },
+      { text: 'The terrace faces east. The view is not simple.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'What else?', next: 'day' },
+      { text: 'Tell me about the house.', next: 'about' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  think: {
+    visitor: 'A place to think.',
+    house: [
+      { text: 'The altitude helps.' },
+      { text: 'Writers have been coming here for over a hundred years.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Who came before?', next: 'history' },
+      { text: 'Where would I stay?', next: 'rooms_think' },
+      { text: 'What\'s a day like?', next: 'day' },
+    ],
+  },
+
+  curious: {
+    visitor: 'Just curious.',
+    house: [
+      { text: 'That\'s the best reason.', cls: 'large' },
+    ],
+    followUps: [
+      { text: 'Tell me about the house.', next: 'about' },
+      { text: 'What\'s this ridge?', next: 'history' },
+      { text: 'Show me the house.', next: 'gallery_intro' },
+    ],
+  },
+
+  about: {
+    visitor: 'Tell me about the house.',
+    house: [
+      { text: 'It started from knowing this ridge.' },
+      { text: 'Not from hospitality training. From the ridge itself.', cls: 'quiet' },
+      { text: 'Honest. Not designed to impress.', cls: 'tiny' },
+    ],
+    followUps: [
+      { text: 'Who designed it?', next: 'raman' },
+      { text: 'Show me.', next: 'gallery_intro' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  raman: {
+    visitor: 'Who designed it?',
+    house: [
+      { text: 'Raman did.', cls: 'large' },
+      { text: 'Slowly.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Tell me more.', next: 'raman_more' },
+      { text: 'What kind of people come?', next: 'visitors' },
+    ],
+  },
+
+  raman_more: {
+    visitor: 'Tell me more.',
+    house: [
+      { text: 'He built the house around the silence. Not the other way around.' },
+    ],
+    followUps: [
+      { text: 'Show me.', next: 'gallery_intro' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  rooms_quiet: {
+    visitor: 'Show me the rooms.',
+    house: [
+      { text: 'Three ways to sleep well.' },
+      { text: 'Every bed faces the right direction.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Prices?', next: 'prices' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  rooms_think: {
+    visitor: 'Where would I stay?',
+    house: [
+      { text: 'The mountain double has a writing desk and a balcony.' },
+      { text: 'The peaks are the first thing you see.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Prices?', next: 'prices' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  prices: {
+    visitor: 'Prices?',
+    house: [
+      { text: '₹2,640 — dorm bed' },
+      { text: '₹4,200 — mountain double' },
+      { text: '₹5,800 — deluxe twin', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+      { text: 'Tell me about the ridge.', next: 'history' },
+    ],
+  },
+
+  visitors: {
+    visitor: 'What kind of people come?',
+    house: [
+      { text: 'Writers. Wanderers. People between lives.' },
+      { text: 'Some come for two nights. Stay for six.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Who came before?', next: 'history' },
+      { text: 'Notes left behind.', next: 'guestbook' },
+    ],
+  },
+
+  history: {
+    visitor: 'Who came before?',
+    house: [
+      { text: 'Vivekananda. Lawrence. Cat Stevens. Ram Dass.' },
+      { text: 'The ridge absorbed everyone.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Tell me about the house.', next: 'about' },
+      { text: 'Notes left behind.', next: 'guestbook' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  day: {
+    visitor: 'What\'s a day like?',
+    house: [
+      { text: 'Morning: mist. Tea. The peaks catch light.' },
+      { text: 'Evening: the mountains go pink, then deep.', cls: 'quiet' },
+      { text: 'Night: the Milky Way is not metaphorical here.', cls: 'tiny' },
+    ],
+    followUps: [
+      { text: 'Tell me about the house.', next: 'about' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  location: {
+    visitor: 'How far?',
+    house: [
+      { text: 'Temple: ten minutes.' },
+      { text: 'Almora: five kilometres.' },
+      { text: 'Delhi: nine hours. Beautiful once you leave the plains.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Tell me about the house.', next: 'about' },
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+    ],
+  },
+
+  gallery_intro: {
+    visitor: 'Show me the house.',
+    house: [
+      { text: 'What would you like to see?' },
+    ],
+    followUps: [
+      { text: 'A corner.', next: 'gallery_corner' },
+      { text: 'A window.', next: 'gallery_window' },
+      { text: 'A table.', next: 'gallery_table' },
+      { text: 'The view.', next: 'gallery_view' },
+    ],
+  },
+
+  gallery_corner: {
+    visitor: 'A corner.',
+    house: [
+      { text: 'Late afternoon. The light makes people put their phones down.', cls: 'quiet' },
+    ],
+    gallery: { mood: 'mood-corner', label: 'The common area', placeholder: 'Light through pine trees' },
+    followUps: [
+      { text: 'Something else.', next: 'gallery_intro' },
+      { text: 'There is more.', next: 'gallery_more' },
+    ],
+  },
+
+  gallery_window: {
+    visitor: 'A window.',
+    house: [
+      { text: 'Every window faces a different version of the same mountain.', cls: 'quiet' },
+    ],
+    gallery: { mood: 'mood-window', label: 'A window at dawn', placeholder: 'Mountain double, sunrise' },
+    followUps: [
+      { text: 'Something else.', next: 'gallery_intro' },
+      { text: 'There is more.', next: 'gallery_more' },
+    ],
+  },
+
+  gallery_table: {
+    visitor: 'A table.',
+    house: [
+      { text: 'First dates. Breakups. At least one proposal.', cls: 'quiet' },
+      { text: 'It just holds the tea cups.', cls: 'quiet' },
+    ],
+    gallery: { mood: 'mood-table', label: 'The dining table', placeholder: 'Where conversations happen' },
+    followUps: [
+      { text: 'Something else.', next: 'gallery_intro' },
+      { text: 'There is more.', next: 'gallery_more' },
+    ],
+  },
+
+  gallery_view: {
+    visitor: 'The view.',
+    house: [
+      { text: 'October through March — the Nanda Devi range appears in full.', cls: 'quiet' },
+    ],
+    gallery: { mood: 'mood-view', label: 'The ridge at dusk', placeholder: 'Nanda Devi on a clear evening' },
+    followUps: [
+      { text: 'Something else.', next: 'gallery_intro' },
+      { text: 'There is more.', next: 'gallery_more' },
+    ],
+  },
+
+  gallery_more: {
+    visitor: 'There is more.',
+    house: [
+      { text: 'Some things are easier to discover in person.', cls: 'large' },
+    ],
+    followUps: [
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+      { text: 'Notes left behind.', next: 'guestbook' },
+    ],
+  },
+
+  booking_intro: {
+    visitor: 'I\'d like to visit.',
+    house: [
+      { text: 'Before you book,', cls: 'large' },
+      { text: 'there are a few things worth knowing.', cls: 'quiet' },
+    ],
+    followUps: [
+      { text: 'Go on.', next: 'pact' },
+    ],
+  },
+
+  pact: {
+    visitor: 'Go on.',
+    house: [
+      { text: 'Not rules. An invitation.', cls: 'quiet' },
+    ],
+    pact: true,
+    followUps: [
+      { text: 'How do I reach you?', next: 'booking_channels' },
+    ],
+  },
+
+  booking_channels: {
+    visitor: 'How do I reach you?',
+    house: [
+      { text: 'However feels right.', cls: 'large' },
+    ],
+    booking: true,
+    followUps: [
+      { text: 'Notes left behind.', next: 'guestbook' },
+    ],
+  },
+
+  guestbook: {
+    visitor: 'Notes left behind.',
+    house: [
+      { text: 'Not reviews. Observations.', cls: 'quiet' },
+    ],
+    guestbook: true,
+    followUps: [
+      { text: 'I\'d like to visit.', next: 'booking_intro' },
+      { text: 'Tell me about the house.', next: 'about' },
+    ],
+  },
+};
+
+// ═══════════════════════════════════════════
+// GUEST NOTES
+// ═══════════════════════════════════════════
+const guestNotes = [
+  { text: 'Stayed two nights. Missed my train. Didn\'t mind.', meta: 'November' },
+  { text: 'The rain sounds different from every window.', meta: 'Monsoon' },
+  { text: 'Came for coffee. Left with three friends.', meta: 'March' },
+  { text: 'Wrote the first page of my book here.', meta: 'October' },
+  { text: 'The stars are not a metaphor from this terrace.', meta: 'Someone who looked up' },
+  { text: 'Asked about the trail. Got lost. Found better.', meta: 'January' },
+  { text: 'My phone died day one. Best thing that happened.', meta: 'February' },
+  { text: 'The mountains are never the same twice.', meta: 'Always' },
+];
+
+// ═══════════════════════════════════════════
+// HIDDEN STARS
+// ═══════════════════════════════════════════
+const hiddenStars = [
+  'Ask Raman about the lamp.',
+  'Every regular has a favourite window.',
+  'The mountains are never the same twice.',
+  'Some guests never find this message.',
+  'The best trail starts before dawn.',
+  'There\'s a pressed leaf on page 47.',
+  'The firepit conversations go long.',
+  '5:45 AM on the terrace. Worth it.',
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let starsRevealed = new Set();
+
+const landingEl = document.getElementById('landing');
+const conversationEl = document.getElementById('conversation');
+const footerEl = document.getElementById('footer');
+
+// ═══════════════════════════════════════════
+// LANDING → CONVERSATION
+// ═══════════════════════════════════════════
+document.querySelectorAll('#landing-choices .choice-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const choice = btn.dataset.choice;
+    landingEl.style.transition = 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
+    landingEl.style.opacity = '0';
+
+    setTimeout(() => {
+      landingEl.style.display = 'none';
+      conversationEl.classList.add('active');
+      footerEl.style.display = 'block';
+      renderExchange(narratives[choice], choice);
+    }, 1200);
+  });
+});
+
+// ═══════════════════════════════════════════
+// RENDER EXCHANGE
+// ═══════════════════════════════════════════
+function renderExchange(narrative, key) {
+  const exchange = document.createElement('div');
+  exchange.className = 'exchange';
+
+  // Visitor
+  const visitorDiv = document.createElement('div');
+  visitorDiv.className = 'visitor-msg';
+  visitorDiv.innerHTML = `<p>${esc(narrative.visitor)}</p>`;
+  exchange.appendChild(visitorDiv);
+
+  // House
+  const houseDiv = document.createElement('div');
+  houseDiv.className = 'house-msg';
+  narrative.house.forEach(line => {
+    const p = document.createElement('p');
+    p.textContent = line.text;
+    if (line.cls) p.classList.add(line.cls);
+    houseDiv.appendChild(p);
+  });
+  exchange.appendChild(houseDiv);
+
+  // Pact
+  if (narrative.pact) {
+    const pactCard = document.createElement('div');
+    pactCard.className = 'pact-card';
+    pactCard.innerHTML = `
+      <h3 class="pact-title">Before You Arrive</h3>
+      <ul class="pact-items">
+        <li>Come curious.</li>
+        <li>Respect the quiet.</li>
+        <li>Ask questions.</li>
+        <li>Leave stories better than you found them.</li>
+        <li>Allow the place to reveal itself slowly.</li>
+      </ul>
+    `;
+    exchange.appendChild(pactCard);
+  }
+
+  // Gallery
+  if (narrative.gallery) {
+    const g = narrative.gallery;
+    const card = document.createElement('div');
+    card.className = 'visual-card';
+    card.innerHTML = `
+      <div class="card-image ${g.mood}">
+        <span class="mood">${esc(g.placeholder)}</span>
+      </div>
+      <div class="card-caption">${esc(g.label)}</div>
+    `;
+    exchange.appendChild(card);
+  }
+
+  // Guestbook
+  if (narrative.guestbook) {
+    const gb = document.createElement('div');
+    gb.className = 'guestbook-section';
+    gb.innerHTML = `
+      <h3 class="guestbook-title">Notes left behind</h3>
+      <div class="guest-notes">
+        ${guestNotes.map((n, i) => `
+          <div class="guest-note" data-delay="${i * 120}">
+            <p>${esc(n.text)}</p>
+            <p class="note-meta">${esc(n.meta)}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    exchange.appendChild(gb);
+  }
+
+  // Booking
+  if (narrative.booking) {
+    const wa = APP_CONFIG.whatsappNumber !== 'REPLACE_ME' ? APP_CONFIG.whatsappNumber : '919999999999';
+    const bk = document.createElement('div');
+    bk.className = 'booking-pathway';
+    bk.innerHTML = `
+      <div class="booking-channels">
+        <a href="https://wa.me/${wa}" target="_blank" rel="noopener" class="booking-channel">
+          <span class="ch-icon">WhatsApp</span>
+          <span class="ch-name">Chat</span>
+          <span class="ch-arrow">↗</span>
+        </a>
+        <a href="https://www.instagram.com/starsandpiness" target="_blank" rel="noopener" class="booking-channel">
+          <span class="ch-icon">Instagram</span>
+          <span class="ch-name">@starsandpiness</span>
+          <span class="ch-arrow">↗</span>
+        </a>
+        <a href="https://www.booking.com" target="_blank" rel="noopener" class="booking-channel">
+          <span class="ch-icon">Booking</span>
+          <span class="ch-name">Online</span>
+          <span class="ch-arrow">↗</span>
+        </a>
+        <a href="mailto:stay@starsandpines.in" class="booking-channel">
+          <span class="ch-icon">Email</span>
+          <span class="ch-name">stay@starsandpines.in</span>
+          <span class="ch-arrow">↗</span>
+        </a>
+      </div>
+    `;
+    exchange.appendChild(bk);
+  }
+
+  // Follow-ups
+  if (narrative.followUps?.length) {
+    const choices = document.createElement('div');
+    choices.className = 'follow-up-choices';
+    narrative.followUps.forEach(fu => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.textContent = fu.text;
+      btn.addEventListener('click', () => {
+        choices.querySelectorAll('.choice-btn').forEach(b => {
+          b.style.pointerEvents = 'none';
+          b.style.opacity = '0.35';
+        });
+        btn.style.opacity = '1';
+        btn.style.borderColor = 'var(--pine-deep)';
+
+        const divider = document.createElement('div');
+        divider.className = 'visual-divider';
+        divider.innerHTML = '<span>✦</span>';
+        conversationEl.appendChild(divider);
+
+        setTimeout(() => renderExchange(narratives[fu.next], fu.next), 400);
+      });
+      choices.appendChild(btn);
+    });
+    exchange.appendChild(choices);
+  }
+
+  conversationEl.appendChild(exchange);
+
+  // Animate
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      exchange.classList.add('visible');
+
+      const card = exchange.querySelector('.visual-card');
+      if (card) setTimeout(() => card.classList.add('visible'), 500);
+
+      exchange.querySelectorAll('.guest-note').forEach(note => {
+        setTimeout(() => note.classList.add('visible'), 300 + (parseInt(note.dataset.delay) || 0));
+      });
+
+      setTimeout(() => exchange.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+    });
+  });
+
+  injectStars(exchange);
+}
+
+// ═══════════════════════════════════════════
+// HIDDEN STARS
+// ═══════════════════════════════════════════
+function injectStars(exchange) {
+  const ps = exchange.querySelectorAll('.house-msg p');
+  if (!ps.length) return;
+
+  const available = hiddenStars.filter((_, i) => !starsRevealed.has(i));
+  if (!available.length) return;
+
+  const count = Math.min(1, available.length);
+  const shuffled = [...available].sort(() => Math.random() - 0.5);
+
+  for (let i = 0; i < count; i++) {
+    const text = shuffled[i];
+    starsRevealed.add(hiddenStars.indexOf(text));
+
+    const target = ps[Math.floor(Math.random() * ps.length)];
+    const star = document.createElement('span');
+    star.className = 'hidden-star';
+    star.innerHTML = `<span class="star-reveal">${esc(text)}</span>`;
+    star.addEventListener('click', e => { e.stopPropagation(); star.classList.toggle('revealed'); });
+    target.appendChild(star);
+  }
+}
+
+function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+</script>
+
+</body>
+</html>
