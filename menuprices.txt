@@ -1,0 +1,94 @@
+drinks (Wyrmie's)
+
+Item	Price (₹)
+
+Masala Chai	55
+Ginger Lemon Honey	122
+Americano	155
+Cappuccino	222
+Mocha	244
+Hot Chocolate	233
+latte 222
+
+
+Breakfast
+
+Item	Price (₹)
+
+Peculiar Poha	111
+Aalo Puri	 222
+Omelette (Plain)	180
+Omelette (Veg Cheese)	250
+Pancake	355
+Muesli	288 
+Paratha (Aloo)	122
+Paratha (Paneer) 	144
+French Toast	 255
+Crepes	333
+Shakshouka	 355
+Moong Dal Chilla (2 pcs)	222
+
+
+Burgers
+
+Item	Price (₹)
+
+Garden Fresh	255
+Potato vs Paneer	333
+Achaari Chicken	444
+
+
+Small Plates
+
+Potata Batata	222
+Herb Whisperers	255
+Cheesy Aubergenie	299
+Falafel Chips	222
+Falafel Wrap	299
+Pizza Toasties	222
+Pakoda	222
+Fries (Salted / Peri Peri)	166 / 199
+
+
+Sandwiches
+
+Chilli Cheeseswich	255
+Habibi	277
+Creamy Shroomwich	277
+Creamy Chickenwich	355
+
+Soups & Salads
+
+Tomatine 	188
+Hemp Supreme	222
+Creamy Mushroom	255
+Fruity Fantasy	255
+Bodhi Bowl	 299
+The Himalayan	 333
+
+
+Coolers
+
+Lime Wire	 144
+Kheera Masala	166
+Rhodo Lover	166
+Apple Gingerina	177
+Thick Shake	 222
+Cold Kaapi	 222
+Iced Tea	 177
+Lassi	 177
+
+
+Large Plates
+
+Item	Price (₹)
+
+Coconut Qualia (Veg)	422
+Coconut Qualia (Chicken)	499
+Velvet Stroganov (Mushroom)	-
+Velvet Stroganov (Chicken)	-
+Penne Divino (Veg) 	455
+Penne Divino (Non-Veg)	533
+Alfredo / Arrabiata	 455/533
+The Grand Hummus Spread	 555
+Kumaoni Thali	 444
