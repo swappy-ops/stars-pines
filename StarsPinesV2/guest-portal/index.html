@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Stars & Pines — Guest Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --night:#131a12;--pine:#1f2f1d;--pine-light:#2a3f28;
+  --gold:#d4b880;--cream:#f6f1ea;--mist:#e8e2d8;
+  --alert:#d4885a;--green:#4a8a62;--red:#c45a5a;
+  --radius:12px;--radius-lg:16px;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--night);color:var(--cream);min-height:100vh;min-height:100dvh;overflow-x:hidden}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600}
+.serif{font-family:'EB Garamond',serif}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:inherit;font-size:16px;background:var(--pine-light);color:var(--cream);border:1px solid rgba(212,184,128,0.2);border-radius:8px;padding:12px 16px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+label{font-size:13px;color:var(--mist);margin-bottom:4px;display:block}
+
+/* ─── Access Screen ─── */
+.access-screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;text-align:center}
+.access-logo{width:64px;height:64px;margin-bottom:20px}
+.access-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin-bottom:8px}
+.access-sub{font-size:14px;color:var(--mist);margin-bottom:32px;max-width:280px;line-height:1.6}
+.access-form{width:100%;max-width:320px}
+.access-form .form-group{margin-bottom:16px}
+.access-form .code-input{font-family:'DM Mono',monospace;font-size:28px;text-align:center;letter-spacing:8px;text-transform:uppercase;padding:16px}
+
+/* ─── Portal Screen ─── */
+.portal-screen{display:none;padding-bottom:80px}
+.portal-screen.active{display:block}
+
+/* ─── Header ─── */
+.portal-header{padding:24px 16px 16px;text-align:center;border-bottom:1px solid rgba(212,184,128,0.1)}
+.portal-greeting{font-family:'EB Garamond',serif;font-size:22px;color:var(--gold);font-style:italic;margin-bottom:4px}
+.portal-room{font-size:14px;color:var(--mist)}
+.portal-code{font-family:'DM Mono',monospace;font-size:12px;color:var(--mist);margin-top:4px;opacity:0.6}
+
+/* ─── Tab Bar ─── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;background:var(--night);border-top:1px solid rgba(212,184,128,0.1);display:flex;overflow-x:auto;padding:6px 0 env(safe-area-inset-bottom,6px);-webkit-overflow-scrolling:touch}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 12px;background:none;color:var(--mist);font-size:9px;transition:color 0.2s;white-space:nowrap}
+.tab-btn.active{color:var(--gold)}
+.tab-btn .tab-icon{font-size:18px}
+
+/* ─── Tab Content ─── */
+.tab-content{display:none;padding:16px}
+.tab-content.active{display:block}
+
+/* ─── Cards ─── */
+.card{background:var(--pine);border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid rgba(212,184,128,0.08)}
+.card-title{font-size:16px;font-weight:600;color:var(--cream);margin-bottom:8px}
+.card-body{font-size:14px;color:var(--mist);line-height:1.5}
+.card-meta{font-size:12px;color:var(--mist);margin-top:8px}
+
+/* ─── Badges ─── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase}
+.badge-paid{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-pending{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-overdue{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-open{background:rgba(196,90,90,0.2);color:var(--red)}
+.badge-resolved{background:rgba(74,138,98,0.2);color:var(--green)}
+.badge-preparing{background:rgba(212,184,128,0.2);color:var(--gold)}
+.badge-delivered{background:rgba(74,138,98,0.2);color:var(--green)}
+
+/* ─── Buttons ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s;min-height:44px}
+.btn-primary{background:var(--gold);color:var(--night)}
+.btn-secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+.btn-sm{padding:8px 14px;font-size:12px;min-height:36px}
+.btn-block{width:100%}
+
+/* ─── Running Bill ─── */
+.bill-summary{background:var(--pine);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.bill-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(212,184,128,0.08);font-size:14px}
+.bill-line:last-child{border-bottom:none}
+.bill-label{color:var(--mist)}
+.bill-value{color:var(--cream);font-weight:600}
+.bill-total{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--gold);font-size:18px;font-weight:700}
+.bill-total .bill-label{color:var(--gold)}
+.bill-total .bill-value{color:var(--gold)}
+.bill-outstanding{display:flex;justify-content:space-between;padding:12px 0 0;margin-top:8px;border-top:2px solid var(--alert);font-size:20px;font-weight:700}
+.bill-outstanding .bill-label{color:var(--alert)}
+.bill-outstanding .bill-value{color:var(--alert)}
+
+/* ─── Menu ─── */
+.menu-category{margin-bottom:20px}
+.menu-cat-title{font-size:16px;font-weight:600;color:var(--gold);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(212,184,128,0.1)}
+.menu-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+.menu-item:active{background:var(--pine-light)}
+.menu-item-name{font-size:14px;font-weight:500;color:var(--cream)}
+.menu-item-desc{font-size:12px;color:var(--mist);margin-top:2px}
+.menu-item-price{font-size:14px;font-weight:600;color:var(--gold);white-space:nowrap;margin-left:12px}
+.menu-item-qty{display:flex;align-items:center;gap:8px}
+.qty-btn{width:32px;height:32px;border-radius:50%;background:var(--pine-light);color:var(--gold);font-size:18px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(212,184,128,0.2)}
+
+/* ─── Cart Bar ─── */
+.cart-bar{position:fixed;bottom:60px;left:12px;right:12px;z-index:99;background:var(--gold);color:var(--night);border-radius:var(--radius);padding:12px 16px;display:none;align-items:center;justify-content:space-between;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.3)}
+.cart-bar.visible{display:flex}
+
+/* ─── Section Headers ─── */
+.section-header{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin:20px 0 12px;font-weight:600}
+
+/* ─── Empty State ─── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--mist)}
+.empty-state .empty-icon{font-size:48px;margin-bottom:12px;opacity:0.5}
+.empty-state p{font-size:14px}
+
+/* ─── House Requests ─── */
+.request-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--pine);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+.request-item:active{background:var(--pine-light)}
+
+/* ─── Animations ─── */
+@keyframes spFadeIn{from{opacity:0}to{opacity:1}}
+
+/* ─── Responsive ─── */
+@media(min-width:480px){
+  .tab-bar{max-width:480px;left:50%;transform:translateX(-50%);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+  ACCESS SCREEN
+═══════════════════════════════════════ -->
+<div class="screen active" id="screen-access">
+  <div class="access-screen">
+    <svg class="access-logo" viewBox="0 0 64 64" fill="none">
+      <circle cx="32" cy="32" r="30" stroke="#d4b880" stroke-width="2"/>
+      <path d="M32 10 L35 22 L48 22 L38 30 L42 42 L32 34 L22 42 L26 30 L16 22 L29 22Z" fill="#d4b880" opacity="0.8"/>
+    </svg>
+    <div class="access-title">Stars & Pines</div>
+    <div class="access-sub">Enter your access code to enter the portal.</div>
+    <div class="access-form">
+      <div class="form-group">
+        <label>Access Code</label>
+        <input type="text" class="code-input" id="access-code" maxlength="6" placeholder="ABC123" autocomplete="off" />
+      </div>
+      <button class="btn btn-primary btn-block" onclick="validateAccess()" style="margin-top:8px">Enter Portal</button>
+    </div>
+    <div style="margin-top:24px;font-size:12px;color:var(--mist)">
+      Stars & Pines · Kasar Devi · Almora
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  PORTAL SCREEN
+═══════════════════════════════════════ -->
+<div class="portal-screen" id="screen-portal">
+  <div class="portal-header">
+    <div class="portal-greeting" id="portal-greeting">Welcome</div>
+    <div class="portal-room" id="portal-room"></div>
+    <div class="portal-code" id="portal-code-display"></div>
+  </div>
+
+  <!-- TAB: My Booking -->
+  <div class="tab-content active" id="tab-booking">
+    <div class="card">
+      <div class="card-title">My Booking</div>
+      <div class="card-body" id="booking-details"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">WiFi</div>
+      <div class="card-body">
+        <div class="bill-line"><span class="bill-label">Network</span><span class="bill-value">StarsAndPines_Guest</span></div>
+        <div class="bill-line"><span class="bill-label">Password</span><span class="bill-value">pines2024</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Emergency Contacts</div>
+      <div class="card-body">
+        <div class="bill-line"><span class="bill-label">Front Desk</span><span class="bill-value">+91 79825 23582</span></div>
+        <div class="bill-line"><span class="bill-label">Ambulance</span><span class="bill-value">108</span></div>
+        <div class="bill-line"><span class="bill-label">Police</span><span class="bill-value">100</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Running Bill -->
+  <div class="tab-content" id="tab-bill">
+    <div class="bill-summary" id="bill-summary"></div>
+  </div>
+
+  <!-- TAB: Food Orders -->
+  <div class="tab-content" id="tab-food">
+    <div id="menu-container"></div>
+  </div>
+
+  <!-- TAB: Service Requests -->
+  <div class="tab-content" id="tab-services">
+    <div class="section-header">House Requests</div>
+    <div id="house-requests"></div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('booking')" data-tab="booking"><span class="tab-icon">📋</span>Booking</button>
+    <button class="tab-btn" onclick="switchTab('bill')" data-tab="bill"><span class="tab-icon">🧾</span>Bill</button>
+    <button class="tab-btn" onclick="switchTab('food')" data-tab="food"><span class="tab-icon">🍽</span>Food</button>
+    <button class="tab-btn" onclick="switchTab('services')" data-tab="services"><span class="tab-icon">🛎</span>Services</button>
+  </div>
+
+  <!-- Cart Bar -->
+  <div class="cart-bar" id="cart-bar">
+    <span id="cart-count">0 items</span>
+    <span id="cart-total">₹0</span>
+    <button class="btn btn-sm" style="background:var(--night);color:var(--gold)" onclick="submitOrder()">Send to Kitchen</button>
+  </div>
+</div>
+
+<script src="../shared/api.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  var guestData = null;
+  var cart = {};
+
+  // ─── Initialize ──────────────────────────────────────────────────
+  function init() {
+    // Check URL for token
+    var params = new URLSearchParams(window.location.search);
+    var codeFromUrl = params.get('token');
+    if (codeFromUrl) {
+      document.getElementById('access-code').value = codeFromUrl.toUpperCase();
+      validateAccess();
+    }
+  }
+
+  // ─── Access Validation ───────────────────────────────────────────
+  window.validateAccess = function() {
+    var code = document.getElementById('access-code').value.trim().toUpperCase();
+    if (!code || code.length < 4) { showToast('Enter your access code'); return; }
+
+    API.validateToken(code).then(function(data) {
+      guestData = {
+        guestName: data.guest_name,
+        room: data.room_name,
+        token: code,
+        stayId: data.stay_id,
+        roomId: data.room_id,
+      };
+      enterPortal();
+    }).catch(function(err) {
+      showToast('Invalid access code. Please check with the front desk.');
+    });
+  };
+
+  function enterPortal() {
+    document.getElementById('screen-access').classList.remove('active');
+    document.getElementById('screen-access').style.display = 'none';
+    document.getElementById('screen-portal').classList.add('active');
+    document.getElementById('screen-portal').style.display = 'block';
+
+    document.getElementById('portal-greeting').textContent = 'Welcome, ' + (guestData.guestName || 'Guest');
+    document.getElementById('portal-room').textContent = guestData.room || '';
+    document.getElementById('portal-code').textContent = 'Code: ' + (guestData.token || '');
+
+    loadBookingDetails();
+    loadRunningBill();
+    renderMenu();
+    renderHouseRequests();
+  }
+
+  // ─── Tab Switching ───────────────────────────────────────────────
+  window.switchTab = function(tab) {
+    document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+    document.getElementById('tab-' + tab).classList.add('active');
+    var btn = document.querySelector('[data-tab="' + tab + '"]');
+    if (btn) btn.classList.add('active');
+
+    if (tab === 'bill') loadRunningBill();
+  };
+
+  // ─── Booking Details ─────────────────────────────────────────────
+  function loadBookingDetails() {
+    var container = document.getElementById('booking-details');
+    if (!container) return;
+
+    container.innerHTML =
+      '<div class="bill-line"><span class="bill-label">Guest</span><span class="bill-value">' + escHtml(guestData.guestName) + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Room</span><span class="bill-value">' + escHtml(guestData.room) + '</span></div>' +
+      '<div class="bill-line"><span class="bill-label">Access Code</span><span class="bill-value" style="font-family:monospace;font-size:12px">' + escHtml(guestData.token) + '</span></div>';
+  }
+
+  // ─── Running Bill ────────────────────────────────────────────────
+  function loadRunningBill() {
+    if (!guestData || !guestData.token) return;
+
+    API.getPortalBill(guestData.token).then(function(bill) {
+      var charges = bill.entries.filter(function(e) { return e.amount > 0; });
+      var payments = bill.entries.filter(function(e) { return e.amount < 0; });
+
+      var totalCharges = charges.reduce(function(s, e) { return s + e.amount; }, 0);
+      var totalPayments = payments.reduce(function(s, e) { return s + Math.abs(e.amount); }, 0);
+      var outstanding = Math.max(0, bill.balance);
+
+      var html = '';
+      charges.forEach(function(e) {
+        html += '<div class="bill-line"><span class="bill-label">' + escHtml(e.description) + '</span><span class="bill-value">₹' + e.amount.toFixed(0) + '</span></div>';
+      });
+      payments.forEach(function(e) {
+        html += '<div class="bill-line"><span class="bill-label">Payment</span><span class="bill-value" style="color:var(--green)">-₹' + Math.abs(e.amount).toFixed(0) + '</span></div>';
+      });
+
+      html += '<div class="bill-total"><span class="bill-label">Total</span><span class="bill-value">₹' + totalCharges.toFixed(0) + '</span></div>';
+      if (totalPayments > 0) {
+        html += '<div class="bill-line"><span class="bill-label">Paid</span><span class="bill-value" style="color:var(--green)">-₹' + totalPayments.toFixed(0) + '</span></div>';
+      }
+      if (outstanding > 0) {
+        html += '<div class="bill-outstanding"><span class="bill-label">Outstanding</span><span class="bill-value">₹' + outstanding.toFixed(0) + '</span></div>';
+      }
+
+      document.getElementById('bill-summary').innerHTML = html;
+    }).catch(function() {
+      document.getElementById('bill-summary').innerHTML = '<div class="empty-state"><p>No charges yet</p></div>';
+    });
+  }
+
+  // ─── Menu & Ordering ─────────────────────────────────────────────
+  function renderMenu() {
+    API.getMenu().then(function(menu) {
+      var container = document.getElementById('menu-container');
+      var html = '';
+
+      for (var category in menu) {
+        if (!menu.hasOwnProperty(category)) continue;
+        html += '<div class="menu-category"><div class="menu-cat-title">' + escHtml(category) + '</div>';
+        menu[category].forEach(function(item) {
+          var qty = cart[item.id] ? cart[item.id].qty : 0;
+          html += '<div class="menu-item" onclick="toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">' +
+            '<div style="flex:1">' +
+              '<div class="menu-item-name">' + escHtml(item.name) + '</div>' +
+              '<div class="menu-item-desc">' + item.prep_time_min + ' min</div>' +
+            '</div>' +
+            '<div class="menu-item-qty">' +
+              (qty > 0 ? '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">−</span>' +
+                '<span style="min-width:20px;text-align:center">' + qty + '</span>' +
+                '<span class="qty-btn" onclick="event.stopPropagation();toggleCartItem(\'' + item.id + '\', \'' + escHtml(item.name) + '\', ' + item.price + ')">+</span>' :
+                '<span class="menu-item-price">₹' + item.price + '</span>') +
+            '</div>' +
+          '</div>';
+        });
+        html += '</div>';
+      }
+
+      container.innerHTML = html;
+    }).catch(function() {
+      document.getElementById('menu-container').innerHTML = '<div class="empty-state"><div class="empty-icon">🍽</div><p>Menu unavailable</p></div>';
+    });
+  }
+
+  window.toggleCartItem = function(id, name, price) {
+    if (!cart[id]) cart[id] = { name: name, qty: 0, price: price };
+    cart[id].qty++;
+    if (cart[id].qty > 10) cart[id].qty = 1;
+    updateCart();
+    renderMenu();
+  };
+
+  function updateCart() {
+    var totalItems = 0;
+    var totalPrice = 0;
+    for (var id in cart) {
+      if (cart.hasOwnProperty(id) && cart[id].qty > 0) {
+        totalItems += cart[id].qty;
+        totalPrice += cart[id].qty * cart[id].price;
+      }
+    }
+
+    var bar = document.getElementById('cart-bar');
+    if (totalItems > 0) {
+      bar.classList.add('visible');
+      document.getElementById('cart-count').textContent = totalItems + ' item' + (totalItems > 1 ? 's' : '');
+      document.getElementById('cart-total').textContent = '₹' + totalPrice;
+    } else {
+      bar.classList.remove('visible');
+    }
+  }
+
+  window.submitOrder = function() {
+    var items = [];
+    for (var id in cart) {
+      if (cart.hasOwnProperty(id) && cart[id].qty > 0) {
+        items.push({ menu_item_id: id, quantity: cart[id].qty });
+      }
+    }
+
+    if (items.length === 0) return;
+
+    API.createOrder({
+      order_type: 'room',
+      stay_id: guestData.stayId,
+      table_label: guestData.room,
+      items: items,
+    }).then(function() {
+      cart = {};
+      updateCart();
+      renderMenu();
+      showToast('Order sent to the kitchen');
+    }).catch(function(err) {
+      showToast('Failed to place order: ' + err.message);
+    });
+  };
+
+  // ─── House Requests ──────────────────────────────────────────────
+  function renderHouseRequests() {
+    var requests = [
+      { type: 'extra_towels', icon: '🛁', name: 'Extra Towels', message: 'Extra towels coming right up.' },
+      { type: 'extra_blanket', icon: '🧣', name: 'Extra Blanket', message: 'An extra blanket coming right up.' },
+      { type: 'water_refill', icon: '💧', name: 'Water Refill', message: 'Water refill on the way.' },
+      { type: 'room_cleaning', icon: '🧹', name: 'Room Cleaning', message: 'Room cleaning requested.' },
+      { type: 'firepit_setup', icon: '🔥', name: 'Firepit Setup', message: 'Firepit setup requested.' },
+      { type: 'tea_to_room', icon: '☕', name: 'Tea to Room', message: 'Tea to room requested.' }
+    ];
+
+    var container = document.getElementById('house-requests');
+    container.innerHTML = requests.map(function(r) {
+      return '<div class="request-item" onclick="sendHouseRequest(\'' + r.type + '\', \'' + escHtml(r.message) + '\')">' +
+        '<div><span style="font-size:20px;margin-right:8px">' + r.icon + '</span><span class="menu-item-name">' + escHtml(r.name) + '</span></div>' +
+        '<span class="badge badge-pending" id="hr-' + r.type + '" style="display:none">Sent</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  window.sendHouseRequest = function(type, message) {
+    API.createCleaning({
+      stay_id: guestData.stayId,
+      room_id: guestData.roomId,
+      notes: message,
+    }).then(function() {
+      var badge = document.getElementById('hr-' + type);
+      if (badge) {
+        badge.style.display = 'inline-block';
+        setTimeout(function() { badge.style.display = 'none'; }, 4000);
+      }
+      showToast(message.split(' ')[0] + ' noted');
+    }).catch(function() {
+      showToast('Request failed');
+    });
+  };
+
+  // ─── Toast ───────────────────────────────────────────────────────
+  function showToast(msg) {
+    var t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--pine-light);color:var(--cream);padding:10px 20px;border-radius:8px;font-size:13px;z-index:200;border:1px solid rgba(212,184,128,0.2);';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function() { t.remove(); }, 2500);
+  }
+
+  function escHtml(str) {
+    if (!str) return '';
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // ─── Start ───────────────────────────────────────────────────────
+  init();
+})();
+</script>
+</body>
+</html>
