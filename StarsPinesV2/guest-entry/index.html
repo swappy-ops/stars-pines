@@ -282,8 +282,8 @@ body {
 
   <div class="entry-form">
     <div class="entry-field">
-      <label for="staff-booking-id">Booking ID</label>
-      <input type="text" id="staff-booking-id" placeholder="SP-2026-001" />
+      <label for="staff-booking-id">Booking ID (auto)</label>
+      <input type="text" id="staff-booking-id" readonly style="opacity:0.5" />
     </div>
     <div class="entry-row">
       <div class="entry-field">
@@ -294,7 +294,8 @@ body {
         <label for="staff-room">Room</label>
         <select id="staff-room">
           <option value="">— select —</option>
-          <option value="Six-Bed Dorm">Six-Bed Dorm</option>
+          <option value="Dorm 1">Dorm 1</option>
+          <option value="Dorm 2">Dorm 2</option>
           <option value="Turquoise Room">Turquoise Room</option>
           <option value="Yellow Room">Yellow Room</option>
           <option value="Star Suite">Star Suite</option>
@@ -352,6 +353,17 @@ body {
 let currentToken = null;
 let currentGuest = null;
 
+// ─── AUTO-GENERATE BOOKING ID ON LOAD
+async function loadNextBookingNumber() {
+  try {
+    const resp = await API.get('/api/next-booking-number');
+    document.getElementById('staff-booking-id').value = resp.booking_number;
+  } catch (e) {
+    document.getElementById('staff-booking-id').value = '—';
+  }
+}
+loadNextBookingNumber();
+
 // ─── SCREEN MANAGEMENT
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -387,7 +399,7 @@ document.getElementById('staff-generate-btn').addEventListener('click', async ()
       guest_phone: phone || '+910000000000',
       room_id: roomToId(room),
       staff_name: 'Staff',
-      notes: bookingId ? `Booking: ${bookingId}` : null,
+      notes: `Booking ${bookingId}`,
     });
 
     currentToken = result.token;
@@ -409,7 +421,8 @@ document.getElementById('staff-generate-btn').addEventListener('click', async ()
 
 function roomToId(name) {
   const map = {
-    'Six-Bed Dorm': 'D01',
+    'Dorm 1': 'D01',
+    'Dorm 2': 'D02',
     'Turquoise Room': 'R01',
     'Yellow Room': 'R02',
     'Star Suite': 'R03',
@@ -438,12 +451,12 @@ function generateQR(token) {
 // ─── QR ACTIONS
 document.getElementById('qr-new-btn').addEventListener('click', () => {
   // Reset form
-  document.getElementById('staff-booking-id').value = '';
   document.getElementById('staff-guest-name').value = '';
   document.getElementById('staff-room').value = '';
   document.getElementById('staff-checkin').value = '';
   document.getElementById('staff-checkout').value = '';
   document.getElementById('staff-phone').value = '';
+  loadNextBookingNumber();
   showScreen('screen-staff');
 });
 

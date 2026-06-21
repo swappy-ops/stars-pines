@@ -10,7 +10,6 @@
 
 const API_BASE =
   (typeof window !== 'undefined' && window.__API_URL__) ||
-  (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_URL) ||
   "http://localhost:8000";
 
 const API = {
@@ -99,4 +98,31 @@ const API = {
   getInventory() { return this.get("/api/inventory"); },
   restockItem(data) { return this.post("/api/inventory/restock", data); },
   consumeItem(data) { return this.post("/api/inventory/consume", data); },
+
+  // ─── Grievances ───
+  createGrievance(data) { return this.post("/api/grievances", data); },
+  getGrievances(stayId) { return this.get(`/api/grievances?stay_id=${encodeURIComponent(stayId)}`); },
+  updateGrievanceStatus(id, status, staffName) {
+    return this.post(`/api/grievances/${id}/status?status=${encodeURIComponent(status)}&staff_name=${encodeURIComponent(staffName || '')}`, {});
+  },
+
+  // ─── Notifications ───
+  getNotifications(stayId) { return this.get(`/api/notifications?stay_id=${encodeURIComponent(stayId)}`); },
+  markNotificationRead(id) { return this.post(`/api/notifications/${id}/read`, {}); },
+  markAllNotificationsRead(stayId) { return this.post(`/api/notifications/read-all?stay_id=${encodeURIComponent(stayId)}`, {}); },
+
+  // ─── Service Requests (Experiences + Concierge) ───
+  createServiceRequest(data) { return this.post("/api/service-requests", data); },
+  getServiceRequests(stayId, type) {
+    const url = type
+      ? `/api/service-requests?stay_id=${encodeURIComponent(stayId)}&request_type=${encodeURIComponent(type)}`
+      : `/api/service-requests?stay_id=${encodeURIComponent(stayId)}`;
+    return this.get(url);
+  },
+  updateServiceRequestStatus(id, status) {
+    return this.post(`/api/service-requests/${id}/status?status=${encodeURIComponent(status)}`, {});
+  },
+
+  // ─── Portal Payment ───
+  portalPayment(token, data) { return this.post(`/api/portal/${encodeURIComponent(token)}/payment`, data); },
 };

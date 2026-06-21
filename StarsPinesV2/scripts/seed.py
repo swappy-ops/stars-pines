@@ -26,11 +26,12 @@ from api.db import get_db
 def seed_rooms():
     """Insert actual Stars & Pines rooms."""
     rooms = [
-        ("R01", "Turquoise Room", "private", 1500, 2),
-        ("R02", "Yellow Room", "private", 1500, 2),
-        ("R03", "Star Suite", "private", 2000, 2),
+        ("R01", "Turquoise Room", "private", 2500, 2),
+        ("R02", "Yellow Room", "private", 2500, 2),
+        ("R03", "Star Suite", "private", 5000, 2),
         ("R04", "Ridge Room", "private", 1800, 2),
-        ("D01", "Six Bed Dorm", "dorm", 500, 6),
+        ("D01", "Dorm 1", "dorm", 600, 6),
+        ("D02", "Dorm 2", "dorm", 700, 6),
     ]
     with get_db() as conn:
         conn.executemany(
@@ -43,13 +44,20 @@ def seed_rooms():
 def seed_beds():
     """Insert beds for dorm rooms."""
     beds = [
-        # Six Bed Dorm
+        # Dorm 1
         ("D01-1", "D01", "Bed 1"),
         ("D01-2", "D01", "Bed 2"),
         ("D01-3", "D01", "Bed 3"),
         ("D01-4", "D01", "Bed 4"),
         ("D01-5", "D01", "Bed 5"),
         ("D01-6", "D01", "Bed 6"),
+        # Dorm 2
+        ("D02-1", "D02", "Bed 1"),
+        ("D02-2", "D02", "Bed 2"),
+        ("D02-3", "D02", "Bed 3"),
+        ("D02-4", "D02", "Bed 4"),
+        ("D02-5", "D02", "Bed 5"),
+        ("D02-6", "D02", "Bed 6"),
     ]
     with get_db() as conn:
         conn.executemany(

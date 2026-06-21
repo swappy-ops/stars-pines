@@ -16,6 +16,10 @@ from api.services.inventory_service import InventoryService
 from api.services.dashboard_service import DashboardService
 from api.services.orders import OrderService
 from api.repositories.menu import MenuRepository
+from api.repositories.guests import GuestRepository
+from api.repositories.grievances import GrievanceRepository
+from api.repositories.notifications import NotificationRepository
+from api.repositories.requests import ServiceRequestRepository
 from api.repositories.tokens import TokenRepository
 from api.repositories.staff import StaffRepository
 from api.repositories.cleaning import CleaningRepository
@@ -92,6 +96,27 @@ class ConsumeRequest(BaseModel):
     logged_by: Optional[str] = None
 
 
+class GrievanceRequest(BaseModel):
+    stay_id: str
+    type: str
+    message: str
+    severity: str = "medium"
+
+
+class ServiceRequestCreate(BaseModel):
+    stay_id: str
+    request_type: str  # 'experience' | 'concierge'
+    type: str
+    notes: Optional[str] = None
+
+
+class PortalPaymentRequest(BaseModel):
+    stay_id: str
+    amount: float
+    method: str = "cash"  # 'cash' | 'upi' | 'card' | 'pay_later'
+    notes: Optional[str] = None
+
+
 # ─── Staff Auth ───
 
 @router.post("/staff/login")
@@ -137,6 +162,15 @@ def checkin(req: CheckInRequest):
         "token": stay.get("token"),
         "portal_url": f"/guest-portal?token={stay.get('token')}",
     }
+
+
+@router.get("/next-booking-number")
+def next_booking_number():
+    """Return the next sequential booking number (1, 2, 3, ...)."""
+    from api.db import get_db
+    with get_db() as conn:
+        row = conn.execute("SELECT COUNT(*) as cnt FROM stays").fetchone()
+        return {"booking_number": row["cnt"] + 1}
 
 
 @router.post("/checkout")
@@ -357,3 +391,112 @@ def restock_item(req: RestockRequest):
 @router.post("/inventory/consume")
 def consume_item(req: ConsumeRequest):
     return InventoryService.consume(req.item_id, req.quantity, req.note, req.logged_by)
+
+
+# ─── Grievances ───
+
+@router.post("/grievances")
+def create_grievance(req: GrievanceRequest):
+    import uuid
+    from datetime import datetime
+    gid = f"griev_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    grievance = GrievanceRepository.create(gid, req.stay_id, req.type, req.message, req.severity)
+
+    # Create notification for staff
+    NotificationRepository.create(
+        f"notif_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:6]}",
+        stay_id=req.stay_id,
+        message=f"Guest concern: {req.type} — {req.message[:50]}",
+        ntype="grievance",
+        priority="high" if req.severity in ("high", "urgent") else "normal",
+    )
+    return grievance
+
+
+@router.get("/grievances")
+def get_grievances(stay_id: str):
+    return GrievanceRepository.get_by_stay(stay_id)
+
+
+@router.post("/grievances/{grievance_id}/status")
+def update_grievance_status(grievance_id: str, status: str, staff_name: Optional[str] = None):
+    result = GrievanceRepository.update_status(grievance_id, status, staff_name)
+    if not result:
+        raise HTTPException(status_code=404, detail="Grievance not found")
+    return result
+
+
+# ─── Notifications ───
+
+@router.get("/notifications")
+def get_notifications(stay_id: str):
+    stay_notifs = NotificationRepository.get_by_stay(stay_id)
+    broadcasts = NotificationRepository.get_broadcasts()
+    return stay_notifs + broadcasts
+
+
+@router.post("/notifications/{notification_id}/read")
+def mark_notification_read(notification_id: str):
+    result = NotificationRepository.mark_read(notification_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    return result
+
+
+@router.post("/notifications/read-all")
+def mark_all_notifications_read(stay_id: str):
+    count = NotificationRepository.mark_all_read(stay_id)
+    return {"marked_read": count}
+
+
+# ─── Service Requests (Experiences + Concierge) ───
+
+@router.post("/service-requests")
+def create_service_request(req: ServiceRequestCreate):
+    import uuid
+    from datetime import datetime
+    rid = f"sr_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:6]}"
+    return ServiceRequestRepository.create(rid, req.stay_id, req.request_type, req.type, req.notes)
+
+
+@router.get("/service-requests")
+def get_service_requests(stay_id: str, request_type: Optional[str] = None):
+    return ServiceRequestRepository.get_by_stay(stay_id, request_type)
+
+
+@router.post("/service-requests/{request_id}/status")
+def update_service_request_status(request_id: str, status: str):
+    result = ServiceRequestRepository.update_status(request_id, status)
+    if not result:
+        raise HTTPException(status_code=404, detail="Service request not found")
+    return result
+
+
+# ─── Portal Payment ───
+
+@router.post("/portal/{token}/payment")
+def portal_payment(token: str, req: PortalPaymentRequest):
+    """Record a payment from the guest portal."""
+    token_data = TokenRepository.validate(token)
+    if not token_data:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+    payment = BillingService.record_payment(
+        stay_id=req.stay_id,
+        amount=req.amount,
+        method=req.method,
+        collected_by="Guest Portal",
+    )
+
+    # Create notification
+    import uuid
+    from datetime import datetime
+    NotificationRepository.create(
+        f"notif_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}_{uuid.uuid4().hex[:6]}",
+        stay_id=req.stay_id,
+        message=f"Payment of ₹{req.amount} recorded via portal ({req.method})",
+        ntype="payment",
+        priority="normal",
+    )
+
+    return payment

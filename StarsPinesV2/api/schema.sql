@@ -218,6 +218,49 @@ CREATE TABLE IF NOT EXISTS inventory_log (
 );
 
 -- ============================================================
+-- 14. GRIEVANCES (guest concerns/complaints)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS grievances (
+    id              TEXT PRIMARY KEY,
+    stay_id         TEXT NOT NULL REFERENCES stays(id),
+    type            TEXT NOT NULL,           -- 'room' | 'housekeeping' | 'food' | 'staff' | 'water' | 'electricity' | 'noise' | 'other'
+    message         TEXT NOT NULL,
+    severity        TEXT DEFAULT 'medium',   -- 'low' | 'medium' | 'high' | 'urgent'
+    status          TEXT DEFAULT 'open',     -- 'open' | 'acknowledged' | 'resolved' | 'dismissed'
+    resolved_by     TEXT,                    -- staff name
+    resolved_at     TEXT,
+    created_at      TEXT DEFAULT (datetime('now')),
+    updated_at      TEXT DEFAULT (datetime('now'))
+);
+
+-- ============================================================
+-- 15. NOTIFICATIONS (guest-facing alerts)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS notifications (
+    id              TEXT PRIMARY KEY,
+    stay_id         TEXT REFERENCES stays(id),  -- NULL for broadcast
+    message         TEXT NOT NULL,
+    type            TEXT DEFAULT 'info',     -- 'info' | 'warning' | 'order' | 'grievance' | 'payment'
+    priority        TEXT DEFAULT 'normal',   -- 'low' | 'normal' | 'high' | 'urgent'
+    is_read         INTEGER DEFAULT 0,
+    created_at      TEXT DEFAULT (datetime('now'))
+);
+
+-- ============================================================
+-- 16. SERVICE REQUESTS (experiences + concierge)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS service_requests (
+    id              TEXT PRIMARY KEY,
+    stay_id         TEXT NOT NULL REFERENCES stays(id),
+    request_type    TEXT NOT NULL,           -- 'experience' | 'concierge'
+    type            TEXT NOT NULL,           -- specific type (e.g. 'bonfire', 'taxi', 'laundry')
+    notes           TEXT,
+    status          TEXT DEFAULT 'requested', -- 'requested' | 'in_progress' | 'completed' | 'cancelled'
+    created_at      TEXT DEFAULT (datetime('now')),
+    updated_at      TEXT DEFAULT (datetime('now'))
+);
+
+-- ============================================================
 -- INDEXES
 -- ============================================================
 CREATE INDEX IF NOT EXISTS idx_stays_guest ON stays(guest_id);
@@ -238,3 +281,9 @@ CREATE INDEX IF NOT EXISTS idx_tasks_status ON tasks(status);
 CREATE INDEX IF NOT EXISTS idx_tasks_type ON tasks(type);
 CREATE INDEX IF NOT EXISTS idx_inventory_category ON inventory_items(category_id);
 CREATE INDEX IF NOT EXISTS idx_inventory_low ON inventory_items(current_stock, threshold);
+CREATE INDEX IF NOT EXISTS idx_grievances_stay ON grievances(stay_id);
+CREATE INDEX IF NOT EXISTS idx_grievances_status ON grievances(status);
+CREATE INDEX IF NOT EXISTS idx_notifications_stay ON notifications(stay_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_read ON notifications(is_read);
+CREATE INDEX IF NOT EXISTS idx_service_requests_stay ON service_requests(stay_id);
+CREATE INDEX IF NOT EXISTS idx_service_requests_type ON service_requests(request_type);

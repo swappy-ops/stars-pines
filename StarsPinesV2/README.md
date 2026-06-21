@@ -122,6 +122,6 @@ The existing Firebase version (`archive/firebase-version/`) is preserved as refe
 
 1. Export Firebase data → CSV
 2. Run migration script
-3. Manual review with Rajat
+3. Manual review 
 4. Switch frontend to FastAPI endpoints
 5. Archive Firebase (read-only, 90 days)
